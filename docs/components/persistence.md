@@ -1,6 +1,6 @@
 # COMP-PERSISTENCE — tenant and project storage
 
-Owner: backend implementer. Current implementation is migrations 0001/0002 plus
+Owner: backend implementer. Current implementation is migrations 0001–0003 plus
 the Rust `karate-api::service` adapter, documented in [API component](api.md).
 Requirements: PLAT-TENANT/RBAC and REQ-001. PostgreSQL 14.20 was available for
 local verification. This is not selection of an aging major for production;
@@ -27,7 +27,8 @@ bounded work units; a SQL transaction snapshot is not a revocation push channel.
 
 The runtime gets SELECT on tenants/memberships and CRUD on projects, never
 TRUNCATE, schema ownership, SUPERUSER or BYPASSRLS. Tenant provisioning and
-membership changes await a separately audited service path with owner safeguards.
+membership changes now use narrow definer functions with owner safeguards;
+see [membership administration](membership.md). Direct runtime writes stay denied.
 GUC settings do not authenticate a caller: only a trusted adapter may set them
 after verifying credentials. SQL injection or possession of runtime credentials
 can forge GUCs; parameterized queries, bounded pools and secret custody remain

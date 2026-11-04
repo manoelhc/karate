@@ -37,6 +37,12 @@ response values. These are library limits; the network adapter must also enforce
 streaming response limits before allocating a full response.
 
 Errors: VALIDATION, UNAUTHENTICATED, FORBIDDEN, NOT_FOUND, CONFLICT,
-OUT_OF_SCOPE, UNVERIFIED, LIMIT_REACHED, UNAVAILABLE. No error contains a
-credential, submitted URL or raw provider response. Transport error envelopes,
-localized messages and OpenAPI schemas remain pending with the transport slice.
+OUT_OF_SCOPE, UNVERIFIED, LIMIT_REACHED, UNAVAILABLE, OWNER_REQUIRED. No error contains a
+credential, submitted URL or raw provider response. The API supplies localized closed error envelopes and OpenAPI schemas;
+other transports remain pending.
+
+Membership change policy refines ManageMembers: admins may manage only members
+and viewers, without assigning admin/owner. Owners may manage all roles. Removing
+an owner requires another active, nonexpiring owner; assigning owner requires a
+nonexpiring target. Violations of these ownership invariants return OWNER_REQUIRED.
+Adapters must hold a tenant management lock across current facts, policy and commit.

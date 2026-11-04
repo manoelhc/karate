@@ -20,3 +20,6 @@ Human assistance: none pending. Authenticated reference demos and real provider
 setup are unverified future integration prerequisites. They do not block the
 next independent local service slice. Production provisioning, paid resources,
 outreach and deployment have not been requested or performed.
+
+| DEC-014 | 2026-11-04 | Implement existing-member administration before invites/keys; preserve own-row RLS using narrow definer capabilities | User continuation; all domain authorization remains in Rust, with duplicate SQL storage guards. No full TASK-003b2 completion claim. |
+| DEC-015 | 2026-11-04 | Create NOLOGIN membership capability role only inside disposable PostgreSQL clusters | Local fixture role/table grants removed with each cluster; no shared account, paid resource or production migration. Runtime role is not a member. |

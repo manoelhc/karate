@@ -1,0 +1,48 @@
+{
+  "toolchain": "rustc 1.101.0-nightly (708c94ef0 2026-11-03)\nbinary: rustc\ncommit-hash: 708c94ef093ecc42fb8851e17d8383d999727abc\ncommit-date: 2026-11-03\nhost: aarch64-apple-darwin\nrelease: 1.101.0-nightly\nLLVM version: 23.1.5\n",
+  "instrumentation_only": true,
+  "production_toolchain": "1.99.1",
+  "components": [
+    {
+      "component": "karate-api",
+      "lines": {
+        "count": 696,
+        "covered": 678
+      },
+      "branches": {
+        "count": 122,
+        "covered": 119
+      }
+    },
+    {
+      "component": "karate-core",
+      "lines": {
+        "count": 324,
+        "covered": 324
+      },
+      "branches": {
+        "count": 212,
+        "covered": 206
+      }
+    }
+  ],
+  "files": {
+    "crates/karate-api/src/http.rs": "b3ce74a9ec7e99b378c3afb2543135c6bea06b24f45a6c8d01a94e0c5b716e36",
+    "crates/karate-api/src/identity.rs": "99fbf02040fe9308eed8514be1512cf9ef2350432652f15db96b61d5282c0108",
+    "crates/karate-api/src/lib.rs": "79c99ea4357e98c6bc4ac2aaeca2d924acb31e9e0ba5e543ccb6e28636939486",
+    "crates/karate-api/src/main.rs": "d45deb2715db531d5ba4282aeca59478106604d98cbbc23f4027e5e3be8b1700",
+    "crates/karate-api/src/membership.rs": "5bb0c7acb72a72450b8488356dfe2efd9a9ce1d0f07d39f286a4ea36597f8569",
+    "crates/karate-api/src/service.rs": "56e732e0b4f83718937a8df3a94c6f0b9ebe865e5cccf8c72cdb6c20848b0d2d",
+    "crates/karate-core/src/assessment.rs": "13afd9ab0552f3d2c7c69d5956c1143bde122cc364ab55fbc8499edefb717a0a",
+    "crates/karate-core/src/authorization.rs": "3a3a8903c2501aa9e9c230a843b3bc48179aea03be3797a33ce549bb034e6f01",
+    "crates/karate-core/src/evidence.rs": "a80b1e31826da6ad60feef030819702f09eae00108b1b27c18008c4cd369f69b",
+    "crates/karate-core/src/lib.rs": "518fc053fc076461b551ac30881dc8f7e829bb0aeb3878bf578befea45038923",
+    "crates/karate-core/src/scope.rs": "b8b8d35a69ce8fca174cb55b5dc33029565708a58ac4fcc57042441217d5512d"
+  },
+  "lock_sha256": "3a8b39e860c3511fa88aa1c84e30ac034e5c332d2ba2a503986c30e810cbf6fd",
+  "exclusions": [
+    "Test sources",
+    "Third-party/compiler code",
+    "karate-api/src/lib.rs: module declarations only, enforced by source check; no executable logic"
+  ]
+}

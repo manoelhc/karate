@@ -10,7 +10,7 @@ service/policy; those transports and durable scheduling remain pending.
 
 REQ-002/003/006 and PLAT-TENANT/RBAC/AGENTS drive this slice. Public Rust types
 are the internal contract; the project API exposes its own versioned HTTP schema. Stable errors in
-`lib.rs` are machine codes; localized presentation belongs to future transports.
+`lib.rs` are machine codes; localized presentation belongs to transports (the HTTP API now supplies it).
 The project HTTP contract is separate. Scope construction validates before URL normalization. Only explicit HTTP(S)
 origins and segment-bounded paths are accepted. Encoded paths, dot segments,
 backslashes, duplicate slashes and credentials are refused conservatively.

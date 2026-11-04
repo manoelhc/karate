@@ -1,3 +1,5 @@
+EVIDENCE_DIR ?= docs/specker/runs/2026-11-04-karate/evidence/membership
+
 .PHONY: help install run lint format test build licenses audit secrets test-db coverage-lines coverage clean
 
 help:
@@ -26,13 +28,14 @@ audit:
 	./scripts/cargo.sh audit
 
 secrets:
-	gitleaks dir . --redact --no-banner --report-format json --report-path docs/specker/runs/2026-11-04-karate/evidence/projects/gitleaks.json
+	@mkdir -p $(EVIDENCE_DIR)
+	gitleaks dir . --redact --no-banner --report-format json --report-path $(EVIDENCE_DIR)/gitleaks.json
 
 coverage-lines:
-	python3 tools/coverage.py
+	python3 tools/coverage.py --output-dir $(EVIDENCE_DIR)
 
 coverage:
-	python3 tools/coverage.py --require-branches
+	python3 tools/coverage.py --require-branches --output-dir $(EVIDENCE_DIR)
 
 test-db:
 	./scripts/test-postgres.sh

@@ -30,15 +30,15 @@ are prerequisites to their coding slices.
 | Slice | Owner / size | Dependencies and files | Acceptance / command | Status and rollback |
 | --- | --- | --- | --- | --- |
 | TASK-003a | Backend implementer / medium | Existing architecture, POLICY, PAGE-004/010/011/024/044; crates/karate-core, migration 0001, SQL fixtures | Explicit role/lifecycle matrix, strict scope, real two-tenant persistence and restart; make lint test build licenses test-db | Implemented foundation with recorded local checks; full task/coverage remain open. Additive schema used only in disposable fixture; source changes reversible. |
-| TASK-003b | Backend implementer / large | 003a; identity/persistence/API component contracts | Signed access-token verification, async current membership, paginated project API, revision/idempotency and atomic audit | **003b1 implemented and locally tested.** Full OIDC login/refresh, key lifecycle, membership management and audit retention remain open in 003b2. |
+| TASK-003b | Backend implementer / large | 003a; identity/persistence/API component contracts | Signed access-token verification, async current membership, paginated project API, revision/idempotency and atomic audit | **003b1 implemented; remote CI passed at e530e90.** 003b2a adds existing membership administration; invitations, full OIDC login/refresh, key lifecycle and audit retention remain open. |
+| TASK-003b2a | Backend implementer / medium | 003b1; membership component; migration 0003; core/API policy and real fixtures | Bounded directory, granular roles, revisioned revocation, serialized permanent-owner safeguards, atomic audit; make lint test build licenses test-db coverage | Local checks pass: 26 tests and >90% component line/branch coverage; exact-commit remote CI checked after push. Complete 003b2 remains open. Additive local migration only; no shared environment action. |
 | TASK-004a | Backend implementer / large | 003b plus target-verification/worker contracts | Expiring ownership proof, immutable scope, atomic budget+job publication, lease fencing, per-request cancellation/authority and pinned DNS; owned HTTP fixture | Pending. No third-party network assessment. |
 | TASK-012a | Quality owner / medium | Current Rust components | >90% line and branch per component; make coverage | Pass locally with nightly-2026-11-04 instrumentation; production remains 1.99.1. Full platform gates still open. |
 
 Backend checklist: model/internal contract and initial threat review complete for
 003a; no shared/production migration approval applies to disposable fixtures;
-lint/tests/build/license/audit checks recorded. CI workflow authored but unrun;
-remote checks, release controls and the full compliance/access lifecycle remain
-open. Delivery uses direct commits and pushes to main, without PRs, per the user's
+lint/tests/build/license/audit checks recorded. Foundation CI passed at e530e90; the current continuation must pass again.
+Release controls and the full compliance/access lifecycle remain open. Delivery uses direct commits and pushes to main, without PRs, per the user's
 2026-11-04 instruction. Publication does not change the verification gate status.
 
 Migration strategy: initial schema is additive; future updates use expand/backfill/verify/contract with snapshots before destructive changes. Production provisioning, billing activation and deployment require their own authority. No production environment has been selected.

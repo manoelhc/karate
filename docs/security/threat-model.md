@@ -18,3 +18,11 @@ Trust boundaries: browser↔API, OIDC provider↔token verifier, API↔tenant da
 | Export injection | Escape HTML/CSV; redaction; scoped report snapshots | Malicious target-supplied strings |
 
 No real customer PII or production target credentials are required for development. Hosting jurisdiction, production retention period, processor contracts, support access and applicable regulation are unresolved launch decisions. This document is not a certification claim.
+
+TASK-003b2a adds concurrent owner-removal, queued-actor revocation, admin role
+escalation and privileged-function misuse cases. Tenant row locking, post-lock
+authorization, permanent-owner requirements, column-specific capability grants,
+fixed function search paths and atomic audit are verified against real PostgreSQL.
+The NOLOGIN capability owner bypasses RLS only inside narrow functions; runtime
+membership in that role is refused at startup. Existing GUC trust assumptions
+remain unchanged. Production retention and privileged-operator governance stay open.

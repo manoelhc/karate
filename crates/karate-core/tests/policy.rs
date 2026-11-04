@@ -387,3 +387,80 @@ fn delegation_is_bounded_and_never_grants_privileged_operations() {
         Err(Error::Forbidden)
     );
 }
+
+#[test]
+fn membership_management_cannot_escalate_or_remove_durable_ownership() {
+    for actor_role in [Role::Owner, Role::Admin, Role::Member, Role::Viewer] {
+        for target in [Role::Owner, Role::Admin, Role::Member, Role::Viewer] {
+            for desired in [
+                None,
+                Some(Role::Owner),
+                Some(Role::Admin),
+                Some(Role::Member),
+                Some(Role::Viewer),
+            ] {
+                let principal = resolve(
+                    &Auth::default(),
+                    &Store {
+                        role: actor_role,
+                        ..Store::default()
+                    },
+                    "valid",
+                    TENANT,
+                    100,
+                )
+                .unwrap();
+                let expected = match actor_role {
+                    Role::Owner => Ok(()),
+                    Role::Admin
+                        if matches!(target, Role::Member | Role::Viewer)
+                            && matches!(desired, None | Some(Role::Member | Role::Viewer)) =>
+                    {
+                        Ok(())
+                    }
+                    _ => Err(Error::Forbidden),
+                };
+                assert_eq!(
+                    principal.authorize_member_change(TENANT, target, desired, true, true),
+                    expected
+                );
+                assert_eq!(
+                    principal.authorize_member_change(OTHER, target, desired, true, true),
+                    Err(Error::Forbidden)
+                );
+            }
+        }
+    }
+    let owner = resolve(&Auth::default(), &Store::default(), "valid", TENANT, 100).unwrap();
+    assert_eq!(
+        owner.authorize_member_change(TENANT, Role::Owner, None, false, true),
+        Err(Error::OwnerRequired)
+    );
+    assert_eq!(
+        owner.authorize_member_change(TENANT, Role::Owner, Some(Role::Member), false, true),
+        Err(Error::OwnerRequired)
+    );
+    assert_eq!(
+        owner.authorize_member_change(TENANT, Role::Owner, Some(Role::Owner), false, true),
+        Ok(())
+    );
+    assert_eq!(
+        owner.authorize_member_change(TENANT, Role::Member, Some(Role::Owner), true, false),
+        Err(Error::OwnerRequired)
+    );
+    let key = resolve(
+        &Auth {
+            key: Some((TENANT, vec![Action::ManageMembers])),
+            ..Auth::default()
+        },
+        &Store::default(),
+        "valid",
+        TENANT,
+        100,
+    )
+    .unwrap();
+    assert_eq!(
+        key.authorize_member_change(TENANT, Role::Viewer, None, true, true),
+        Err(Error::Forbidden)
+    );
+}

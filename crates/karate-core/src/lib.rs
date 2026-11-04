@@ -22,6 +22,8 @@ pub enum Error {
     NotFound,
     #[error("operation conflicts with current state")]
     Conflict,
+    #[error("permanent workspace ownership required")]
+    OwnerRequired,
     #[error("target is outside the authorized scope")]
     OutOfScope,
     #[error("target ownership is not verified")]

@@ -10,7 +10,7 @@ use axum::{
     response::{IntoResponse, Response},
     routing::{get, post},
 };
-use karate_core::Error;
+use karate_core::{Error, authorization::Role};
 use serde::Deserialize;
 use serde_json::{Value, json};
 use std::{
@@ -97,6 +97,7 @@ impl IntoResponse for ApiError {
                 (StatusCode::FORBIDDEN, "FORBIDDEN", "authorization", false)
             }
             Error::NotFound => (StatusCode::NOT_FOUND, "NOT_FOUND", "resource", false),
+            Error::OwnerRequired => (StatusCode::CONFLICT, "OWNER_REQUIRED", "conflict", false),
             Error::Conflict => (StatusCode::CONFLICT, "CONFLICT", "conflict", false),
             Error::LimitReached => (
                 StatusCode::TOO_MANY_REQUESTS,
@@ -177,6 +178,18 @@ struct ListInput {
     after: Option<Uuid>,
 }
 
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct MemberRoleInput {
+    role: Role,
+    expected_revision: i64,
+}
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct RevokeInput {
+    expected_revision: i64,
+}
+
 pub fn router(service: Arc<ProjectService>) -> Router {
     Router::new()
         .route("/healthz", get(|| async { StatusCode::NO_CONTENT }))
@@ -184,6 +197,15 @@ pub fn router(service: Arc<ProjectService>) -> Router {
         .route(
             "/v1/tenants/{tenant}/projects/{project}",
             get(read).patch(update),
+        )
+        .route("/v1/tenants/{tenant}/memberships", get(list_members))
+        .route(
+            "/v1/tenants/{tenant}/memberships/{membership}",
+            axum::routing::patch(change_member),
+        )
+        .route(
+            "/v1/tenants/{tenant}/memberships/{membership}/revoke",
+            post(revoke_member),
         )
         .fallback(|Extension(locale): Extension<Locale>| async move {
             ApiError(Error::NotFound, locale)
@@ -268,6 +290,67 @@ async fn update(
     Ok(Json(json!(
         service
             .update(credential, tenant, id, &input.name, input.expected_revision)
+            .await
+            .map_err(error)?
+    )))
+}
+
+async fn list_members(
+    State(service): State<Arc<ProjectService>>,
+    Extension(locale): Extension<Locale>,
+    headers: HeaderMap,
+    tenant: Result<Path<Uuid>, PathRejection>,
+    query: Result<Query<ListInput>, QueryRejection>,
+) -> Result<Json<Value>, ApiError> {
+    let error = |e| ApiError(e, locale);
+    let credential = bearer(&headers).map_err(error)?;
+    let Path(tenant) = tenant.map_err(|_| error(Error::Validation))?;
+    let Query(input) = query.map_err(|_| error(Error::Validation))?;
+    Ok(Json(json!(
+        service
+            .list_members(credential, tenant, input.limit.unwrap_or(25), input.after)
+            .await
+            .map_err(error)?
+    )))
+}
+async fn change_member(
+    State(service): State<Arc<ProjectService>>,
+    Extension(locale): Extension<Locale>,
+    headers: HeaderMap,
+    path: Result<Path<(Uuid, Uuid)>, PathRejection>,
+    body: Result<Json<MemberRoleInput>, JsonRejection>,
+) -> Result<Json<Value>, ApiError> {
+    let error = |e| ApiError(e, locale);
+    let credential = bearer(&headers).map_err(error)?;
+    let Path((tenant, id)) = path.map_err(|_| error(Error::Validation))?;
+    let Json(input) = body.map_err(|_| error(Error::Validation))?;
+    Ok(Json(json!(
+        service
+            .change_member(
+                credential,
+                tenant,
+                id,
+                input.expected_revision,
+                Some(input.role)
+            )
+            .await
+            .map_err(error)?
+    )))
+}
+async fn revoke_member(
+    State(service): State<Arc<ProjectService>>,
+    Extension(locale): Extension<Locale>,
+    headers: HeaderMap,
+    path: Result<Path<(Uuid, Uuid)>, PathRejection>,
+    body: Result<Json<RevokeInput>, JsonRejection>,
+) -> Result<Json<Value>, ApiError> {
+    let error = |e| ApiError(e, locale);
+    let credential = bearer(&headers).map_err(error)?;
+    let Path((tenant, id)) = path.map_err(|_| error(Error::Validation))?;
+    let Json(input) = body.map_err(|_| error(Error::Validation))?;
+    Ok(Json(json!(
+        service
+            .change_member(credential, tenant, id, input.expected_revision, None)
             .await
             .map_err(error)?
     )))

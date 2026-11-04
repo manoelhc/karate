@@ -1,0 +1,1 @@
+PASS: coverage source/lock hashes; 26 tests; unchanged MIT license; shell/Python syntax; git diff whitespace; local Markdown links; OpenAPI JSON/internal references (not full schema validation). Historical project snapshot hashes verified against e530e90; only representation changed.

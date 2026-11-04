@@ -1,74 +1,278 @@
 {
   "base_commit": "972ae0cb741f6d1832898dc045db2c3131dc5b07",
   "recorded_at": "2026-11-04T18:40:08.112209+00:00",
-  "files": {
-    ".github/workflows/foundation.yml": "31d7bbdb8a43ce3c697bcb1395d6797025996d5cf525a6488ddffecc04277bcf",
-    ".gitignore": "bccaec725cef7c3c89fdc9341fba51d97cc2ac722a8fc6beb96cbfe284f5a52a",
-    ".gitleaks.toml": "8b3a39bc9667e5fd0d88d95453d6b9f62a2928d1e8f7f67fa4de665f73c91f3d",
-    ".pre-commit-config.yaml": "58c9b55ce13f2b3749ed89df6cb7e7403232dc3cab37c281192f433007371a94",
-    "AGENTS.md": "868f5a77360bf66204d96cb8e1d68c37e843ae2eddf428b0471e292375ee1b6b",
-    "Cargo.lock": "3a8b39e860c3511fa88aa1c84e30ac034e5c332d2ba2a503986c30e810cbf6fd",
-    "Cargo.toml": "2917dc25292dec2b7bb4723fe8fba0cb117b1d9cf977d1a38b2b7a55a11f8535",
-    "LICENSE": "66292e4ef1490a2cd7dcdfd3b4f507717de5b27ee17d2aa877bb10775b5cc0ed",
-    "Makefile": "15ba07504de7e1c29e3adce3fb0048e740826596513b73459ffb3181fb4cda82",
-    "README.md": "b9a9be48e2141333faf522f816cde81b375e70b4dd647b5ff9776b019693caeb",
-    "crates/karate-api/Cargo.toml": "914e20805acd47ce97b21ae843334d21b3b2a332407b9446e644d9ee42620daa",
-    "crates/karate-api/locales/en.json": "f9ac1269d65716190ad95d7998aa1f6df857f909893ba769fc1326db9ebe7498",
-    "crates/karate-api/locales/pt-BR.json": "0ce66ed764738dca5c027e45905915af73b6ee66ba72089b28e1e6642368011e",
-    "crates/karate-api/src/http.rs": "00713ee8762fe1f1ef94277dd36f975fe43c74d4f8d8f01537b88755f50714b1",
-    "crates/karate-api/src/identity.rs": "99fbf02040fe9308eed8514be1512cf9ef2350432652f15db96b61d5282c0108",
-    "crates/karate-api/src/lib.rs": "0e083525a5b0feac375d2c3ecaf81f0df4e19ce53ce3067c48f91237bed4685e",
-    "crates/karate-api/src/main.rs": "d45deb2715db531d5ba4282aeca59478106604d98cbbc23f4027e5e3be8b1700",
-    "crates/karate-api/src/service.rs": "3a0d8dbe1d1e7d064cb3a2c6f71f0953a3a5b732978c7ec870291a2d0441fea5",
-    "crates/karate-api/tests/integration.rs": "14d955dcf5014bc7b1e505c980ee2e57c466ef37132bb9dc85e91600262293ac",
-    "crates/karate-api/tests/process.rs": "5d5949bb5fbce1a0ef6477696ffdd5e5c4533a46673756541693363c3e3a8bc8",
-    "crates/karate-core/Cargo.toml": "3afeb981507cc11a579c61cd7d827b9468af16aca43d73e1584d88698c3deb50",
-    "crates/karate-core/src/assessment.rs": "13afd9ab0552f3d2c7c69d5956c1143bde122cc364ab55fbc8499edefb717a0a",
-    "crates/karate-core/src/authorization.rs": "31667123def80b6dd295f8f5bdaca84c6d58b1e69a89f3e42721467148caee7c",
-    "crates/karate-core/src/evidence.rs": "a80b1e31826da6ad60feef030819702f09eae00108b1b27c18008c4cd369f69b",
-    "crates/karate-core/src/lib.rs": "a3cc5f4455e36920d43753226f79a0e3a431e220332eed007fdfa43523ec9272",
-    "crates/karate-core/src/scope.rs": "b8b8d35a69ce8fca174cb55b5dc33029565708a58ac4fcc57042441217d5512d",
-    "crates/karate-core/tests/domain.rs": "f66b7fb8c5c7db1e6ce2bf09efee9c317aea2db1fa98ec9114dc12dad2ac143f",
-    "crates/karate-core/tests/policy.rs": "897e6e5cfd434945081ee706fbe03505b9f68c1d4b51b967f5dc1ea8975d3f63",
-    "crates/karate-core/tests/scope.rs": "3ae18982049a9e13599fb4fbcf752d6765b37766ef2d46138057c4a74502fa2e",
-    "deny.toml": "727695394c916b91077c737f9adc7902f6b7cd4cfbad5b476f73fc3e5c79dbed",
-    "docs/adr/0001-rust-modular-services.md": "2a8c91cffd0d1b407a3bea268e81100e27862f4b4628331a6d72d44baff04a94",
-    "docs/adr/0002-evidence-and-scope.md": "7dc2ac74e6ff4ad60930446033e320987cc0c69a908b743ea8286d8cbfaf184e",
-    "docs/adr/0003-project-resource-server.md": "aab5f079603eff31e50725828951ea58b12ee28afa63809b79298c62059cd380",
-    "docs/architecture/overview.md": "0cf36b03982e9321e02c9bd41d62f3b98ac3f94f5fc0232be5d189e2083839dd",
-    "docs/architecture/versions.md": "2e0a257af21c1a7774c9c3c5eca79bdf1ad0bec8befe08df48cf51966e221165",
-    "docs/business/plan.md": "e285575bac15b35b3254c759dc8a3f0de0180fe0050692730078c3306f27739e",
-    "docs/components/api.md": "896d324f014b9572c1c0b761d6455f8d9cc564b5042e03ba8203e2263d25b69f",
-    "docs/components/domain.md": "af680d24c981c80ff4df6efd4f4005f44ee98fe24a8953f2c29dddd1086ae967",
-    "docs/components/persistence.md": "f6a42233b87af542b098c1ac529e62c58e0e40a999450e8ab78387c6ec6cabf1",
-    "docs/contracts/domain-v1.md": "f6ccdb9c6e850b1fd530d067e2e186553d6b42ae068fe639a20879287a14d949",
-    "docs/contracts/projects-v1.md": "bbc0fefa7ba18dc54817cf32065db3f9fac15ff8ef61ee8c867147cd5f31e3ce",
-    "docs/contracts/projects-v1.openapi.json": "dca46aecc6a36675c576c91e61e4ff0905afab8a904106aa7307f312a6565f48",
-    "docs/engineering/plan.md": "4ff2bd836ab3dfdb13523f4e0f6b10df0d9683e8b7aaccefbb4ed0fa98c6d1fe",
-    "docs/engineering/risks.md": "bd953f3412ad77ad49e0c655062b615497c85a0fe4b1bed79d36d53479f9c856",
-    "docs/engineering/test-strategy.md": "1c9a34eebed04e1671a37a74720045d5278de9915a854be5454ef90ceebc75a2",
-    "docs/operations/local-development.md": "fa9b980cd2bebd8ba9147b84b432918c1494e98b9d7cccfab7b8cd5a05a8b612",
-    "docs/operations/project-api.md": "74c0c3f8be64cd17c509b551eaf4344c735e47fa85e3fd0a4a3432a2390f88b8",
-    "docs/product/prd.md": "d794a1ebaeada7ca117905faa513552ef0e8d84024ee863e7b255a8fb7f97895",
-    "docs/product/traceability.md": "887aa5720b65caba98a409002eac73d57e3e43019c8ae1114af5be7c983e8a7e",
-    "docs/security/threat-model.md": "df177064ddfb11fae86c224510125e2cb97c0ecf5fad5583dcd375a8897eebad",
-    "docs/specker/runs/2026-11-04-karate/decisions.md": "74144da681f67ffcf1d062782b3ac285ff8067158390dc4c4945fcc969b9705d",
-    "docs/specker/runs/2026-11-04-karate/final.md": "20038726a8fa1682263a049fc4475a0c2b604889f3182f1444880bc3da5429ec",
-    "docs/specker/runs/2026-11-04-karate/projects-verification.md": "1d9cd9ff1530fde56b734af5f0b96318e009f370a526d3b8e0499a24c5b50047",
-    "docs/specker/runs/2026-11-04-karate/research-pages.json": "9a7e8d930fa033fd69527b271f7c9700fb7b5547a7e5964e56dc752e519d2129",
-    "docs/specker/runs/2026-11-04-karate/research.md": "1988d62f9637084aea08a703e7d4361d523bb22a0b8f24e2c567fb0c16a433d3",
-    "docs/specker/runs/2026-11-04-karate/run.md": "117068c03a3d1c6711df9405c0d741c1b009e692d959c95ee91231c16c601a70",
-    "docs/specker/runs/2026-11-04-karate/verification.md": "213d3633917d6b3aa38c94ba58d2b40278c0a182f67ef2e9dca130d7568bc44c",
-    "migrations/0001_tenants_projects.sql": "e3a968f7a1425ee857edb85f161ee63f1ceb8eac6a369a4d43d3c2d69f8d0264",
-    "migrations/0002_project_audit.sql": "2f913ae6fd9696159a4087a6d69cd19bebd9fdd1c2e45b42b3f6a8127d3852d0",
-    "rust-toolchain.toml": "d13306be0ecda81ce779baa290ffb417380d525928477f16200884b5169cca33",
-    "scripts/cargo.sh": "746b8b190b103a14fb3d7f2abb38f403868a87b3f1a6fba10aff8f57025538fc",
-    "scripts/test-postgres.sh": "9bedfe496dc3e0391668fb9d75e167323281c82d4a2dd22566ed5bdba5585875",
-    "tests/postgres/api_seed.sql": "4dc501303cfa91fbc75e9907eaa286ae75ef71c16b1327e956667bf9baaeccf6",
-    "tests/postgres/restart.sql": "f13affb0a38bf15539cff4e8347cb1bb558451c9c8d0866409b4df44c913c232",
-    "tests/postgres/tenant_isolation.sql": "b73ab1aeeacb22d7eb16dfe45b3c0c34ada2a1affae22efa9458801e2e24606e",
-    "tools/coverage.py": "aac7804c7660cdcf9ad3e557b122d790b33803a6d436175c5ad805e3ad3ce831",
-    "tools/pyproject.toml": "d87f9718ea2ae0602c4d275d574e600a2113ec34f552509c152452e89dd2d5da",
-    "tools/uv.lock": "ea97f02590654d4d597c5a3c7406bb7f2210c65e36772391217f6385aea6dcea"
-  }
+  "files": [
+    {
+      "path": ".github/workflows/foundation.yml",
+      "sha256": "31d7bbdb8a43ce3c697bcb1395d6797025996d5cf525a6488ddffecc04277bcf"
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "bccaec725cef7c3c89fdc9341fba51d97cc2ac722a8fc6beb96cbfe284f5a52a"
+    },
+    {
+      "path": ".gitleaks.toml",
+      "sha256": "8b3a39bc9667e5fd0d88d95453d6b9f62a2928d1e8f7f67fa4de665f73c91f3d"
+    },
+    {
+      "path": ".pre-commit-config.yaml",
+      "sha256": "58c9b55ce13f2b3749ed89df6cb7e7403232dc3cab37c281192f433007371a94"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "868f5a77360bf66204d96cb8e1d68c37e843ae2eddf428b0471e292375ee1b6b"
+    },
+    {
+      "path": "Cargo.lock",
+      "sha256": "3a8b39e860c3511fa88aa1c84e30ac034e5c332d2ba2a503986c30e810cbf6fd"
+    },
+    {
+      "path": "Cargo.toml",
+      "sha256": "2917dc25292dec2b7bb4723fe8fba0cb117b1d9cf977d1a38b2b7a55a11f8535"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "66292e4ef1490a2cd7dcdfd3b4f507717de5b27ee17d2aa877bb10775b5cc0ed"
+    },
+    {
+      "path": "Makefile",
+      "sha256": "15ba07504de7e1c29e3adce3fb0048e740826596513b73459ffb3181fb4cda82"
+    },
+    {
+      "path": "README.md",
+      "sha256": "b9a9be48e2141333faf522f816cde81b375e70b4dd647b5ff9776b019693caeb"
+    },
+    {
+      "path": "crates/karate-api/Cargo.toml",
+      "sha256": "914e20805acd47ce97b21ae843334d21b3b2a332407b9446e644d9ee42620daa"
+    },
+    {
+      "path": "crates/karate-api/locales/en.json",
+      "sha256": "f9ac1269d65716190ad95d7998aa1f6df857f909893ba769fc1326db9ebe7498"
+    },
+    {
+      "path": "crates/karate-api/locales/pt-BR.json",
+      "sha256": "0ce66ed764738dca5c027e45905915af73b6ee66ba72089b28e1e6642368011e"
+    },
+    {
+      "path": "crates/karate-api/src/http.rs",
+      "sha256": "00713ee8762fe1f1ef94277dd36f975fe43c74d4f8d8f01537b88755f50714b1"
+    },
+    {
+      "path": "crates/karate-api/src/identity.rs",
+      "sha256": "99fbf02040fe9308eed8514be1512cf9ef2350432652f15db96b61d5282c0108"
+    },
+    {
+      "path": "crates/karate-api/src/lib.rs",
+      "sha256": "0e083525a5b0feac375d2c3ecaf81f0df4e19ce53ce3067c48f91237bed4685e"
+    },
+    {
+      "path": "crates/karate-api/src/main.rs",
+      "sha256": "d45deb2715db531d5ba4282aeca59478106604d98cbbc23f4027e5e3be8b1700"
+    },
+    {
+      "path": "crates/karate-api/src/service.rs",
+      "sha256": "3a0d8dbe1d1e7d064cb3a2c6f71f0953a3a5b732978c7ec870291a2d0441fea5"
+    },
+    {
+      "path": "crates/karate-api/tests/integration.rs",
+      "sha256": "14d955dcf5014bc7b1e505c980ee2e57c466ef37132bb9dc85e91600262293ac"
+    },
+    {
+      "path": "crates/karate-api/tests/process.rs",
+      "sha256": "5d5949bb5fbce1a0ef6477696ffdd5e5c4533a46673756541693363c3e3a8bc8"
+    },
+    {
+      "path": "crates/karate-core/Cargo.toml",
+      "sha256": "3afeb981507cc11a579c61cd7d827b9468af16aca43d73e1584d88698c3deb50"
+    },
+    {
+      "path": "crates/karate-core/src/assessment.rs",
+      "sha256": "13afd9ab0552f3d2c7c69d5956c1143bde122cc364ab55fbc8499edefb717a0a"
+    },
+    {
+      "path": "crates/karate-core/src/authorization.rs",
+      "sha256": "31667123def80b6dd295f8f5bdaca84c6d58b1e69a89f3e42721467148caee7c"
+    },
+    {
+      "path": "crates/karate-core/src/evidence.rs",
+      "sha256": "a80b1e31826da6ad60feef030819702f09eae00108b1b27c18008c4cd369f69b"
+    },
+    {
+      "path": "crates/karate-core/src/lib.rs",
+      "sha256": "a3cc5f4455e36920d43753226f79a0e3a431e220332eed007fdfa43523ec9272"
+    },
+    {
+      "path": "crates/karate-core/src/scope.rs",
+      "sha256": "b8b8d35a69ce8fca174cb55b5dc33029565708a58ac4fcc57042441217d5512d"
+    },
+    {
+      "path": "crates/karate-core/tests/domain.rs",
+      "sha256": "f66b7fb8c5c7db1e6ce2bf09efee9c317aea2db1fa98ec9114dc12dad2ac143f"
+    },
+    {
+      "path": "crates/karate-core/tests/policy.rs",
+      "sha256": "897e6e5cfd434945081ee706fbe03505b9f68c1d4b51b967f5dc1ea8975d3f63"
+    },
+    {
+      "path": "crates/karate-core/tests/scope.rs",
+      "sha256": "3ae18982049a9e13599fb4fbcf752d6765b37766ef2d46138057c4a74502fa2e"
+    },
+    {
+      "path": "deny.toml",
+      "sha256": "727695394c916b91077c737f9adc7902f6b7cd4cfbad5b476f73fc3e5c79dbed"
+    },
+    {
+      "path": "docs/adr/0001-rust-modular-services.md",
+      "sha256": "2a8c91cffd0d1b407a3bea268e81100e27862f4b4628331a6d72d44baff04a94"
+    },
+    {
+      "path": "docs/adr/0002-evidence-and-scope.md",
+      "sha256": "7dc2ac74e6ff4ad60930446033e320987cc0c69a908b743ea8286d8cbfaf184e"
+    },
+    {
+      "path": "docs/adr/0003-project-resource-server.md",
+      "sha256": "aab5f079603eff31e50725828951ea58b12ee28afa63809b79298c62059cd380"
+    },
+    {
+      "path": "docs/architecture/overview.md",
+      "sha256": "0cf36b03982e9321e02c9bd41d62f3b98ac3f94f5fc0232be5d189e2083839dd"
+    },
+    {
+      "path": "docs/architecture/versions.md",
+      "sha256": "2e0a257af21c1a7774c9c3c5eca79bdf1ad0bec8befe08df48cf51966e221165"
+    },
+    {
+      "path": "docs/business/plan.md",
+      "sha256": "e285575bac15b35b3254c759dc8a3f0de0180fe0050692730078c3306f27739e"
+    },
+    {
+      "path": "docs/components/api.md",
+      "sha256": "896d324f014b9572c1c0b761d6455f8d9cc564b5042e03ba8203e2263d25b69f"
+    },
+    {
+      "path": "docs/components/domain.md",
+      "sha256": "af680d24c981c80ff4df6efd4f4005f44ee98fe24a8953f2c29dddd1086ae967"
+    },
+    {
+      "path": "docs/components/persistence.md",
+      "sha256": "f6a42233b87af542b098c1ac529e62c58e0e40a999450e8ab78387c6ec6cabf1"
+    },
+    {
+      "path": "docs/contracts/domain-v1.md",
+      "sha256": "f6ccdb9c6e850b1fd530d067e2e186553d6b42ae068fe639a20879287a14d949"
+    },
+    {
+      "path": "docs/contracts/projects-v1.md",
+      "sha256": "bbc0fefa7ba18dc54817cf32065db3f9fac15ff8ef61ee8c867147cd5f31e3ce"
+    },
+    {
+      "path": "docs/contracts/projects-v1.openapi.json",
+      "sha256": "dca46aecc6a36675c576c91e61e4ff0905afab8a904106aa7307f312a6565f48"
+    },
+    {
+      "path": "docs/engineering/plan.md",
+      "sha256": "4ff2bd836ab3dfdb13523f4e0f6b10df0d9683e8b7aaccefbb4ed0fa98c6d1fe"
+    },
+    {
+      "path": "docs/engineering/risks.md",
+      "sha256": "bd953f3412ad77ad49e0c655062b615497c85a0fe4b1bed79d36d53479f9c856"
+    },
+    {
+      "path": "docs/engineering/test-strategy.md",
+      "sha256": "1c9a34eebed04e1671a37a74720045d5278de9915a854be5454ef90ceebc75a2"
+    },
+    {
+      "path": "docs/operations/local-development.md",
+      "sha256": "fa9b980cd2bebd8ba9147b84b432918c1494e98b9d7cccfab7b8cd5a05a8b612"
+    },
+    {
+      "path": "docs/operations/project-api.md",
+      "sha256": "74c0c3f8be64cd17c509b551eaf4344c735e47fa85e3fd0a4a3432a2390f88b8"
+    },
+    {
+      "path": "docs/product/prd.md",
+      "sha256": "d794a1ebaeada7ca117905faa513552ef0e8d84024ee863e7b255a8fb7f97895"
+    },
+    {
+      "path": "docs/product/traceability.md",
+      "sha256": "887aa5720b65caba98a409002eac73d57e3e43019c8ae1114af5be7c983e8a7e"
+    },
+    {
+      "path": "docs/security/threat-model.md",
+      "sha256": "df177064ddfb11fae86c224510125e2cb97c0ecf5fad5583dcd375a8897eebad"
+    },
+    {
+      "path": "docs/specker/runs/2026-11-04-karate/decisions.md",
+      "sha256": "74144da681f67ffcf1d062782b3ac285ff8067158390dc4c4945fcc969b9705d"
+    },
+    {
+      "path": "docs/specker/runs/2026-11-04-karate/final.md",
+      "sha256": "20038726a8fa1682263a049fc4475a0c2b604889f3182f1444880bc3da5429ec"
+    },
+    {
+      "path": "docs/specker/runs/2026-11-04-karate/projects-verification.md",
+      "sha256": "1d9cd9ff1530fde56b734af5f0b96318e009f370a526d3b8e0499a24c5b50047"
+    },
+    {
+      "path": "docs/specker/runs/2026-11-04-karate/research-pages.json",
+      "sha256": "9a7e8d930fa033fd69527b271f7c9700fb7b5547a7e5964e56dc752e519d2129"
+    },
+    {
+      "path": "docs/specker/runs/2026-11-04-karate/research.md",
+      "sha256": "1988d62f9637084aea08a703e7d4361d523bb22a0b8f24e2c567fb0c16a433d3"
+    },
+    {
+      "path": "docs/specker/runs/2026-11-04-karate/run.md",
+      "sha256": "117068c03a3d1c6711df9405c0d741c1b009e692d959c95ee91231c16c601a70"
+    },
+    {
+      "path": "docs/specker/runs/2026-11-04-karate/verification.md",
+      "sha256": "213d3633917d6b3aa38c94ba58d2b40278c0a182f67ef2e9dca130d7568bc44c"
+    },
+    {
+      "path": "migrations/0001_tenants_projects.sql",
+      "sha256": "e3a968f7a1425ee857edb85f161ee63f1ceb8eac6a369a4d43d3c2d69f8d0264"
+    },
+    {
+      "path": "migrations/0002_project_audit.sql",
+      "sha256": "2f913ae6fd9696159a4087a6d69cd19bebd9fdd1c2e45b42b3f6a8127d3852d0"
+    },
+    {
+      "path": "rust-toolchain.toml",
+      "sha256": "d13306be0ecda81ce779baa290ffb417380d525928477f16200884b5169cca33"
+    },
+    {
+      "path": "scripts/cargo.sh",
+      "sha256": "746b8b190b103a14fb3d7f2abb38f403868a87b3f1a6fba10aff8f57025538fc"
+    },
+    {
+      "path": "scripts/test-postgres.sh",
+      "sha256": "9bedfe496dc3e0391668fb9d75e167323281c82d4a2dd22566ed5bdba5585875"
+    },
+    {
+      "path": "tests/postgres/api_seed.sql",
+      "sha256": "4dc501303cfa91fbc75e9907eaa286ae75ef71c16b1327e956667bf9baaeccf6"
+    },
+    {
+      "path": "tests/postgres/restart.sql",
+      "sha256": "f13affb0a38bf15539cff4e8347cb1bb558451c9c8d0866409b4df44c913c232"
+    },
+    {
+      "path": "tests/postgres/tenant_isolation.sql",
+      "sha256": "b73ab1aeeacb22d7eb16dfe45b3c0c34ada2a1affae22efa9458801e2e24606e"
+    },
+    {
+      "path": "tools/coverage.py",
+      "sha256": "aac7804c7660cdcf9ad3e557b122d790b33803a6d436175c5ad805e3ad3ce831"
+    },
+    {
+      "path": "tools/pyproject.toml",
+      "sha256": "d87f9718ea2ae0602c4d275d574e600a2113ec34f552509c152452e89dd2d5da"
+    },
+    {
+      "path": "tools/uv.lock",
+      "sha256": "ea97f02590654d4d597c5a3c7406bb7f2210c65e36772391217f6385aea6dcea"
+    }
+  ]
 }

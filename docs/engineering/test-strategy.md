@@ -34,3 +34,11 @@ fixtures. No branch protection has been verified. No release workflow exists, an
 complete platform baseline. React coverage, real OIDC/MCP/voice/provider clients,
 SAST/fuzzing, container scans/smoke, resilience/performance, accessibility, i18n,
 backup/restore and full end-to-end journeys remain required in TASK-003b–012.
+
+Membership tests use real signed tokens and nonsuperuser PostgreSQL operations.
+They exercise the complete actor/target/desired-role policy matrix, permanent-owner
+succession, concurrent self-demotion, self-revocation, revocation while actually
+waiting on the tenant lock, revision conflicts, expiry, atomic audit failure and
+raw SQL privilege/search-path attacks. New executable modules are automatically
+inventoried by coverage. The audit test temporarily changes privileges only in
+the isolated fixture and restores them before completing.

@@ -1,30 +1,27 @@
 # Continuation handoff
 
-State: **partial implementation**. The runnable Rust project API now verifies
-signed access tokens before resolving current tenant membership, supports bounded
-project reads and idempotent creation/revision updates, and commits attributable
-audit records atomically. English and pt-BR errors share a closed contract.
+State: **partial implementation**. TASK-003b2a adds existing-member directory,
+role changes and revocation to the shared Rust service/API, with revision checks,
+atomic audit and concurrent permanent-owner protection. Admins manage member/viewer
+roles; owners manage all roles. Authority is rechecked after waiting for the tenant
+lock, under explicit READ COMMITTED isolation. Runtime SQL cannot write membership
+rows directly or assume the narrow NOLOGIN capability role.
 
-All 24 named Rust tests pass, including real PostgreSQL, HTTP and process tests.
-Core coverage is 304/304 lines and 194/200 branches; API coverage is 509/523 lines
-and 107/110 branches. Both components exceed 90% separately. RustSec, dependency
-license/source checks and local database isolation/restart checks pass. See
-[project verification](projects-verification.md) for commands and evidence.
+All 26 named Rust tests pass, including real PostgreSQL/HTTP/process checks and
+concurrency/privilege cases. Core: 324/324 lines, 206/212 branches. API: 678/696
+lines, 119/122 branches. Both exceed 90% separately. Dependency license/source,
+RustSec and secret scans pass. Snapshot hash formatting was corrected without
+scanner suppression; prior digest values were preserved and verified. See
+[membership verification](membership-verification.md) for commands and evidence.
 
-Production Rust remains 1.99.1; branch instrumentation uses the separately pinned
-nightly-2026-11-04. Public JWKS snapshots expire and require operator rotation.
-Complete OIDC login, member/key administration, frontend, worker, assessment,
-containers, operational readiness and the full platform baseline remain open.
-Research remains nine of 55 inventoried pages substantively read. These gaps
-prevent a release-readiness claim; implemented component gates do not waive them.
+Production Rust remains 1.99.1; coverage uses nightly-2026-11-04. `make lint test
+build licenses test-db coverage`, `make audit`, `make secrets` verify the slice.
+`make run` requires explicit issuer/JWKS/database configuration. Migration 0003 is
+additive and has only run in disposable local fixtures; read the
+[runbook](../../../operations/project-api.md) before an authorized environment change.
 
-Use `make lint test build licenses`, `make test-db`, `make coverage`, `make audit`
-and `make secrets`; see [local setup](../../../operations/local-development.md)
-and the [API runbook](../../../operations/project-api.md). `make run` requires
-explicit identity/database configuration and starts the loopback resource server.
-
-Next: TASK-003b2 audited tenant/membership administration, invitation expiry/replay
-and last-owner protections, scoped API-key lifecycle, and complete OIDC integration.
-Resume from [run.md](run.md). The user authorized direct commits and pushes to main
-without PRs. No deployment, paid resources or third-party assessment occurred;
-MIT licensing is preserved. Git history records publication of this checkpoint.
+Next: invitation acceptance bound to verified identity, expiry/replay and audited
+re-enrollment, then tenant lifecycle, scoped API keys and full OIDC login. UI,
+worker, containers, providers, operations and the full platform/research baseline
+remain open. No production deployment, paid resources or third-party assessment.
+The user requires commits/pushes directly to main without PRs. Resume [run.md](run.md).

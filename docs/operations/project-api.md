@@ -30,7 +30,7 @@ A normal `JWT` ID token is rejected. Raw token material never enters audit/logs.
 
 ## Database bootstrap
 
-Use a dedicated migration identity to apply 0001 then 0002 to a new database.
+Use a dedicated migration identity to apply 0001, 0002 then 0003 to a new database.
 These are additive local schema migrations; do not run them on a shared database
 without its own change authority. No production environment has been provisioned.
 Create the runtime role externally with appropriate authentication and grant:
@@ -40,11 +40,15 @@ GRANT USAGE ON SCHEMA karate TO karate_runtime;
 GRANT SELECT ON karate.tenants, karate.memberships TO karate_runtime;
 GRANT SELECT, INSERT, UPDATE, DELETE ON karate.projects TO karate_runtime;
 GRANT SELECT, INSERT ON karate.audit_events TO karate_runtime;
+GRANT SELECT ON karate.membership_events TO karate_runtime;
+GRANT EXECUTE ON FUNCTION karate.list_memberships(uuid,bigint,uuid),
+    karate.membership_snapshot(uuid,uuid),
+    karate.change_membership(uuid,uuid,bigint,text,uuid) TO karate_runtime;
 ```
 
 The role must not own customer tables or have SUPERUSER/BYPASSRLS. Startup checks
 these properties. Never grant UPDATE/DELETE/TRUNCATE on audit records. Tenant and
-membership provisioning currently requires an explicit privileged operator action:
+initial membership provisioning requires an explicit privileged operator action:
 insert a tenant and a membership binding that tenant to the exact issuer+subject
 of an authorized account. Role values are owner/admin/member/viewer. No identity
 is granted access merely because it supplies a tenant UUID or role claim.
@@ -71,5 +75,39 @@ for persistent environments. Audit retention/deletion and tamper detection are
 still required before customer operation.
 
 TCP TLS, reverse-proxy deployment, tenant rate limits, OTel, containers, key/session
-revocation, member administration and all assessment/provider interfaces remain
+revocation, invitations and all assessment/provider interfaces remain
 open. Do not expose this partial service as a production-ready pentesting platform.
+
+## Membership migration and recovery
+
+Migration 0003 requires a privileged bootstrap identity capable of creating the
+NOLOGIN BYPASSRLS `karate_membership_guard` role. It adds member UUIDs/revisions,
+a separate membership audit table, and four narrow definer functions. Existing
+RLS policies and primary keys remain unchanged. The role has only specific table/
+column grants; PUBLIC execution and schema creation are revoked. Never grant this
+role to the runtime or a user; startup rejects runtime membership in it. Only the
+three functions listed above are callable by the runtime. Do not grant raw member
+UPDATE/INSERT/DELETE, event INSERT/UPDATE/DELETE, or helper-function execution.
+
+The migration has only been applied to disposable local databases. Existing
+persistent deployments need their own migration authority, backup and assessment
+of the UUID backfill/index lock duration. A role name collision aborts rather than
+silently trusting a preexisting role. There is no destructive down migration.
+
+For existing members, owners/admins can list, change allowed roles and revoke
+through the documented API. Promote a nonexpiring member to owner before demoting
+or revoking the last permanent owner. No-op role changes emit no extra audit;
+mutations require matching revisions. Revocation is irreversible through this API;
+re-enrollment awaits invitations. Provisioning/repair remains an explicit operator
+operation. Such operator changes must acquire the same tenant row lock before
+changing membership; privileged out-of-band SQL is outside runtime guarantees.
+Do not bootstrap a tenant solely with expiring owners. There is no automated
+recovery bypass when ownership is missing.
+
+Membership writes serialize on the tenant row using FOR NO KEY UPDATE, bounded by
+the existing lock/statement/idle timeouts. Actor permission is read again after
+waiting. The Rust policy runs before mutation; the SQL function repeats guards and
+writes audit atomically. A lost response requires inspecting the current directory
+and revision before another request. Timeouts/audit failures roll back changes and
+return a closed error. Customer-facing UI, invitation lifecycle, key lifecycle,
+retention/erasure, external audit tamper detection and full OIDC are still pending.

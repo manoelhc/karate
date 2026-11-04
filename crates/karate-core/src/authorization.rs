@@ -170,6 +170,31 @@ pub fn authorize_membership(
 }
 
 impl Principal {
+    /// The adapter must hold the tenant management lock while obtaining these
+    /// current target facts and committing the resulting mutation plus audit.
+    pub fn authorize_member_change(
+        &self,
+        tenant: Uuid,
+        current: Role,
+        desired: Option<Role>,
+        other_permanent_owner: bool,
+        target_permanent: bool,
+    ) -> Result<(), Error> {
+        self.authorize(tenant, Action::ManageMembers)?;
+        if self.role == Role::Admin
+            && (matches!(current, Role::Owner | Role::Admin)
+                || matches!(desired, Some(Role::Owner | Role::Admin)))
+        {
+            return Err(Error::Forbidden);
+        }
+        if (desired == Some(Role::Owner) && !target_permanent)
+            || (current == Role::Owner && desired != Some(Role::Owner) && !other_permanent_owner)
+        {
+            return Err(Error::OwnerRequired);
+        }
+        Ok(())
+    }
+
     pub fn authorize(&self, tenant: Uuid, action: Action) -> Result<(), Error> {
         if self.tenant_id != tenant || !self.role.allows(action) {
             return Err(Error::Forbidden);

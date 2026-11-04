@@ -4,13 +4,28 @@
 - Method: https://github.com/manoelhc/specker at f71612bb25bfb1951b3d0df4abb3de9bf914e9d3.
 - Reference: https://www.aikido.dev/attack/aipentest (research only; no assessment authorized).
 - Product: independent MIT-licensed AI security-assessment SaaS; copyright Manoel Carvalho preserved.
-- Current delivery base: 972ae0cb741f6d1832898dc045db2c3131dc5b07. User requires direct commits/pushes to main without PRs. No production deployment or paid resources authorized.
-- Current stage: **partial implementation**. TASK-003b1 project API implemented; complete platform and reference parity still open.
+- Current delivery base: e530e906bf0329dd9533d7c78991e3071dd1d8b3. User requires direct commits/pushes to main without PRs. No production deployment or paid resources authorized.
+- Current stage: **partial implementation**. TASK-003b1 project API and TASK-003b2a existing-member administration implemented; complete platform and reference parity still open.
 - Toolchains: production Rust 1.99.1; separate coverage-only nightly-2026-11-04 (1.101.0-nightly, 708c94ef0), matching LLVM tools. PostgreSQL 14.20 local fixture; production major version not selected. Docker absent.
-- Capacity: disk recovered to several GiB during this continuation, permitting the isolated coverage toolchain. Recheck before large installs; workspace build outputs are removed at handoff.
+- Capacity: about 2.1 GiB free at continuation start, falling near 1 GiB during builds. No new toolchain/dependency installation; workspace build outputs are removed at handoff.
 - Owner: single backend implementer using backend-engineer workflow. No sub-agents, cloud/account provisioning or provider credentials.
 
 ## Latest implemented slice
+
+TASK-003b2a adds a bounded owner/admin membership directory, granular role changes,
+revisioned revocation and attributable atomic membership events. Admins can manage
+only member/viewer roles; owners can manage all. Concurrent removal preserves a
+permanent owner. The service rechecks current actor authority after obtaining the
+tenant lock. OWNER_REQUIRED provides a localized recovery instruction. Existing
+membership RLS remains own-row only; narrow NOLOGIN-role definer capabilities
+supply the directory and guarded updates. Runtime membership in that role is
+refused at startup. Migration 0003 has only run in disposable local databases.
+
+The latest evidence is [membership verification](membership-verification.md).
+Project checkpoint evidence remains historical; foundation CI passed at e530e90.
+Full 003b2 remains unfinished: invitations, tenant lifecycle, keys and full OIDC.
+
+## Prior implemented foundation
 
 `karate-api` is a runnable Rust resource server and shared project service:
 RS256 at+jwt verification with configured issuer/audience/expiring public JWKS,
@@ -51,8 +66,9 @@ binds and unencrypted DB TCP are rejected. No frontend/worker/assessment is buil
 
 ## Exact next actions
 
-1. TASK-003b2: design and implement audited tenant/membership administration with
-   invitation expiry/replay and last-owner protections, service API-key creation/
+1. TASK-003b2b: implement invitation acceptance bound to verified identity, expiry/
+   replay and audited re-enrollment through the existing membership lock/policy.
+   Tenant provisioning/lifecycle, service API-key creation/
    hashing/scopes/expiry/rotation/revocation, then real OIDC login/PKCE and bounded
    JWKS discovery/refresh with a maintained test IdP. Preserve shared policy and
    extend real integration and component coverage rather than adding a bypass.

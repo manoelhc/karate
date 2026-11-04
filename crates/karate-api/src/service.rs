@@ -3,7 +3,7 @@ use crate::identity::{TokenVerifier, unix_now};
 use deadpool_postgres::{Manager, Object, Pool, Runtime, Timeouts, Transaction};
 use karate_core::{
     Error,
-    authorization::{Action, Identity, Membership, authorize_membership},
+    authorization::{Action, Identity, Membership, Principal, authorize_membership},
     validate_name,
 };
 use serde::Serialize;
@@ -65,7 +65,7 @@ impl ProjectService {
             .build()
             .map_err(unavailable)?;
         let client = pool.get().await.map_err(unavailable)?;
-        let role = client.query_one("SELECT rolsuper OR rolbypassrls OR EXISTS (SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='karate' AND c.relowner=r.oid) AS unsafe_role FROM pg_roles r WHERE rolname=current_user", &[]).await.map_err(unavailable)?;
+        let role = client.query_one("SELECT rolsuper OR rolbypassrls OR pg_has_role(current_user, 'karate_membership_guard', 'MEMBER') OR EXISTS (SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='karate' AND c.relowner=r.oid) AS unsafe_role FROM pg_roles r WHERE rolname=current_user", &[]).await.map_err(unavailable)?;
         if role.get::<_, bool>("unsafe_role") {
             return Err(Error::Forbidden);
         }
@@ -73,7 +73,7 @@ impl ProjectService {
         Ok(Arc::new(Self { verifier, pool }))
     }
 
-    async fn connection(&self, credential: &str) -> Result<(Identity, Object), Error> {
+    pub(crate) async fn connection(&self, credential: &str) -> Result<(Identity, Object), Error> {
         // No DB access can occur before the cryptographic check.
         let identity = self.verifier.verify(credential)?;
         let client = self.pool.get().await.map_err(unavailable)?;
@@ -187,12 +187,12 @@ impl ProjectService {
     }
 }
 
-async fn authorize(
+pub(crate) async fn authorize(
     tx: &Transaction<'_>,
     identity: &Identity,
     tenant: Uuid,
     action: Action,
-) -> Result<(), Error> {
+) -> Result<Principal, Error> {
     tx.batch_execute("SET LOCAL statement_timeout='3s'; SET LOCAL lock_timeout='1s'; SET LOCAL idle_in_transaction_session_timeout='5s'").await.map_err(unavailable)?;
     tx.execute("SELECT set_config('karate.tenant_id',$1,true),set_config('karate.issuer',$2,true),set_config('karate.subject',$3,true)", &[&tenant.to_string(),&identity.issuer,&identity.subject]).await.map_err(unavailable)?;
     let row = tx.query_opt("SELECT role FROM karate.memberships WHERE tenant_id=$1 AND issuer=$2 AND subject=$3 AND revoked_at IS NULL AND (expires_at IS NULL OR expires_at>statement_timestamp())", &[&tenant,&identity.issuer,&identity.subject]).await.map_err(unavailable)?.ok_or(Error::Forbidden)?;
@@ -205,8 +205,9 @@ async fn authorize(
         revoked: false,
         expires_at: None,
     };
-    authorize_membership(identity.clone(), membership, tenant, unix_now()?)?
-        .authorize(tenant, action)
+    let principal = authorize_membership(identity.clone(), membership, tenant, unix_now()?)?;
+    principal.authorize(tenant, action)?;
+    Ok(principal)
 }
 
 async fn audit(

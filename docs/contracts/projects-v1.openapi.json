@@ -1,7 +1,7 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Karate project API",
+    "title": "Karate project and membership API",
     "version": "0.1.0",
     "description": "Partial platform: no assessments, API keys or browser login yet. RS256 at+jwt with configured issuer/audience and current database membership required."
   },
@@ -773,6 +773,601 @@
           }
         }
       }
+    },
+    "/v1/tenants/{tenant}/memberships": {
+      "parameters": [
+        {
+          "name": "tenant",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "listMemberships",
+        "responses": {
+          "200": {
+            "description": "Authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberPage"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid bounded input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "403": {
+            "description": "No current permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "404": {
+            "description": "Resource absent in this tenant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "409": {
+            "description": "Revision or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Exclusive UUID cursor, not an authority token."
+          }
+        ],
+        "description": "Owner/admin only. Includes inactive records. Bounded UUID cursor pagination; not a snapshot."
+      }
+    },
+    "/v1/tenants/{tenant}/memberships/{membership}": {
+      "parameters": [
+        {
+          "name": "tenant",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "membership",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "patch": {
+        "operationId": "changeMembershipRole",
+        "responses": {
+          "200": {
+            "description": "Authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Member"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid bounded input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "403": {
+            "description": "No current permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "404": {
+            "description": "Resource absent in this tenant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "409": {
+            "description": "Stale/inactive membership (CONFLICT) or permanent ownership required (OWNER_REQUIRED)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberRoleInput"
+              }
+            }
+          },
+          "description": "Maximum encoded body size 8192 bytes; unknown fields rejected."
+        },
+        "description": "Owners manage all roles. Admins may only change member/viewer to member/viewer. Active target and expected revision required. Preserve a permanent owner."
+      }
+    },
+    "/v1/tenants/{tenant}/memberships/{membership}/revoke": {
+      "parameters": [
+        {
+          "name": "tenant",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "membership",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "revokeMembership",
+        "responses": {
+          "200": {
+            "description": "Authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Member"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid bounded input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "403": {
+            "description": "No current permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "404": {
+            "description": "Resource absent in this tenant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "409": {
+            "description": "Stale/inactive membership (CONFLICT) or permanent ownership required (OWNER_REQUIRED)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RevokeInput"
+              }
+            }
+          },
+          "description": "Maximum encoded body size 8192 bytes; unknown fields rejected."
+        },
+        "description": "Revoke active membership with matching revision. Owner safeguards apply. Repeated or stale requests conflict; no automatic reactivation."
+      }
     }
   },
   "components": {
@@ -822,7 +1417,8 @@
               "NOT_FOUND",
               "CONFLICT",
               "LIMIT_REACHED",
-              "UNAVAILABLE"
+              "UNAVAILABLE",
+              "OWNER_REQUIRED"
             ]
           },
           "category": {
@@ -909,6 +1505,122 @@
               "null"
             ],
             "format": "uuid"
+          }
+        }
+      },
+      "Member": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "membership_id",
+          "issuer",
+          "subject",
+          "role",
+          "revision",
+          "revoked",
+          "expires_at"
+        ],
+        "properties": {
+          "membership_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "issuer": {
+            "type": "string",
+            "maxLength": 2048
+          },
+          "subject": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "owner",
+              "admin",
+              "member",
+              "viewer"
+            ]
+          },
+          "revision": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1
+          },
+          "revoked": {
+            "type": "boolean"
+          },
+          "expires_at": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "Unix seconds; null means nonexpiring"
+          }
+        }
+      },
+      "MemberPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/Member"
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          }
+        }
+      },
+      "MemberRoleInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "role",
+          "expected_revision"
+        ],
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "owner",
+              "admin",
+              "member",
+              "viewer"
+            ]
+          },
+          "expected_revision": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854775806
+          }
+        }
+      },
+      "RevokeInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "expected_revision"
+        ],
+        "properties": {
+          "expected_revision": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854775806
           }
         }
       }

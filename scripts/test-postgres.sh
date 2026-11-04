@@ -23,6 +23,7 @@ export PGHOST="$fixture" PGPORT=55439 PGUSER=karate_fixture PGDATABASE=postgres
 unset PGSERVICE PGSERVICEFILE PGOPTIONS PGPASSWORD
 psql -X -v ON_ERROR_STOP=1 -f migrations/0001_tenants_projects.sql
 psql -X -v ON_ERROR_STOP=1 -f migrations/0002_project_audit.sql
+psql -X -v ON_ERROR_STOP=1 -f migrations/0003_membership_administration.sql
 if [ "$#" -gt 0 ]; then
     psql -X -v ON_ERROR_STOP=1 -f tests/postgres/api_seed.sql
     openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out "$fixture/key.pem" 2>/dev/null

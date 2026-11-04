@@ -175,6 +175,7 @@ fn errors_are_closed_stable_and_free_of_caller_data() {
         (Error::Forbidden, "FORBIDDEN"),
         (Error::NotFound, "NOT_FOUND"),
         (Error::Conflict, "CONFLICT"),
+        (Error::OwnerRequired, "OWNER_REQUIRED"),
         (Error::OutOfScope, "OUT_OF_SCOPE"),
         (Error::Unverified, "UNVERIFIED"),
         (Error::LimitReached, "LIMIT_REACHED"),

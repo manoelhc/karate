@@ -34,3 +34,13 @@ mutation events with restricted readers; retention/tamper detection and other
 event families remain pending. PLAT-I18N has localized API errors, not complete
 UI/report/email catalogs. Per-component line/branch gates pass for both current
 Rust components. See [current evidence](../specker/runs/2026-11-04-karate/projects-verification.md).
+
+## TASK-003b2a update
+
+PLAT-TENANT/RBAC/AUDIT now include an authorized existing-member directory,
+role changes, revocation, last-permanent-owner safeguards under concurrency and
+atomic membership events. Real DB/HTTP/domain tests cover escalation, stale
+revisions, post-lock revocation, direct SQL privileges and audit rollback. UI,
+invitations/re-enrollment, tenant lifecycle, API keys, complete OIDC and retention
+remain open. Latest evidence belongs in the membership verification record; the
+project checkpoint is retained as historical evidence rather than overwritten.

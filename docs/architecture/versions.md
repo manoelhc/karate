@@ -11,7 +11,7 @@ TypeScript/React. MIT copyright and license text are unchanged.
 | cargo-deny | 0.20.2 | License, duplicate dependency and source checks pass. |
 | cargo-audit | 0.22.1 | Refreshed RustSec database, 1,403 advisories, no matched vulnerability/warning in locked graph. |
 | Gitleaks | 8.30.1 | Installed binary; hook pinned to upstream commit 83d9cd684c87d95d656c1458ef04895a7f1cbd8e. Working-tree scan passed. |
-| CI checkout | v6 commit d23441a48e516b6c34aea4fa41551a30e30af803 | Resolved using the official GitHub ref API; read-only workflow permission, credentials not persisted. Workflow has not run remotely. |
+| CI checkout | v6 commit d23441a48e516b6c34aea4fa41551a30e30af803 | Resolved using the official GitHub ref API; read-only workflow permission, credentials not persisted. Foundation workflow passed remotely at e530e90. |
 | Verification helpers | Python 3.13.5 observed; >=3.11 required | Standard library only, uv lockfile; these are engineering tools, not application logic. |
 
 The wrapper selects rustc/rustdoc explicitly because the host's Homebrew Rust
@@ -30,15 +30,15 @@ that each crate is the latest published release.
 | Crate | Version | License | Purpose / primary documentation | Instrumentation and replacement |
 | --- | --- | --- | --- | --- |
 | serde | 1.0.229 | MIT OR Apache-2.0 | Typed serialization; [upstream](https://github.com/serde-rs/serde) | No I/O; caller spans. Replacement touches contracts. |
-| serde_json | 1.0.154 | MIT OR Apache-2.0 | Test-only JSON contract checks; [upstream](https://github.com/serde-rs/json) | No production adapter yet; low replacement cost. |
-| uuid | 1.29.0 | MIT OR Apache-2.0 | Typed tenant IDs; [upstream](https://github.com/uuid-rs/uuid) | No UUID generation enabled; storage/API boundary impact if replaced. |
+| serde_json | 1.0.154 | MIT OR Apache-2.0 | JSON transport, locale catalogs and contract checks; [upstream](https://github.com/serde-rs/json) | Used by the API; contract-sensitive replacement. |
+| uuid | 1.29.0 | MIT OR Apache-2.0 | Typed tenant IDs; [upstream](https://github.com/uuid-rs/uuid) | API enables v4 generation for events; storage/API boundary impact if replaced. |
 | thiserror | 2.0.21 | MIT OR Apache-2.0 | Closed Rust errors; [upstream](https://github.com/dtolnay/thiserror) | Internal Display text is not localized user copy. Low replacement cost. |
 | url | 2.5.8 | MIT OR Apache-2.0 | WHATWG parsing; [versioned docs](https://docs.rs/url/2.5.8/url/) | Validation surrounds normalization. Security-sensitive replacement requires all scope regressions. |
 | ICU4X normalizer/properties | 2.4.0 (transitive via IDNA) | Unicode-3.0 | International domain normalization; [upstream](https://github.com/unicode-org/icu4x) | Compatible license checked; coupled to URL parsing. |
 
 Maintenance/security posture is limited to upstream provenance and the dated
 advisory/license reports; no vendor support SLA or full source audit is claimed.
-Recheck before release. OTel SDK, Rust HTTP/DB/identity/provider libraries, React,
+Recheck before release. OTel SDK, full OIDC/provider clients, React,
 TypeScript, frontend runtime, MCP revision and container digests are deliberately
 unselected until their respective implementation slices; those version gates
 remain pending. No non-Rust backend language exception has been accepted.
