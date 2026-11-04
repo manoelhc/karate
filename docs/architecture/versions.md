@@ -43,7 +43,7 @@ TypeScript, frontend runtime, MCP revision and container digests are deliberatel
 unselected until their respective implementation slices; those version gates
 remain pending. No non-Rust backend language exception has been accepted.
 
-## Coverage tooling gap
+## Historical coverage tooling gap (resolved for current components below)
 
 Stable instrumentation produces real line data but no branch denominator in this
 run. The official [coverage-options documentation](https://doc.rust-lang.org/unstable-book/compiler-flags/coverage-options.html)
@@ -52,3 +52,39 @@ nightly is 1.78.0-nightly from 2024-02-11 and cannot compile this edition/MSRV.
 A compatible, date-pinned instrumentation-only toolchain must be provisioned and
 tested after checking disk capacity; production stays on 1.99.1. No bootstrap
 override or fabricated branch percentage is used. `make coverage` fails closed.
+
+## Project API continuation
+
+Latest stable direct crate versions were fetched from the official crates.io API
+on 2026-11-04 before implementation and pinned exactly. The RustCrypto backend of
+jsonwebtoken initially pulled crypto-bigint/rsa versions with active advisories;
+AWS-LC removed these dependencies. No advisory exception is configured.
+
+| Dependency | Pin | License / purpose / primary docs |
+| --- | --- | --- |
+| axum | 0.8.9 | MIT; HTTP routing/extractors; https://docs.rs/axum/0.8.9/axum/ |
+| tokio | 1.54.1 | MIT; async I/O, timers and signals; https://docs.rs/tokio/1.54.1/tokio/ |
+| tokio-postgres | 0.7.18 | MIT OR Apache-2.0; parameterized async PostgreSQL; https://docs.rs/tokio-postgres/0.7.18/tokio_postgres/ |
+| deadpool-postgres | 0.14.2 | MIT OR Apache-2.0; bounded connection pool; https://docs.rs/deadpool-postgres/0.14.2/deadpool_postgres/ |
+| jsonwebtoken | 11.1.0 | MIT; signed JWT validation with aws_lc_rs backend; https://docs.rs/jsonwebtoken/11.1.0/jsonwebtoken/ |
+| aws-lc-rs / aws-lc-sys | 1.19.0 / 0.47.0 | ISC and upstream compatible combined licenses; crypto backend, C/CMake build; https://github.com/aws/aws-lc-rs |
+| tower / http-body-util | 0.5.3 / 0.1.5 | MIT; transport tests and bounded body collection |
+| coverage-only Rust | nightly-2026-11-04 | rustc 1.101.0-nightly (708c94ef0 2026-11-03), matching LLVM; branch instrumentation only |
+
+BSD-3-Clause and ISC are allowed after reviewing the transitive crypto/router
+licenses; MIT remains the product license. Exact duplicate-version allowances
+cover getrandom 0.2.17 (JWT vs newer platform RNG), syn 2.0.119 (macro ecosystem
+migration) and wasi 0.11.1 (target generations). Other duplicate versions still
+fail. Maintenance/advisory status is a dated tool result, not a vendor support
+promise. Provider OIDC/MCP/voice SDKs remain unselected.
+
+HTTP/SQL libraries can be instrumented at shared service/transaction boundaries;
+OTel SDK/exporter integration and end-to-end traces remain pending. Crypto code
+has no customer-data logging. Replacing the HTTP/pool layer is bounded by public
+project contracts; replacing token validation requires all signature/claim and
+provider tests. Automated upstream key refresh remains separate work.
+
+Both Rust components now exceed 90% line AND branch coverage with actual counters;
+production compiler still 1.99.1. The old nightly/branch-data blocker no longer
+applies to current components. See the latest project verification record for
+counts and the scope of remaining release gates.

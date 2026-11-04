@@ -1,22 +1,25 @@
 # Local development
 
-Only the domain library and tenant/project schema exist. There is no runnable
-web/API/worker service yet. `make run` intentionally exits with that explanation.
+The domain library, PostgreSQL migrations and project API are implemented.
+See [project API setup](project-api.md) for runtime configuration and limitations.
+Production uses Rust 1.99.1; scripts/cargo.sh selects its compiler/rustdoc explicitly
+when Homebrew binaries precede rustup. No global shell configuration is changed.
 
-Install Rust 1.99.1 using rustup with rustfmt and clippy. Run `make install` once
-to fetch locked dependencies, then `make lint test build licenses`. cargo-deny
-0.20.2 is needed for licenses; cargo-audit is needed for `make audit`. The wrapper
-resolves compiler and rustdoc from the pinned toolchain even when Homebrew binaries
-precede rustup shims. No user-wide shell configuration is changed.
+Run `make install`, then `make lint test build licenses`. The suite requires local
+PostgreSQL binaries, OpenSSL 3 and Python >=3.11. It creates a fresh private
+Unix-socket PostgreSQL cluster and ephemeral signing keys, exercises domain,
+real API/database and process behavior, then removes the fixture. It ignores
+operator DATABASE_URL settings and never migrates an existing database.
 
-`make test-db` requires initdb, pg_ctl and psql on PATH. It creates a unique
-directory under /tmp, a private Unix socket with no TCP listener, isolated
-fictional identities, and a nonsuperuser runtime role. It runs the migration,
-negative policy tests and a restart check; cleanup stops and removes that fixture.
-It never reads DATABASE_URL or connects to a preexisting database. An OS sandbox
-may require permission for PostgreSQL shared memory. Do not weaken permissions on
-the fixture directory or repurpose this trust-auth setup for a shared environment.
+`make test-db` additionally exercises SQL policies, rollback and restart. Trust
+authentication exists only inside mode-0700 temporary fixture directories with
+TCP disabled. Production runtime roles must not own tables or bypass RLS.
 
-`make clean` removes only Cargo build outputs in this workspace. Preserved test
-reports live in the run evidence directory. The full stack and production
-deployment commands remain pending; no cloud/account resource is required here.
+`make coverage` needs nightly-2026-11-04 with llvm-tools-preview, used only for
+instrumentation. It enforces strict >90% line and branch coverage separately for
+every Rust component, including executable startup code. `make audit` requires
+cargo-audit; `make licenses` requires cargo-deny 0.20.2; `make secrets` uses
+Gitleaks 8.30.1. No credentials or raw private fixtures are saved in reports.
+
+`make clean` removes Cargo outputs in this workspace, retaining run evidence.
+No Docker runtime or complete production/container verification is available yet.

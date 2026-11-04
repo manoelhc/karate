@@ -22,6 +22,24 @@ started=true
 export PGHOST="$fixture" PGPORT=55439 PGUSER=karate_fixture PGDATABASE=postgres
 unset PGSERVICE PGSERVICEFILE PGOPTIONS PGPASSWORD
 psql -X -v ON_ERROR_STOP=1 -f migrations/0001_tenants_projects.sql
+psql -X -v ON_ERROR_STOP=1 -f migrations/0002_project_audit.sql
+if [ "$#" -gt 0 ]; then
+    psql -X -v ON_ERROR_STOP=1 -f tests/postgres/api_seed.sql
+    openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out "$fixture/key.pem" 2>/dev/null
+    openssl rsa -in "$fixture/key.pem" -traditional -outform DER -out "$fixture/key.der" 2>/dev/null
+    python3 - "$fixture" <<'PY'
+import base64,json,pathlib,subprocess,sys
+p=pathlib.Path(sys.argv[1])
+modulus=subprocess.check_output(['openssl','rsa','-in',str(p/'key.pem'),'-modulus','-noout'],stderr=subprocess.DEVNULL).decode().strip().split('=',1)[1]
+n=base64.urlsafe_b64encode(bytes.fromhex(modulus)).decode().rstrip('=')
+(p/'jwks.json').write_text(json.dumps({'keys':[{'kty':'RSA','alg':'RS256','use':'sig','kid':'fixture','n':n,'e':'AQAB'}]}))
+PY
+    export KARATE_TEST_DATABASE_URL="host=$fixture port=55439 user=karate_api_test dbname=postgres"
+    export KARATE_TEST_ADMIN_URL="host=$fixture port=55439 user=karate_fixture dbname=postgres"
+    export KARATE_TEST_KEY="$fixture/key.der" KARATE_TEST_JWKS="$fixture/jwks.json"
+    "$@"
+    exit 0
+fi
 psql -X -v ON_ERROR_STOP=1 -f tests/postgres/tenant_isolation.sql
 # Durable rows must survive restart; state from SET LOCAL must not survive a transaction.
 pg_ctl -D "$fixture/data" -m fast -w restart -l "$fixture/server.log" >/dev/null

@@ -69,12 +69,14 @@ impl std::str::FromStr for Role {
 
 /// Trusted adapter output, never deserialize this from requests or model output.
 /// `None` grants interactive membership authority; service keys MUST use Some.
+#[derive(Clone)]
 pub struct Identity {
     pub issuer: String,
     pub subject: String,
     pub key_restriction: Option<KeyRestriction>,
 }
 
+#[derive(Clone)]
 pub struct KeyRestriction {
     pub tenant_id: Uuid,
     pub scopes: Vec<Action>,
@@ -131,6 +133,27 @@ pub fn resolve(
     let membership = memberships
         .membership(&identity, tenant)?
         .ok_or(Error::Forbidden)?;
+    authorize_membership(identity, membership, tenant, now)
+}
+
+/// Shared policy for async adapters: identity MUST come from credential verification,
+/// membership from a fresh authorized store lookup, never request/model fields.
+pub fn authorize_membership(
+    identity: Identity,
+    membership: Membership,
+    tenant: Uuid,
+    now: i64,
+) -> Result<Principal, Error> {
+    if identity.subject.is_empty() || identity.issuer.is_empty() {
+        return Err(Error::Unauthenticated);
+    }
+    if identity
+        .key_restriction
+        .as_ref()
+        .is_some_and(|key| key.tenant_id != tenant)
+    {
+        return Err(Error::Forbidden);
+    }
     if membership.tenant_id != tenant
         || membership.subject != identity.subject
         || membership.issuer != identity.issuer

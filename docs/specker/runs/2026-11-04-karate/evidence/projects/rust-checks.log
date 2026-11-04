@@ -1,0 +1,129 @@
+./scripts/cargo.sh fmt --all
+./scripts/cargo.sh fmt --all -- --check
+./scripts/cargo.sh clippy --workspace --all-targets --locked --offline -- -D warnings
+./scripts/test-postgres.sh ./scripts/cargo.sh test --workspace --locked --offline
+BEGIN
+CREATE SCHEMA
+REVOKE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+CREATE POLICY
+CREATE POLICY
+CREATE POLICY
+COMMIT
+BEGIN
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+CREATE POLICY
+COMMIT
+CREATE ROLE
+GRANT
+GRANT
+GRANT
+GRANT
+INSERT 0 2
+INSERT 0 4
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 4 tests
+test language_negotiation_and_catalogs_are_complete ... ok
+test signed_tokens_reject_forgery_expiry_audience_issuer_type_and_claim_errors ... ok
+test real_postgres_http_and_shared_service_enforce_tenants_revisions_and_atomic_audit ... ok
+test key_configuration_is_bounded_explicit_and_expires ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.11s
+
+
+running 2 tests
+test real_process_serves_liveness_and_drains_on_interrupt ... ok
+test startup_fails_closed_without_exposing_configuration ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.41s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 8 tests
+test budget_reservations_reject_negative_values_exhaustion_and_overflow ... ok
+test the_full_journey_can_pause_resume_cancel_or_complete_honestly ... ok
+test persisted_lifecycle_rejects_inconsistent_pause_metadata ... ok
+test every_state_event_pair_has_a_documented_outcome ... ok
+test errors_are_closed_stable_and_free_of_caller_data ... ok
+test names_are_bounded_and_not_empty ... ok
+test observations_are_presence_only_and_never_contain_response_values ... ok
+test header_observation_work_is_bounded_without_echoing_oversized_input ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 6 tests
+test all_roles_and_actions_obey_the_documented_matrix ... ok
+test keys_cannot_cross_tenants_create_other_keys_or_elevate_roles ... ok
+test async_membership_entry_rejects_invalid_identity_and_preserves_key_limits ... ok
+test membership_is_bound_to_tenant_issuer_subject_and_current_authority ... ok
+test delegation_is_bounded_and_never_grants_privileged_operations ... ok
+test credentials_are_verified_before_any_membership_lookup ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 4 tests
+test special_addresses_mixed_dns_and_unbounded_results_fail_closed ... ok
+test origin_and_segment_boundaries_are_exact ... ok
+test exclusions_are_validated_and_bounded ... ok
+test ambiguous_urls_are_rejected_before_normalization ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+./scripts/cargo.sh build --workspace --locked --offline
+./scripts/cargo.sh deny --offline check licenses bans sources
+bans ok, licenses ok, sources ok
+    Checking karate-api v0.1.0 (/Users/manoelhc/Documents/GitHub/manoelhc/karate/crates/karate-api)
+    Finished `dev` profile [unoptimized] target(s) in 1.88s
+   Compiling karate-api v0.1.0 (/Users/manoelhc/Documents/GitHub/manoelhc/karate/crates/karate-api)
+    Finished `test` profile [unoptimized] target(s) in 3.18s
+     Running unittests src/lib.rs (target/debug/deps/karate_api-822d360c929674eb)
+     Running unittests src/main.rs (target/debug/deps/karate_api-2d1f9d89ac8a6eeb)
+     Running tests/integration.rs (target/debug/deps/integration-56976d18ec20ab16)
+     Running tests/process.rs (target/debug/deps/process-3c8c7d9d78d64d66)
+     Running unittests src/lib.rs (target/debug/deps/karate_core-b0efa32814468db8)
+     Running tests/domain.rs (target/debug/deps/domain-232cab12cf154e48)
+     Running tests/policy.rs (target/debug/deps/policy-7b9877952f6528d6)
+     Running tests/scope.rs (target/debug/deps/scope-5e8a23a678399640)
+   Doc-tests karate_api
+   Doc-tests karate_core
+    Finished `dev` profile [unoptimized] target(s) in 0.10s

@@ -4,6 +4,55 @@ use uuid::Uuid;
 
 const TENANT: Uuid = Uuid::from_u128(1);
 const OTHER: Uuid = Uuid::from_u128(2);
+
+#[test]
+fn async_membership_entry_rejects_invalid_identity_and_preserves_key_limits() {
+    let identity = || Identity {
+        issuer: "https://id.example".into(),
+        subject: "alice".into(),
+        key_restriction: None,
+    };
+    let membership = || Membership {
+        issuer: "https://id.example".into(),
+        subject: "alice".into(),
+        tenant_id: TENANT,
+        role: Role::Owner,
+        revoked: false,
+        expires_at: None,
+    };
+    for field in ["issuer", "subject"] {
+        let mut invalid = identity();
+        if field == "issuer" {
+            invalid.issuer.clear();
+        } else {
+            invalid.subject.clear();
+        }
+        assert!(matches!(
+            authorize_membership(invalid, membership(), TENANT, 10),
+            Err(Error::Unauthenticated)
+        ));
+    }
+    let mut foreign = identity();
+    foreign.key_restriction = Some(KeyRestriction {
+        tenant_id: OTHER,
+        scopes: vec![Action::Read],
+    });
+    assert!(matches!(
+        authorize_membership(foreign, membership(), TENANT, 10),
+        Err(Error::Forbidden)
+    ));
+    let mut restricted = identity();
+    restricted.key_restriction = Some(KeyRestriction {
+        tenant_id: TENANT,
+        scopes: vec![Action::Read],
+    });
+    let actor = authorize_membership(restricted, membership(), TENANT, 10).unwrap();
+    assert_eq!(actor.authorize(TENANT, Action::Read), Ok(()));
+    assert_eq!(
+        actor.authorize(TENANT, Action::Write),
+        Err(Error::Forbidden)
+    );
+}
 const ACTIONS: [Action; 8] = [
     Action::Read,
     Action::Write,

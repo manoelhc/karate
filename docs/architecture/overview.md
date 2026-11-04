@@ -2,12 +2,13 @@
 
 Status: target architecture; verify implementation status in the run report.
 
-Implemented at the current checkpoint: [shared domain policy](../components/domain.md)
-and [tenant/project SQL schema](../components/persistence.md). No API, worker,
-frontend or provider adapter exists yet. The diagram below remains the target,
-not a representation of running services. The library's synchronous fixture
-authentication seam is not selection of a blocking server architecture; the
-runtime adapter must provide bounded async I/O with the same ordering/policies.
+Implemented at the current checkpoint: [shared domain policy](../components/domain.md),
+[tenant/project SQL schema](../components/persistence.md), and the [project API](../components/api.md)
+with async PostgreSQL service, signed access-token verification and atomic audit.
+There is no worker/frontend or full provider-login workflow yet. The diagram below
+remains the target architecture. The API calls the core membership policy after
+real credential verification and an async current-membership lookup; the original
+synchronous authentication seam remains useful for deterministic domain tests.
 
 Karate uses a modular Rust service, a separately runnable Rust worker, PostgreSQL for durable state/jobs, Valkey for distributed read caching/rate coordination, an OIDC provider, and a React application. REST, MCP and voice invoke the same authorization and domain services. No client or model chooses its own authority.
 

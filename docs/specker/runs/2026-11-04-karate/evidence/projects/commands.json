@@ -1,0 +1,47 @@
+[
+  {
+    "check": "rust-checks",
+    "command": [
+      "make",
+      "format",
+      "lint",
+      "test",
+      "build",
+      "licenses"
+    ],
+    "started_at": "2026-11-04T18:36:30.148991+00:00",
+    "exit_code": 0,
+    "log": "rust-checks.log"
+  },
+  {
+    "check": "postgres",
+    "command": [
+      "make",
+      "test-db"
+    ],
+    "started_at": "2026-11-04T18:36:40.701930+00:00",
+    "exit_code": 0,
+    "log": "postgres.log"
+  },
+  {
+    "check": "coverage",
+    "command": [
+      "make",
+      "coverage"
+    ],
+    "started_at": "2026-11-04T18:36:42.001280+00:00",
+    "exit_code": 0,
+    "log": "coverage.log"
+  },
+  {
+    "check": "audit",
+    "command": [
+      "./scripts/cargo.sh",
+      "audit",
+      "--json"
+    ],
+    "started_at": "2026-11-04T18:36:50.090248+00:00",
+    "exit_code": 0,
+    "log": "audit.log"
+  }
+]

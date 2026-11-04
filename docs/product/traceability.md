@@ -23,3 +23,14 @@ implementer; all future runtime/component owners are the implementation agent.
 | Strict >90% line/branch per component | POLICY | TASK-012 | Domain line report; branch gate blocked | Compatible pinned branch instrumentation; all future components included |
 
 Current checks and hashes: [verification](../specker/runs/2026-11-04-karate/verification.md).
+
+## TASK-003b1 update (supersedes initial status cells above)
+
+REQ-001 now has real authenticated create/list/get/update project APIs and a Rust
+PostgreSQL service. PLAT-RBAC is enforced there and in RLS. PLAT-OAUTH now has
+signed access-token resource-server validation; full login/PKCE/live-provider
+integration remains pending. PLAT-AUDIT now has atomic append-only project
+mutation events with restricted readers; retention/tamper detection and other
+event families remain pending. PLAT-I18N has localized API errors, not complete
+UI/report/email catalogs. Per-component line/branch gates pass for both current
+Rust components. See [current evidence](../specker/runs/2026-11-04-karate/projects-verification.md).

@@ -19,3 +19,10 @@ isolated tests, but does not select a production version. No Docker binary was
 found. Evidence ledger recovery fixed lost source IDs, while reading coverage
 and authenticated reference observation remain incomplete. Revisit these open
 risks before their dependent slices or release; none is a waived requirement.
+
+TASK-003b1 follow-up: disk recovered to several GiB. A separate pinned coverage
+compiler now measures branches, resolving R-07 for current Rust components. Docker
+remains unavailable. API JWT/JWKS snapshots expire and require operator rotation;
+automatic provider refresh, full browser login, TLS deployment and token/session
+revocation remain launch blockers. The initial cryptography backend failed audit
+and was replaced before commit; the final dependency graph passes the audit.

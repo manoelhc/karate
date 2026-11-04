@@ -17,10 +17,12 @@ jobs:
           persist-credentials: false
       - name: Install pinned compiler
         run: rustup toolchain install 1.99.1 --profile minimal --component rustfmt,clippy,llvm-tools-preview
+      - name: Make isolated PostgreSQL binaries available
+        run: echo "$(pg_config --bindir)" >> "$GITHUB_PATH"
       - run: make install lint test build
       - name: Install pinned license checker
         run: ./scripts/cargo.sh install cargo-deny --version 0.20.2 --locked
-      - run: make licenses coverage-lines
+      - run: make licenses
   postgres:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
@@ -33,7 +35,7 @@ jobs:
           export PATH="$(pg_config --bindir):$PATH"
           make test-db
   release-coverage:
-    name: Strict coverage gate (blocked until branches are measured)
+    name: Strict per-component line and branch coverage
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -41,4 +43,7 @@ jobs:
         with:
           persist-credentials: false
       - run: rustup toolchain install 1.99.1 --profile minimal --component llvm-tools-preview
+      - run: rustup toolchain install nightly-2026-11-04 --profile minimal --component llvm-tools-preview
+      - name: Make isolated PostgreSQL binaries available
+        run: echo "$(pg_config --bindir)" >> "$GITHUB_PATH"
       - run: make install coverage

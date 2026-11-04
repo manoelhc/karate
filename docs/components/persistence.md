@@ -1,7 +1,7 @@
 # COMP-PERSISTENCE — tenant and project storage
 
-Owner: backend implementer. Current implementation is SQL migration
-`migrations/0001_tenants_projects.sql`; a Rust storage adapter is still pending.
+Owner: backend implementer. Current implementation is migrations 0001/0002 plus
+the Rust `karate-api::service` adapter, documented in [API component](api.md).
 Requirements: PLAT-TENANT/RBAC and REQ-001. PostgreSQL 14.20 was available for
 local verification. This is not selection of an aging major for production;
 the deployment version and container digest must be selected and tested later.
@@ -13,7 +13,10 @@ Projects use `(tenant_id, project_id)` as their primary key; downstream tables
 must use composite foreign keys. Membership keys are tenant+issuer+subject.
 Names and role strings are constrained; timestamps are UTC-capable timestamptz.
 Project revisions support compare-and-set updates, which the adapter must use.
-All reads/lists must be bounded by the application adapter (not yet present).
+The adapter bounds project lists to 100 records with UUID cursors and parameterized
+queries. Migration 0002 adds append-only project audit records with tenant/project
+composite references, actor context, action and server time. Create/update and
+audit commit together; audit failure rolls back the mutation.
 
 All three tables ENABLE and FORCE row-level security. Membership visibility
 requires transaction-local tenant, authenticated issuer and subject, plus current
@@ -49,7 +52,7 @@ statement/lock timeouts, backup retention, deletion propagation, OTel spans and
 RPO/RTO measurements. No production values or SLOs are claimed by this slice.
 Schema SQL has no executable language coverage denominator; actual SQL behavior
 is tested against PostgreSQL. A future Rust adapter needs its own >90% line and
-branch reports. MCP/voice and UI consume that adapter through shared services,
+branch reports (now measured for karate-api). MCP/voice and UI consume that adapter through shared services,
 not direct SQL. The schema contains no localized UI strings.
 
 ## Acceptance evidence

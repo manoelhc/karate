@@ -1,0 +1,22 @@
+[package]
+name = "karate-api"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+karate-core = { path = "../karate-core" }
+serde.workspace = true
+serde_json.workspace = true
+uuid = { workspace = true, features = ["v4"] }
+url.workspace = true
+axum = "=0.8.9"
+tokio = { version = "=1.54.1", features = ["macros", "rt-multi-thread", "net", "signal", "time", "io-util"] }
+tokio-postgres = { version = "=0.7.18", features = ["with-uuid-1"] }
+deadpool-postgres = "=0.14.2"
+jsonwebtoken = { version = "=11.1.0", default-features = false, features = ["aws_lc_rs"] }
+
+[dev-dependencies]
+tower = { version = "=0.5.3", features = ["util"] }
+http-body-util = "=0.1.5"

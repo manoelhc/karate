@@ -1,16 +1,17 @@
 # COMP-DOMAIN — shared policy and domain library
 
 Owner: backend implementer. Path: `crates/karate-core`. Rust 1.99.1, MIT.
-This is a library, not a running assessment service. REST, MCP, voice and
-workers must invoke its policy through their application services. Those
-transports, identity adapters and durable scheduling are not implemented yet.
+This is a library, not an assessment executor. The project REST service now
+invokes `authorize_membership` after cryptographic access-token validation and
+async current membership lookup. MCP, voice and workers must use the same shared
+service/policy; those transports and durable scheduling remain pending.
 
 ## Contract
 
 REQ-002/003/006 and PLAT-TENANT/RBAC/AGENTS drive this slice. Public Rust types
-are the current internal contract; no HTTP endpoint exists. Stable errors in
+are the internal contract; the project API exposes its own versioned HTTP schema. Stable errors in
 `lib.rs` are machine codes; localized presentation belongs to future transports.
-Scope construction validates before URL normalization. Only explicit HTTP(S)
+The project HTTP contract is separate. Scope construction validates before URL normalization. Only explicit HTTP(S)
 origins and segment-bounded paths are accepted. Encoded paths, dot segments,
 backslashes, duplicate slashes and credentials are refused conservatively.
 Queries are allowed on requests but not scope definitions. A scope match alone

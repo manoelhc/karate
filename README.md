@@ -1,41 +1,43 @@
 # Karate
 
 An independently implemented, MIT-licensed AI security-assessment platform in
-development. Rust owns domain logic and backend services; TypeScript/React is
-planned for presentation. Assessments require verified ownership and explicit
-authorization. No third-party assessment is authorized by building this project.
+development. Rust owns backend/domain logic; TypeScript/React presentation is
+still pending. No third-party assessment is authorized by building this project.
 
-Current implementation: shared authorization, scope, lifecycle, budget and
-observation rules, plus a tenant/project PostgreSQL migration. **There is no
-runnable application server, web UI or assessment worker yet.** The complete
-Specker platform scope remains required.
-
-With Rust 1.99.1 (rustup, rustfmt, clippy) installed:
+The project API now runs with signed access-token verification, current tenant
+membership, PostgreSQL row-level security, paginated project reads, idempotent
+creation, revision-checked updates and atomic audit events. Errors support English
+and Brazilian Portuguese. No assessment worker or frontend exists yet.
 
 ```sh
 make install
-make lint test build
-make licenses       # requires cargo-deny 0.20.2
-make test-db        # requires local initdb, pg_ctl and psql
-make coverage-lines # requires the matching llvm-tools-preview component
+make lint test build licenses
+make test-db
+make coverage
 ```
 
-The database command uses only an isolated disposable Unix-socket fixture.
-It does not connect to an existing database. `make coverage` enforces both
-strict >90% thresholds and currently fails because branch data is unavailable.
-`make run` reports the missing application runtime instead of starting a demo.
+Prerequisites: Rust 1.99.1 with rustfmt/clippy, PostgreSQL initdb/pg_ctl/psql,
+OpenSSL 3, Python >=3.11, a C compiler/CMake for AWS-LC, and cargo-deny 0.20.2.
+Coverage uses a separate **nightly-2026-11-04** toolchain with llvm-tools-preview;
+production remains on Rust 1.99.1. `make test` provisions only an isolated
+Unix-socket database and ephemeral signing keys, then removes them.
 
-Latest checks: 17 Rust tests passed; real PostgreSQL isolation and restart checks
-passed; domain line coverage 297/297 (100%); branch coverage blocked. Dependency
-license, RustSec and working-tree secret checks passed. CI is authored but has
-not run remotely. Container and full platform gates remain open.
+To start the API, supply trusted issuer/audience, an expiring public JWKS snapshot,
+and a nonsuperuser Unix-socket PostgreSQL connection, then run `make run`.
+See [API setup](docs/operations/project-api.md) for exact configuration and grants.
+There is no anonymous mode, first-login administrator or committed credential.
 
-- [Current run and exact next action](docs/specker/runs/2026-11-04-karate/run.md)
-- [Verification evidence and unmet gates](docs/specker/runs/2026-11-04-karate/verification.md)
-- [Implementation plan](docs/engineering/plan.md) and [traceability](docs/product/traceability.md)
-- [Architecture](docs/architecture/overview.md), [domain component](docs/components/domain.md), [persistence component](docs/components/persistence.md)
-- [Local development](docs/operations/local-development.md) and [version record](docs/architecture/versions.md)
+Latest local checks: **24 Rust tests passed**, real HTTP/PostgreSQL and binary
+startup/shutdown tests passed. Both components exceed 90% line and branch coverage:
+core 304/304 lines, 194/200 branches; API 509/523 lines, 107/110 branches.
+Full provider login, key management, containers and the complete platform remain
+unverified/unfinished; this is a partial implementation, not a ready SaaS.
 
-The pinned [Specker method](https://github.com/manoelhc/specker/tree/f71612bb25bfb1951b3d0df4abb3de9bf914e9d3)
-governs this build. This repository is the target product. No deployment, paid
-resource or production authentication bypass has been created.
+- [Current run and next actions](docs/specker/runs/2026-11-04-karate/run.md)
+- [Project API verification](docs/specker/runs/2026-11-04-karate/projects-verification.md)
+- [API contract](docs/contracts/projects-v1.openapi.json) and [component](docs/components/api.md)
+- [Architecture](docs/architecture/overview.md), [plan](docs/engineering/plan.md), [traceability](docs/product/traceability.md)
+- [Pinned Specker method](https://github.com/manoelhc/specker/tree/f71612bb25bfb1951b3d0df4abb3de9bf914e9d3)
+
+Delivery uses direct commits/pushes to main without PRs. No production deployment
+or paid resource has been created. Existing MIT copyright is preserved.

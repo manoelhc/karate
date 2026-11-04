@@ -1,25 +1,30 @@
 # Continuation handoff
 
-State: **partial implementation**. No deployment, paid resources or third-party
-assessment. Existing MIT license preserved. The user authorized direct commits
-and pushes to main without PRs; Git history records publication of this checkpoint.
+State: **partial implementation**. The runnable Rust project API now verifies
+signed access tokens before resolving current tenant membership, supports bounded
+project reads and idempotent creation/revision updates, and commits attributable
+audit records atomically. English and pt-BR errors share a closed contract.
 
-Delivered: Rust domain policy with 17 passing tests; tenant/project PostgreSQL
-schema with real isolation and restart checks; pinned dependencies and toolchain;
-coverage/audit/license/secret evidence; CI/hooks; restored research ledger and
-updated component/contracts/traceability/run documentation.
+All 24 named Rust tests pass, including real PostgreSQL, HTTP and process tests.
+Core coverage is 304/304 lines and 194/200 branches; API coverage is 509/523 lines
+and 107/110 branches. Both components exceed 90% separately. RustSec, dependency
+license/source checks and local database isolation/restart checks pass. See
+[project verification](projects-verification.md) for commands and evidence.
 
-Domain line coverage is 297/297. Branch coverage is unmeasured and the strict
-command fails. There is no runnable API, frontend or worker. Full research,
-real provider/identity integrations, container verification, operational readiness
-and the mandatory platform baseline remain open.
+Production Rust remains 1.99.1; branch instrumentation uses the separately pinned
+nightly-2026-11-04. Public JWKS snapshots expire and require operator rotation.
+Complete OIDC login, member/key administration, frontend, worker, assessment,
+containers, operational readiness and the full platform baseline remain open.
+Research remains nine of 55 inventoried pages substantively read. These gaps
+prevent a release-readiness claim; implemented component gates do not waive them.
 
-Use `make lint test build licenses`, `make test-db`, and `make coverage-lines` for
-the implemented slice. `make coverage` must remain nonzero until actual line and
-branch measurements both exceed 90%. See [local setup](../../../operations/local-development.md)
-and [verification](verification.md) for exact prerequisites and results.
+Use `make lint test build licenses`, `make test-db`, `make coverage`, `make audit`
+and `make secrets`; see [local setup](../../../operations/local-development.md)
+and the [API runbook](../../../operations/project-api.md). `make run` requires
+explicit identity/database configuration and starts the loopback resource server.
 
-Next: TASK-003b identity/PostgreSQL/API contracts and real credential verification
-before tenant membership, followed by authorized project CRUD and audit with real
-transport/database tests. Resume from [run.md](run.md); no renewed approval is
-needed for that local work.
+Next: TASK-003b2 audited tenant/membership administration, invitation expiry/replay
+and last-owner protections, scoped API-key lifecycle, and complete OIDC integration.
+Resume from [run.md](run.md). The user authorized direct commits and pushes to main
+without PRs. No deployment, paid resources or third-party assessment occurred;
+MIT licensing is preserved. Git history records publication of this checkpoint.

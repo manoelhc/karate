@@ -16,18 +16,21 @@ and acknowledged data after restart. This is storage integration, not a Rust
 database-adapter or end-to-end application test. PostgreSQL-version CI evidence
 and production backup/restore/concurrency checks remain separate gates.
 
-`make lint test build licenses secrets` checks existing product code. `make
-coverage-lines` merges LLVM counters across all Rust test binaries and checks
-the inventory against every source file, including unused files. Product source
-contains no test code. No first-party executable code is excluded. Generated
-dependency/compiler data and tests are outside the product denominator. The helper
-refuses additional workspace components until separate component gates exist.
-`make coverage` requires strict >90% raw line AND branch counts, rejecting missing
-branches. A 0/0 branch report is blocked, not 100%. No rounding relaxes thresholds.
+`make test` now runs all workspace tests with isolated PostgreSQL and ephemeral
+RSA keys. These are signed access-token resource-server tests, not full external
+OIDC sign-in tests. Project transport and service tests verify atomic audit,
+concurrent updates, idempotency, revoked membership and real loopback HTTP. The
+actual API process is exercised for invalid config, serving and graceful shutdown.
 
-CI contains passing-scope foundation jobs and a strict coverage job that currently
-fails on missing branch data. No remote CI run or branch protection has been
-observed. No release workflow exists, and this pipeline cannot establish the
+`make coverage` uses nightly-2026-11-04 only for branch instrumentation, merging
+all test and child-binary counters. Production stays on 1.99.1. It checks every
+source file and separate component denominators. The API lib.rs module index has
+no executable statements; a source validator enforces this exemption. No
+executable first-party code is excluded. Raw line AND branch counts must exceed
+90%; absent/empty reports fail. Latest reports exceed both thresholds locally.
+
+CI installs the separately pinned instrumentation compiler and runs the same real
+fixtures. No branch protection has been verified. No release workflow exists, and this pipeline cannot establish the
 complete platform baseline. React coverage, real OIDC/MCP/voice/provider clients,
 SAST/fuzzing, container scans/smoke, resilience/performance, accessibility, i18n,
 backup/restore and full end-to-end journeys remain required in TASK-003b–012.

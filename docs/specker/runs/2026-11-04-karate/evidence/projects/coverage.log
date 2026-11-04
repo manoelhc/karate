@@ -1,0 +1,100 @@
+python3 tools/coverage.py --require-branches
+BEGIN
+CREATE SCHEMA
+REVOKE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+CREATE POLICY
+CREATE POLICY
+CREATE POLICY
+COMMIT
+BEGIN
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+CREATE POLICY
+COMMIT
+CREATE ROLE
+GRANT
+GRANT
+GRANT
+GRANT
+INSERT 0 2
+INSERT 0 4
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 2 tests
+test real_process_serves_liveness_and_drains_on_interrupt ... ok
+test startup_fails_closed_without_exposing_configuration ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.53s
+
+
+running 4 tests
+test language_negotiation_and_catalogs_are_complete ... ok
+test real_postgres_http_and_shared_service_enforce_tenants_revisions_and_atomic_audit ... ok
+test signed_tokens_reject_forgery_expiry_audience_issuer_type_and_claim_errors ... ok
+test key_configuration_is_bounded_explicit_and_expires ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.11s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 6 tests
+test delegation_is_bounded_and_never_grants_privileged_operations ... ok
+test all_roles_and_actions_obey_the_documented_matrix ... ok
+test async_membership_entry_rejects_invalid_identity_and_preserves_key_limits ... ok
+test keys_cannot_cross_tenants_create_other_keys_or_elevate_roles ... ok
+test credentials_are_verified_before_any_membership_lookup ... ok
+test membership_is_bound_to_tenant_issuer_subject_and_current_authority ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 4 tests
+test special_addresses_mixed_dns_and_unbounded_results_fail_closed ... ok
+test origin_and_segment_boundaries_are_exact ... ok
+test exclusions_are_validated_and_bounded ... ok
+test ambiguous_urls_are_rejected_before_normalization ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 8 tests
+test budget_reservations_reject_negative_values_exhaustion_and_overflow ... ok
+test every_state_event_pair_has_a_documented_outcome ... ok
+test errors_are_closed_stable_and_free_of_caller_data ... ok
+test persisted_lifecycle_rejects_inconsistent_pause_metadata ... ok
+test the_full_journey_can_pause_resume_cancel_or_complete_honestly ... ok
+test observations_are_presence_only_and_never_contain_response_values ... ok
+test header_observation_work_is_bounded_without_echoing_oversized_input ... ok
+test names_are_bounded_and_not_empty ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+karate-api {'component': 'karate-api', 'lines': {'count': 523, 'covered': 509}, 'branches': {'count': 110, 'covered': 107}}
+karate-core {'component': 'karate-core', 'lines': {'count': 304, 'covered': 304}, 'branches': {'count': 200, 'covered': 194}}

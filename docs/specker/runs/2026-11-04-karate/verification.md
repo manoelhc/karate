@@ -1,4 +1,7 @@
-# Verification checkpoint — partial implementation
+# Historical foundation verification — partial implementation
+
+This records the foundation delivered in 972ae0c. The current API/coverage
+checkpoint is [project verification](projects-verification.md).
 
 Date: 2026-11-04. Owner: backend implementer/reviewer, distinct review passes in
 one agent. Base commit: d8ccc5764529c574c1052c090aacbc5704f912a9 on main. Evidence

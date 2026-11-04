@@ -1,0 +1,47 @@
+{
+  "toolchain": "rustc 1.101.0-nightly (708c94ef0 2026-11-03)\nbinary: rustc\ncommit-hash: 708c94ef093ecc42fb8851e17d8383d999727abc\ncommit-date: 2026-11-03\nhost: aarch64-apple-darwin\nrelease: 1.101.0-nightly\nLLVM version: 23.1.5\n",
+  "instrumentation_only": true,
+  "production_toolchain": "1.99.1",
+  "components": [
+    {
+      "component": "karate-api",
+      "lines": {
+        "count": 523,
+        "covered": 509
+      },
+      "branches": {
+        "count": 110,
+        "covered": 107
+      }
+    },
+    {
+      "component": "karate-core",
+      "lines": {
+        "count": 304,
+        "covered": 304
+      },
+      "branches": {
+        "count": 200,
+        "covered": 194
+      }
+    }
+  ],
+  "files": {
+    "crates/karate-api/src/http.rs": "00713ee8762fe1f1ef94277dd36f975fe43c74d4f8d8f01537b88755f50714b1",
+    "crates/karate-api/src/identity.rs": "99fbf02040fe9308eed8514be1512cf9ef2350432652f15db96b61d5282c0108",
+    "crates/karate-api/src/lib.rs": "0e083525a5b0feac375d2c3ecaf81f0df4e19ce53ce3067c48f91237bed4685e",
+    "crates/karate-api/src/main.rs": "d45deb2715db531d5ba4282aeca59478106604d98cbbc23f4027e5e3be8b1700",
+    "crates/karate-api/src/service.rs": "3a0d8dbe1d1e7d064cb3a2c6f71f0953a3a5b732978c7ec870291a2d0441fea5",
+    "crates/karate-core/src/assessment.rs": "13afd9ab0552f3d2c7c69d5956c1143bde122cc364ab55fbc8499edefb717a0a",
+    "crates/karate-core/src/authorization.rs": "31667123def80b6dd295f8f5bdaca84c6d58b1e69a89f3e42721467148caee7c",
+    "crates/karate-core/src/evidence.rs": "a80b1e31826da6ad60feef030819702f09eae00108b1b27c18008c4cd369f69b",
+    "crates/karate-core/src/lib.rs": "a3cc5f4455e36920d43753226f79a0e3a431e220332eed007fdfa43523ec9272",
+    "crates/karate-core/src/scope.rs": "b8b8d35a69ce8fca174cb55b5dc33029565708a58ac4fcc57042441217d5512d"
+  },
+  "lock_sha256": "3a8b39e860c3511fa88aa1c84e30ac034e5c332d2ba2a503986c30e810cbf6fd",
+  "exclusions": [
+    "Test sources",
+    "Third-party/compiler code",
+    "karate-api/src/lib.rs: module declarations only, enforced by source check; no executable logic"
+  ]
+}

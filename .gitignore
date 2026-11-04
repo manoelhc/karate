@@ -34,3 +34,4 @@ __pycache__/
 
 # Preserve sanitized verification logs despite global *.log ignores.
 !docs/specker/runs/2026-11-04-karate/evidence/*.log
+!docs/specker/runs/2026-11-04-karate/evidence/projects/*.log

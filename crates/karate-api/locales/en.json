@@ -1,0 +1,9 @@
+{
+  "VALIDATION": ["Check the request fields.", "Correct the input and try again."],
+  "UNAUTHENTICATED": ["A valid access token is required.", "Sign in and try again."],
+  "FORBIDDEN": ["You do not have permission for this operation.", "Ask a workspace administrator to review your access."],
+  "NOT_FOUND": ["The resource was not found.", "Check the workspace and resource identifier."],
+  "CONFLICT": ["The resource changed or the identifier is already used.", "Reload the resource before making another change."],
+  "LIMIT_REACHED": ["The request exceeds a limit.", "Reduce the request size or wait for capacity."],
+  "UNAVAILABLE": ["The service is temporarily unavailable.", "Try again later. Check the resource before retrying a change."]
+}

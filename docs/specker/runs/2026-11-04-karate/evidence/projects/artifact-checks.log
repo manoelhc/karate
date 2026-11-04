@@ -1,0 +1,1 @@
+PASS: git diff --check; shell syntax; Python syntax; local documentation links; OpenAPI JSON/internal references (not full schema validation).

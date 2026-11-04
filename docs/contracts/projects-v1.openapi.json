@@ -1,0 +1,924 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Karate project API",
+    "version": "0.1.0",
+    "description": "Partial platform: no assessments, API keys or browser login yet. RS256 at+jwt with configured issuer/audience and current database membership required."
+  },
+  "paths": {
+    "/v1/tenants/{tenant}/projects": {
+      "parameters": [
+        {
+          "name": "tenant",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "listProjects",
+        "responses": {
+          "200": {
+            "description": "Authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectPage"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid bounded input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "403": {
+            "description": "No current permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "404": {
+            "description": "Resource absent in this tenant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "409": {
+            "description": "Revision or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Exclusive UUID cursor, not an authority token."
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createProject",
+        "responses": {
+          "200": {
+            "description": "Authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid bounded input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "403": {
+            "description": "No current permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "404": {
+            "description": "Resource absent in this tenant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "409": {
+            "description": "Revision or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "201": {
+            "description": "Created with atomic audit event",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProject"
+              }
+            }
+          },
+          "description": "Maximum encoded body size 8192 bytes; unknown fields rejected."
+        },
+        "description": "Same tenant/project_id/name retry returns 200 without a duplicate audit event; conflicting name returns 409."
+      }
+    },
+    "/v1/tenants/{tenant}/projects/{project}": {
+      "parameters": [
+        {
+          "name": "tenant",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "project",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "getProject",
+        "responses": {
+          "200": {
+            "description": "Authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid bounded input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "403": {
+            "description": "No current permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "404": {
+            "description": "Resource absent in this tenant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "409": {
+            "description": "Revision or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "updateProject",
+        "responses": {
+          "200": {
+            "description": "Authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid bounded input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "403": {
+            "description": "No current permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "404": {
+            "description": "Resource absent in this tenant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "409": {
+            "description": "Revision or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProject"
+              }
+            }
+          },
+          "description": "Maximum encoded body size 8192 bytes; unknown fields rejected."
+        }
+      }
+    },
+    "/healthz": {
+      "get": {
+        "operationId": "liveness",
+        "security": [],
+        "responses": {
+          "204": {
+            "description": "Process live; no customer data"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Project": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "project_id",
+          "name",
+          "revision"
+        ],
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "revision": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "category",
+          "message",
+          "retryable",
+          "remediation"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "VALIDATION",
+              "UNAUTHENTICATED",
+              "FORBIDDEN",
+              "NOT_FOUND",
+              "CONFLICT",
+              "LIMIT_REACHED",
+              "UNAVAILABLE"
+            ]
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "input",
+              "authentication",
+              "authorization",
+              "resource",
+              "conflict",
+              "capacity",
+              "dependency"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "retryable": {
+            "type": "boolean"
+          },
+          "remediation": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateProject": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "project_id",
+          "name"
+        ],
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          }
+        }
+      },
+      "UpdateProject": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "expected_revision"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "expected_revision": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854775806
+          }
+        }
+      },
+      "ProjectPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/Project"
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "AccessToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "RS256 JWT (at+jwt)"
+      }
+    }
+  }
+}

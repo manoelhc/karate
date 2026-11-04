@@ -12,6 +12,9 @@
 | DEC-008 | 2026-11-04 | Keep strict branch gate nonzero with missing data | No nightly downgrade, bootstrap override, scope exclusion or fabricated pass. |
 | DEC-009 | 2026-11-04 | Include newly advertised iOS capability in unresolved mobile parity | PAGE-052 partial; detailed scope/acceptance remain to research. |
 | DEC-010 | 2026-11-04 | Commit completed work and push directly to main; no PRs | Explicit user instruction. Preserve verification evidence and open gates; no deployment or paid-resource authority added. |
+| DEC-011 | 2026-11-04 | Implement project API/resource-server validation before full browser login | ADR-0003; real signed tokens and current membership, no anonymous mode. Remaining OIDC capabilities explicit. |
+| DEC-012 | 2026-11-04 | Replace optional JWT RustCrypto backend with AWS-LC after audit failures | Removed crypto-bigint/rsa advisories from graph; no advisory suppression. BSD-3-Clause/ISC compatible licenses added after review. |
+| DEC-013 | 2026-11-04 | Install nightly-2026-11-04 and matching LLVM tools for coverage only after disk recovered | Local developer-tool installation, no paid/cloud resource. Production remains Rust 1.99.1; true branch counters now measured. |
 
 Human assistance: none pending. Authenticated reference demos and real provider
 setup are unverified future integration prerequisites. They do not block the
