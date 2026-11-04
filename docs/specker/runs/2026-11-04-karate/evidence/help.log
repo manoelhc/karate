@@ -1,0 +1,13 @@
+install: fetch locked Rust dependencies
+lint: formatting and strict clippy
+format: format Rust
+test: domain tests
+build: build library
+licenses: dependency license/source checks
+audit: RustSec dependency audit
+secrets: scan working tree with Gitleaks
+coverage-lines: measure stable Rust line coverage
+coverage: enforce line AND branch coverage (currently blocked)
+test-db: isolated real PostgreSQL tenant tests
+run: reports missing runtime
+clean: remove this workspace build artifacts

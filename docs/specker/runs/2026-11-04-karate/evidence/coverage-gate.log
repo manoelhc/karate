@@ -1,0 +1,41 @@
+python3 tools/coverage.py --require-branches
+
+running 8 tests
+test budget_reservations_reject_negative_values_exhaustion_and_overflow ... ok
+test every_state_event_pair_has_a_documented_outcome ... ok
+test errors_are_closed_stable_and_free_of_caller_data ... ok
+test names_are_bounded_and_not_empty ... ok
+test persisted_lifecycle_rejects_inconsistent_pause_metadata ... ok
+test the_full_journey_can_pause_resume_cancel_or_complete_honestly ... ok
+test observations_are_presence_only_and_never_contain_response_values ... ok
+test header_observation_work_is_bounded_without_echoing_oversized_input ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 5 tests
+test all_roles_and_actions_obey_the_documented_matrix ... ok
+test credentials_are_verified_before_any_membership_lookup ... ok
+test delegation_is_bounded_and_never_grants_privileged_operations ... ok
+test keys_cannot_cross_tenants_create_other_keys_or_elevate_roles ... ok
+test membership_is_bound_to_tenant_issuer_subject_and_current_authority ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 4 tests
+test special_addresses_mixed_dns_and_unbounded_results_fail_closed ... ok
+test exclusions_are_validated_and_bounded ... ok
+test origin_and_segment_boundaries_are_exact ... ok
+test ambiguous_urls_are_rejected_before_normalization ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+karate-core lines: 297/297; branches: 0/0 (blocked)
+BLOCKED: stable coverage has no measured branch denominator; the full coverage gate cannot pass
+make: *** [coverage] Error 1

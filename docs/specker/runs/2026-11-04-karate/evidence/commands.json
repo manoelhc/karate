@@ -1,0 +1,84 @@
+[
+  {
+    "check": "rust-checks",
+    "command": [
+      "make",
+      "lint",
+      "test",
+      "build",
+      "licenses"
+    ],
+    "started_at": "2026-11-04T17:53:51.208375+00:00",
+    "exit_code": 0,
+    "log": "rust-checks.log"
+  },
+  {
+    "check": "coverage-gate",
+    "command": [
+      "make",
+      "coverage"
+    ],
+    "started_at": "2026-11-04T17:53:56.297188+00:00",
+    "exit_code": 2,
+    "log": "coverage-gate.log"
+  },
+  {
+    "check": "secrets",
+    "command": [
+      "make",
+      "secrets"
+    ],
+    "started_at": "2026-11-04T17:57:56.555829+00:00",
+    "exit_code": 0,
+    "log": "secrets.log"
+  },
+  {
+    "check": "help",
+    "command": [
+      "make",
+      "help"
+    ],
+    "started_at": "2026-11-04T17:57:56.794575+00:00",
+    "exit_code": 0,
+    "log": "help.log"
+  },
+  {
+    "check": "runtime-status",
+    "command": [
+      "make",
+      "run"
+    ],
+    "started_at": "2026-11-04T17:57:56.808381+00:00",
+    "exit_code": 2,
+    "log": "runtime-status.log"
+  },
+  {
+    "check": "postgres",
+    "command": [
+      "make",
+      "test-db"
+    ],
+    "completed_at": "2026-11-04T17:50:14.049757+00:00",
+    "exit_code": 0,
+    "log": "postgres.log"
+  },
+  {
+    "check": "audit",
+    "command": [
+      "./scripts/cargo.sh",
+      "audit"
+    ],
+    "exit_code": 0,
+    "report": "audit.json",
+    "advisory_database_commit": "965bf9ad083b58e6340d65829d85217b18be9290",
+    "note": "Live database refresh then JSON capture with --no-fetch; 1403 advisories.",
+    "report_captured_at": "2026-11-04T16:24:29.120134+00:00"
+  },
+  {
+    "check": "install-clean",
+    "command": "make install && make clean",
+    "exit_code": 0,
+    "completed_at": "2026-11-04T17:58:34.623020+00:00",
+    "result": "Locked fetch passed; workspace target directory removed; evidence retained."
+  }
+]

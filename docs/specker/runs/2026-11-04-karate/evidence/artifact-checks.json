@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-11-04T17:58:23.062426+00:00",
+  "relative_markdown_links": {
+    "checked": 28,
+    "broken": 0
+  },
+  "coverage_source_and_lock_hashes": "match",
+  "license": "unchanged from base commit",
+  "git_diff_check": "pass",
+  "shell_syntax": "pass",
+  "python_compile": "pass",
+  "research_pages": {
+    "read": 9,
+    "discovered": 46,
+    "total": 55
+  }
+}

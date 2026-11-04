@@ -1,0 +1,44 @@
+name: Foundation checks (partial platform)
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: foundation-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  rust:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Install pinned compiler
+        run: rustup toolchain install 1.99.1 --profile minimal --component rustfmt,clippy,llvm-tools-preview
+      - run: make install lint test build
+      - name: Install pinned license checker
+        run: ./scripts/cargo.sh install cargo-deny --version 0.20.2 --locked
+      - run: make licenses coverage-lines
+  postgres:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Isolated PostgreSQL fixture
+        run: |
+          export PATH="$(pg_config --bindir):$PATH"
+          make test-db
+  release-coverage:
+    name: Strict coverage gate (blocked until branches are measured)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - run: rustup toolchain install 1.99.1 --profile minimal --component llvm-tools-preview
+      - run: make install coverage

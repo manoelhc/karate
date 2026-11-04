@@ -1,0 +1,62 @@
+# COMP-PERSISTENCE — tenant and project storage
+
+Owner: backend implementer. Current implementation is SQL migration
+`migrations/0001_tenants_projects.sql`; a Rust storage adapter is still pending.
+Requirements: PLAT-TENANT/RBAC and REQ-001. PostgreSQL 14.20 was available for
+local verification. This is not selection of an aging major for production;
+the deployment version and container digest must be selected and tested later.
+
+## Data and authority
+
+Tables: tenants, memberships and projects. Every table includes tenant_id.
+Projects use `(tenant_id, project_id)` as their primary key; downstream tables
+must use composite foreign keys. Membership keys are tenant+issuer+subject.
+Names and role strings are constrained; timestamps are UTC-capable timestamptz.
+Project revisions support compare-and-set updates, which the adapter must use.
+All reads/lists must be bounded by the application adapter (not yet present).
+
+All three tables ENABLE and FORCE row-level security. Membership visibility
+requires transaction-local tenant, authenticated issuer and subject, plus current
+nonrevoked/unexpired membership. Project writes require owner/admin/member.
+Viewer reads work, viewer writes do not. A client-supplied tenant alone fails.
+No cache is used for current authority. Long operations must reauthorize between
+bounded work units; a SQL transaction snapshot is not a revocation push channel.
+
+The runtime gets SELECT on tenants/memberships and CRUD on projects, never
+TRUNCATE, schema ownership, SUPERUSER or BYPASSRLS. Tenant provisioning and
+membership changes await a separately audited service path with owner safeguards.
+GUC settings do not authenticate a caller: only a trusted adapter may set them
+after verifying credentials. SQL injection or possession of runtime credentials
+can forge GUCs; parameterized queries, bounded pools and secret custody remain
+required. RLS is defense in depth, not a substitute for shared service policy.
+
+## Runtime, durability and failure
+
+Current fixture runs with PostgreSQL 14.20 binaries, private mode-0700 directory,
+Unix socket only, ten connections, 16 MiB shared buffers and disposable data.
+Fixture trust auth is never a production configuration. It uses no actual
+customer identities or credentials. It creates no shared/external infrastructure.
+
+The migration is atomic and additive on a fresh database. Rollback before use
+is deletion of the disposable fixture. For persisted deployments, restore or
+forward migration is required; no destructive down migration is supplied.
+`make test-db` verifies bootstrap, policy behavior, transaction rollback and
+restart durability; backup/restore, upgrades and concurrent service transactions
+are separate unverified gates. No Docker/container verification is claimed.
+
+Production deployment must supply TLS, secret injection, bounded connection pool,
+statement/lock timeouts, backup retention, deletion propagation, OTel spans and
+RPO/RTO measurements. No production values or SLOs are claimed by this slice.
+Schema SQL has no executable language coverage denominator; actual SQL behavior
+is tested against PostgreSQL. A future Rust adapter needs its own >90% line and
+branch reports. MCP/voice and UI consume that adapter through shared services,
+not direct SQL. The schema contains no localized UI strings.
+
+## Acceptance evidence
+
+`tests/postgres/tenant_isolation.sql` covers two tenants with identical names and
+project IDs, missing/forged context, wrong issuer, viewer mutation attempts,
+membership escalation denial, revoked/expired membership, cross-tenant writes,
+optimistic update preconditions, transaction context reset and rollback.
+`tests/postgres/restart.sql` verifies durable acknowledged writes, fresh-connection
+authority and tenant B's retained rows. See the run verification report for status.
