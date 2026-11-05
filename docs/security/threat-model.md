@@ -40,3 +40,14 @@ Keys cannot invoke privileged control-plane actions. Plaintext appears only in t
 one-time response and test memory; audit/metadata omit both secret and verifier.
 Concurrency and audit-failure tests protect rotation/revocation; runtime SQL has no
 direct credential-table access. Distributed rate limiting remains a release gate.
+
+Discovery threat boundary: only an operator-selected HTTPS issuer is contacted.
+Exact returned issuer and same-origin JWKS checks reject metadata redirection;
+redirect/proxy/compression denial and response/time/header caps contain malicious
+provider responses. Key refresh is single-producer with bounded cooldown; arbitrary
+kids do not cause fetches. Cancellation cannot extend cache trust. Removed keys
+are replaced atomically; stale snapshots stop authenticating at original expiry.
+Current membership remains uncached. A compromised trusted provider can issue
+identities but cannot grant tenant membership; provider compromise and fleet-wide
+rate coordination still require operational controls. Full OIDC/browser/session
+threat cases remain open and are not discharged by discovery tests.

@@ -60,3 +60,9 @@ limited delegation, expiry, revision-safe rotation/revocation and atomic audit.
 Actual DB/HTTP tests cover data access and control-plane denial. Full OIDC, tenant
 lifecycle, UI, rate coordination and the remaining platform gates stay open; see
 the API-key verification checkpoint for current evidence.
+
+TASK-003b2d1 advances PLAT-OAUTH with trusted HTTPS discovery and bounded JWKS
+refresh. Implementation: discovery.rs, shared AccessVerifier and binary config.
+Evidence: real TLS, signing-key rotation, concurrency, expiry and fault tests; strict
+component coverage. PLAT-OAUTH is still partial: full PKCE/session and maintained
+IdP integration remain open; no overall requirement is marked complete here.

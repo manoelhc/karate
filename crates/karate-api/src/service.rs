@@ -1,5 +1,5 @@
 //! Shared application service. HTTP/MCP/voice must never query customer tables directly.
-use crate::identity::{TokenVerifier, unix_now};
+use crate::{discovery::AccessVerifier, identity::unix_now};
 use deadpool_postgres::{Manager, Object, Pool, Runtime, Timeouts, Transaction};
 use karate_core::{
     Error,
@@ -25,7 +25,7 @@ pub struct ProjectPage {
 }
 
 pub struct ProjectService {
-    verifier: TokenVerifier,
+    verifier: AccessVerifier,
     pub(crate) pool: Pool,
 }
 
@@ -42,7 +42,10 @@ fn project(row: &Row) -> Result<Project, Error> {
 }
 
 impl ProjectService {
-    pub async fn connect(verifier: TokenVerifier, connection: &str) -> Result<Arc<Self>, Error> {
+    pub async fn connect(
+        verifier: impl Into<AccessVerifier>,
+        connection: &str,
+    ) -> Result<Arc<Self>, Error> {
         let mut config: tokio_postgres::Config = connection.parse().map_err(unavailable)?;
         if !config.get_hostaddrs().is_empty()
             || config.get_hosts().is_empty()
@@ -70,7 +73,10 @@ impl ProjectService {
             return Err(Error::Forbidden);
         }
         drop(client);
-        Ok(Arc::new(Self { verifier, pool }))
+        Ok(Arc::new(Self {
+            verifier: verifier.into(),
+            pool,
+        }))
     }
 
     pub(crate) async fn connection(&self, credential: &str) -> Result<(Identity, Object), Error> {
@@ -78,7 +84,7 @@ impl ProjectService {
         if credential.starts_with("kk1.") {
             return self.key_connection(credential).await;
         }
-        let identity = self.verifier.verify(credential)?;
+        let identity = self.verifier.verify(credential).await?;
         let client = self.pool.get().await.map_err(unavailable)?;
         Ok((identity, client))
     }

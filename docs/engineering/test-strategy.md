@@ -56,3 +56,12 @@ membership reads, tenant/scope/current-revision restrictions, credential and mem
 expiry/revocation, concurrent rotation, audit rollback, disclosure boundaries,
 JWKS outage independence and raw SQL privileges/bounds/isolation. Current key
 material is never printed into committed logs.
+
+Discovery tests use an owned HTTPS fault fixture with a fresh private CA/server
+certificate and two generated signing keys. Python only provides test transport;
+all product authentication/network behavior remains Rust. Tests check real TLS
+trust/hostname rejection, issuer/origin restrictions, no redirects, body/header/
+read/total time limits, key replacement/removal, concurrency, cancellation cooldown,
+failed refresh without lifetime extension, recovery, current DB membership and the
+actual API binary in both launch modes. No real customer identity/credential is
+used. This is deliberately not claimed as a maintained IdP/browser login test.

@@ -3,7 +3,10 @@
 Project routes require `Authorization: Bearer <credential>` and current tenant
 membership. Credentials can be RS256 access JWTs or tenant-bound API keys with the
 needed read/write scope. Control-plane routes require interactive JWT authority.
-Tenant selection is a UUID path parameter, not authority.
+Tenant selection is a UUID path parameter, not authority. JWT keys come from a
+trusted expiring file or opt-in bounded HTTPS discovery; stale key trust fails
+with UNAVAILABLE. Unknown key IDs do not trigger extra retrieval. Browser
+authorization-code/PKCE and sessions remain pending.
 
 | Method and path | Input | Success | Permission |
 | --- | --- | --- | --- |

@@ -19,7 +19,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--require-branches", action="store_true")
     parser.add_argument("--toolchain", default="nightly-2026-11-04")
-    parser.add_argument("--output-dir", default="docs/specker/runs/2026-11-04-karate/evidence/keys")
+    parser.add_argument("--output-dir", default="docs/specker/runs/2026-11-04-karate/evidence/discovery")
     args = parser.parse_args()
     metadata = json.loads(run(["./scripts/cargo.sh", "metadata", "--no-deps", "--locked", "--offline", "--format-version=1"], capture_output=True).stdout)
     packages = [p for p in metadata["packages"] if p["id"] in metadata["workspace_members"]]

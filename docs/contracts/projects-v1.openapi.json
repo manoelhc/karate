@@ -3393,7 +3393,7 @@
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "RS256 access JWT or kk1 API key",
-        "description": "Interactive JWT required for control-plane operations. kk1 keys can use only their delegated data-plane scopes in their bound tenant."
+        "description": "Interactive JWT required for control-plane operations. kk1 keys can use only their delegated data-plane scopes in their bound tenant. JWT signing keys use trusted file configuration or bounded HTTPS discovery; expired key trust fails closed. Full browser login and sessions remain pending."
       }
     }
   }

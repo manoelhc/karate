@@ -4,13 +4,29 @@
 - Method: https://github.com/manoelhc/specker at f71612bb25bfb1951b3d0df4abb3de9bf914e9d3.
 - Reference: https://www.aikido.dev/attack/aipentest (research only; no assessment authorized).
 - Product: independent MIT-licensed AI security-assessment SaaS; copyright Manoel Carvalho preserved.
-- Current delivery base: e9ce5d8da760c60f85f1991e58578762bda5597e. User requires direct commits/pushes to main without PRs. No production deployment or paid resources authorized.
-- Current stage: **partial implementation**. TASK-003b1 project API, TASK-003b2a existing-member administration TASK-003b2b invitations and TASK-003b2c API keys implemented; complete platform and reference parity still open.
+- Current delivery base: 0d577b40673ffa7e80a59789412b981342f6e359. User requires direct commits/pushes to main without PRs. No production deployment or paid resources authorized.
+- Current stage: **partial implementation**. TASK-003b1 project API, TASK-003b2a existing-member administration TASK-003b2b invitations and TASK-003b2c API keys and TASK-003b2d1 discovery/key refresh implemented; complete platform and reference parity still open.
 - Toolchains: production Rust 1.99.1; separate coverage-only nightly-2026-11-04 (1.101.0-nightly, 708c94ef0), matching LLVM tools. PostgreSQL 14.20 local fixture; production major version not selected. Docker absent.
-- Capacity: about 2.4 GiB free at this continuation start, falling near 1.7 GiB during builds. No new toolchain/dependency installation; workspace build outputs are removed at handoff.
+- Capacity: about 1.9 GiB free at this continuation start, falling near 1.1 GiB during builds. Added pinned HTTP/TLS dependencies; no new toolchain installation; workspace build outputs are removed at handoff.
 - Owner: single backend implementer using backend-engineer workflow. No sub-agents, cloud/account provisioning or provider credentials.
 
-## Latest implemented slice (2026-11-05)
+## Latest implemented slice (2026-11-05): discovery/key refresh
+
+TASK-003b2d1 adds opt-in trusted HTTPS discovery and automatic bounded JWKS refresh.
+Metadata cannot select a new issuer or origin. TLS certificates/hostnames, response
+sizes, deadlines and headers are checked; redirects/proxies/retries are disabled.
+Concurrent callers use only a still-valid prior snapshot; failed/cancelled refresh
+cannot extend trust. Current membership and API-key behavior remain unchanged.
+36 tests, real TLS/DB/process fixtures, strict component coverage and local checks
+pass; see [discovery verification](discovery-verification.md). Previous 0d577b4 CI
+passed. New exact-commit CI is checked after push. No schema/shared account action.
+
+Full browser OIDC/PKCE/session implementation is still open. Current upstream
+openidconnect/oidc-client dependency metadata requires rsa with an unresolved
+audit advisory; neither was added. Rauthy-client is a candidate needing review.
+The owned fault fixture is not a maintained IdP. No prerequisite is waived.
+
+## Prior API-key slice (2026-11-05)
 
 TASK-003b2c adds real scoped API-key creation/list/rotation/revocation. Credentials
 contain 32 random bytes; only an AWS-LC SHA-256 verifier is stored. Verification
@@ -83,16 +99,18 @@ advertised iOS parity until detailed research resolves it. English/pt-BR and the
 web/API SaaS buyer remain unvalidated market assumptions.
 
 The access-token verifier is not complete OIDC login: browser PKCE, live provider
-sign-in/logout, automatic JWKS discovery/rotation and session revocation remain
-pending. The local issuer fixture generates real signatures but is not evidence
+sign-in/logout and session revocation remain pending. Bounded discovery/key
+refresh is now implemented separately. The local issuer fixture generates real signatures but is not evidence
 of a commercial IdP integration. DB runtime is Unix-socket only; non-loopback API
 binds and unencrypted DB TCP are rejected. No frontend/worker/assessment is built.
 
 ## Exact next actions
 
-1. TASK-003b2d: complete OIDC authorization-code/PKCE login, bounded discovery/JWKS
-   refresh and session lifecycle using maintained libraries and a maintained test
-   IdP. Preserve honest provider/container prerequisites. Tenant provisioning,
+1. TASK-003b2d2: resolve the audited maintained OIDC client (evaluate Rauthy
+   supported algorithms/claim validation/backend first), then authorization-code/
+   PKCE login and session lifecycle with a maintained local IdP. Discovery/JWKS
+   refresh is implemented; retain its authority/transport bounds. Preserve honest
+   provider/container prerequisites. Tenant provisioning,
    lifecycle and UI/provider onboarding remain unfinished; key custody and audit
    retention/rate-control gates are not waived by the local API-key slice.
 2. TASK-004a after its access prerequisites: expiring target ownership, immutable

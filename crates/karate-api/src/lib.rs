@@ -1,4 +1,5 @@
 #![forbid(unsafe_code)]
+pub mod discovery;
 pub mod http;
 pub mod identity;
 pub mod invitations;

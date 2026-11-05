@@ -97,3 +97,29 @@ source was inspected; the versioned docs.rs fetch was unavailable. This reuses t
 existing crypto implementation and compatible license. No resolved package version
 changed; the lockfile adds only the direct dependency edge. Updated license,
 source and RustSec reports remain required for this checkpoint.
+
+## Provider discovery continuation (2026-11-05)
+
+reqwest 0.13.5 (MIT OR Apache-2.0) is pinned with defaults disabled and only the
+rustls feature. TLS uses rustls 0.23.46 / platform-verifier 0.7.1, with AWS-LC;
+HTTP/2, HTTP/3, decompression and ambient proxy use are disabled in this client.
+The lock includes cross-target optional dependencies; cargo-deny audits the whole
+resolved graph. No prior package versions were upgraded. Primary APIs were read
+in [versioned docs](https://docs.rs/reqwest/0.13.5/reqwest/struct.ClientBuilder.html)
+and the exact installed upstream source. RustSec refresh found no advisory/warning;
+final dated evidence belongs in the discovery verification report.
+
+The root-certificate dataset webpki-root-certs 1.0.11 uses CDLA-Permissive-2.0.
+Its text permits use/modification/sharing with license-text redistribution and does
+not relicense Karate code; a package/version-specific license allowance and a
+[copy of that text](../licenses/webpki-root-certs-CDLA-2.0.txt) preserve the
+obligation. Include this notice with future distributions that contain the data.
+The product MIT license remains unchanged. Exact duplicate seams are base64 0.22.1
+(existing JWT/Postgres versus newer HTTP) and untrusted 0.7.1 (AWS-LC versus
+rustls-webpki). No blanket duplicate or advisory suppression was added.
+
+The official crates.io API reports openidconnect 4.1.0, oidc-client 4.1.1 and
+rauthy-client 0.15.1. Some indexed docs still show older versions. The first two
+require rsa 0.9 with RUSTSEC-2023-0071; neither was adopted. Rauthy's optional RSA
+and supported-provider behavior need further review. The [decision](../adr/0007-bounded-provider-key-refresh.md)
+records primary evidence and leaves browser client selection explicitly open.

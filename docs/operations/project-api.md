@@ -11,8 +11,11 @@ valid/invalid signed tokens and binary startup/shutdown. Nothing is deployed.
 | --- | --- |
 | KARATE_ISSUER | Exact trusted HTTPS issuer identifier; <=2048 bytes; no credentials/query/fragment |
 | KARATE_AUDIENCE | Dedicated API audience, 1–255 bytes; do not use a browser ID-token audience |
-| KARATE_JWKS_FILE | Readable public JWKS JSON snapshot, <=64 KiB, 1–32 unique nonempty key IDs; RSA/RS256/signature keys only |
-| KARATE_JWKS_EXPIRES_AT | Absolute Unix timestamp strictly in the future and at most 24h from startup; expiry fails requests closed |
+| KARATE_JWKS_FILE | File mode only: readable public JWKS JSON snapshot, <=64 KiB, 1–32 unique nonempty key IDs; RSA/RS256/signature keys only |
+| KARATE_JWKS_EXPIRES_AT | File mode only: absolute Unix timestamp strictly in the future and at most 24h from startup; expiry fails requests closed |
+| KARATE_OIDC_DISCOVERY | Optional `true` or `false` (default false); true selects HTTPS discovery and forbids both JWKS file settings |
+| KARATE_OIDC_KEY_TTL | Discovery mode only: integer 4–3600 seconds, default 600; snapshot expiry, refresh due after half this interval |
+| KARATE_OIDC_CA_FILE | Discovery mode only: optional public PEM file, <=64KiB, exactly one CA certificate; extends native trust without skipping TLS validation |
 | KARATE_DATABASE_URL | tokio-postgres connection string with Unix socket host and dedicated runtime role; TCP/hostaddr rejected |
 | KARATE_BIND | Optional loopback IP:port, default 127.0.0.1:8080; non-loopback rejected |
 
@@ -21,7 +24,8 @@ never a committed .env. Errors omit connection strings and raw provider errors.
 The public JWKS snapshot must come from the configured issuer through a trusted
 operator process. Tokens cannot supply or redirect key retrieval. Replace the
 snapshot and restart for key rotation; a missing key ID fails authentication.
-Automatic discovery/refresh, external-provider login/logout and PKCE are pending.
+Discovery mode automatically retrieves and refreshes public signing keys. External
+provider login/logout, browser PKCE and sessions remain pending.
 
 Accepted access tokens: signed RS256 JWTs with typ `at+jwt`, matching iss/aud,
 nonempty sub, iat and exp, optional nbf, maximum one-hour lifetime. No clock skew
@@ -74,7 +78,7 @@ No destructive down migration is supplied: use forward fixes or a verified resto
 for persistent environments. Audit retention/deletion and tamper detection are
 still required before customer operation.
 
-TCP TLS, reverse-proxy deployment, tenant rate limits, OTel, containers, key/session
+TCP TLS, reverse-proxy deployment, tenant rate limits, OTel, containers, session
 revocation, tenant lifecycle and all assessment/provider interfaces remain
 open. Do not expose this partial service as a production-ready pentesting platform.
 
@@ -109,7 +113,7 @@ the existing lock/statement/idle timeouts. Actor permission is read again after
 waiting. The Rust policy runs before mutation; the SQL function repeats guards and
 writes audit atomically. A lost response requires inspecting the current directory
 and revision before another request. Timeouts/audit failures roll back changes and
-return a closed error. Customer-facing UI, invitation lifecycle, key lifecycle,
+return a closed error. Customer-facing UI,
 retention/erasure, external audit tamper detection and full OIDC are still pending.
 
 ## Invitation migration and workflow
@@ -185,3 +189,41 @@ authentication; it does not recall already admitted bounded operations. No cache
 Secrets are never persisted in fixtures or artifacts. Future deployments still
 need HTTP/DB TLS, request-rate controls, monitoring, retention/erasure, provider
 login and container/recovery verification. This is not a production deployment.
+
+## Discovery and signing-key rotation
+
+Set `KARATE_OIDC_DISCOVERY=true`, issuer/audience and the existing database/bind
+settings; unset `KARATE_JWKS_FILE` and `KARATE_JWKS_EXPIRES_AT`. Default key lifetime
+is ten minutes, with demand-driven refresh after five minutes. Invalid launch
+values and mixed modes fail startup. A private provider may require its public CA
+file; that is trust configuration, never a private key or an insecure TLS switch.
+
+Startup performs discovery and key retrieval before listening. Metadata issuer
+must exactly match configuration; JWKS must remain on the configured HTTPS origin.
+Providers using a separate key CDN are currently unsupported. No redirects,
+compressed documents, ambient proxy, token-provided URL, WebFinger or arbitrary
+provider endpoint is followed. JSON documents are limited to 64KiB/32 signing keys.
+Transport uses 2s connect/read, 5s per GET and 8s total refresh deadlines. HTTP/1
+header count is capped at 32; no automatic transport retries occur.
+
+One request refreshes when due. Concurrent requests use the prior still-valid
+snapshot; after its original expiry they fail with UNAVAILABLE. Failure never
+extends that expiry. Failed attempts enter exponential 1–60s cooldown plus <250ms
+jitter. Cancellation reserves an eight-second delay before new attempts. No
+request queues behind network refresh; no unknown-kid-triggered fetch is added.
+Invalid empty/oversized credentials do not trigger retrieval. Key metadata stays
+public and memory-only; membership and API-key authority remain live in PostgreSQL.
+
+Publish new signing keys before issuing tokens that use them, allowing at least
+the refresh interval plus the configured network deadline and failed-attempt
+cooldown. Removed keys cease to verify after successful replacement. Failed
+refresh retains the previous set only until its original expiry; a provider
+outage cannot prolong its trust. Correct the provider/certificate/configuration
+and allow the bounded cooldown to recover. Restart also requires successful fresh
+retrieval and is not an outage workaround. No cached failure is called a successful
+provider check. Error responses disclose no provider bodies or raw URLs/credentials.
+
+The owned HTTPS fixture exercises cryptography and failure boundaries, not a full
+OIDC IdP. Provider/client registration, maintained-provider sign-in, PKCE callback,
+session revocation/logout and container gates still require implementation and
+verification. This change applies no database migration or shared account action.

@@ -29,3 +29,7 @@ outreach and deployment have not been requested or performed.
 
 | DEC-018 | 2026-11-05 | Reuse pinned AWS-LC 1.19.0 for random API keys, SHA-256 verifiers and constant-time comparison; bind membership revisions | User continuation; only a direct dependency edge added, no package versions changed. Runtime cannot read credential tables directly. No production provisioning. |
 | DEC-019 | 2026-11-05 | Represent coverage file hashes as separate path/sha256 records | Secret scanner matched a verified source hash beside keys.rs; preserve digest/counts, no suppression or credential incident. |
+
+| DEC-020 | 2026-11-05 | Add opt-in HTTPS discovery/key refresh as TASK-003b2d1; retain full login/session work as 003b2d2 | ADR-0007; real TLS and existing JWT policy, no hand-written OIDC login or authority from metadata. Current client dependency advisories remain explicit selection work. |
+| DEC-021 | 2026-11-05 | Fetch pinned reqwest/rustls dependencies, use fresh local fixture CA/server and signing keys | User-authorized local build/verification. Certificate material exists only under disposable test directories and is deleted. No public IdP/account provisioning, shared migration, system trust change, paid resource or deployment. |
+| DEC-022 | 2026-11-05 | Add exact root-dataset license allowance/notice and exact base64/untrusted version seams | Upstream license read; compatible data redistribution notice preserved. No changed MIT license, blanket duplicate or vulnerability suppression. |

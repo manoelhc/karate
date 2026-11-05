@@ -1,11 +1,19 @@
 [licenses]
 allow = ["MIT", "Apache-2.0", "Unicode-3.0", "BSD-3-Clause", "ISC"]
 
+[[licenses.exceptions]]
+name = "webpki-root-certs"
+version = "=1.0.11"
+allow = ["CDLA-Permissive-2.0"]
+
 [bans]
 multiple-versions = "deny"
 # Upstream major-version seams: JWT/signature vs PostgreSQL RNG APIs,
 # proc macros migrating to syn 3, and WASI generations. Exact older versions only.
 skip = [
+    # Existing JWT/Postgres APIs vs reqwest; AWS-LC vs rustls-webpki.
+    { name = "base64", version = "=0.22.1" },
+    { name = "untrusted", version = "=0.7.1" },
     { name = "getrandom", version = "=0.2.17" },
     { name = "syn", version = "=2.0.119" },
     { name = "wasi", version = "=0.11.1+wasi-snapshot-preview1" },

@@ -1,0 +1,22 @@
+[
+ {
+  "RuleID": "generic-api-key",
+  "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+  "StartLine": 66,
+  "EndLine": 66,
+  "StartColumn": 34,
+  "EndColumn": 64,
+  "Match": "keys, REDACTED ",
+  "Secret": "REDACTED",
+  "File": "docs/product/traceability.md",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 3.7720551,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [],
+  "Fingerprint": "docs/product/traceability.md:generic-api-key:66"
+ }
+]
