@@ -1,0 +1,195 @@
+./scripts/cargo.sh fmt --all -- --check
+./scripts/cargo.sh clippy --workspace --all-targets --locked --offline -- -D warnings
+    Checking karate-api v0.1.0 (/Users/manoelhc/Documents/GitHub/manoelhc/karate/crates/karate-api)
+    Finished `dev` profile [unoptimized] target(s) in 1.59s
+./scripts/test-postgres.sh ./scripts/cargo.sh test --workspace --locked --offline
+BEGIN
+CREATE SCHEMA
+REVOKE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+CREATE POLICY
+CREATE POLICY
+CREATE POLICY
+COMMIT
+BEGIN
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+CREATE POLICY
+COMMIT
+BEGIN
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+CREATE ROLE
+GRANT
+GRANT
+GRANT
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+REVOKE
+REVOKE
+COMMIT
+BEGIN
+CREATE TABLE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+GRANT
+GRANT
+GRANT
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+REVOKE
+REVOKE
+COMMIT
+CREATE ROLE
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+INSERT 0 2
+INSERT 0 4
+GRANT
+GRANT
+   Compiling karate-api v0.1.0 (/Users/manoelhc/Documents/GitHub/manoelhc/karate/crates/karate-api)
+    Finished `test` profile [unoptimized] target(s) in 2.99s
+     Running unittests src/lib.rs (target/debug/deps/karate_api-822d360c929674eb)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/karate_api-2d1f9d89ac8a6eeb)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/integration.rs (target/debug/deps/integration-56976d18ec20ab16)
+
+running 4 tests
+test language_negotiation_and_catalogs_are_complete ... ok
+test signed_tokens_reject_forgery_expiry_audience_issuer_type_and_claim_errors ... ok
+test real_postgres_http_and_shared_service_enforce_tenants_revisions_and_atomic_audit ... ok
+test key_configuration_is_bounded_explicit_and_expires ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.11s
+
+     Running tests/invitations.rs (target/debug/deps/invitations-741dfe777ce04636)
+
+running 1 test
+test invitations_require_bound_identity_current_grants_and_single_atomic_acceptance ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+     Running tests/membership.rs (target/debug/deps/membership-7c929cc0c7d05550)
+
+running 1 test
+test membership_management_enforces_roles_revisions_ownership_and_atomic_audit ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+     Running tests/process.rs (target/debug/deps/process-3c8c7d9d78d64d66)
+
+running 2 tests
+test real_process_serves_liveness_and_drains_on_interrupt ... ok
+test startup_fails_closed_without_exposing_configuration ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.79s
+
+     Running unittests src/lib.rs (target/debug/deps/karate_core-b0efa32814468db8)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/domain.rs (target/debug/deps/domain-232cab12cf154e48)
+
+running 8 tests
+test budget_reservations_reject_negative_values_exhaustion_and_overflow ... ok
+test persisted_lifecycle_rejects_inconsistent_pause_metadata ... ok
+test the_full_journey_can_pause_resume_cancel_or_complete_honestly ... ok
+test every_state_event_pair_has_a_documented_outcome ... ok
+test errors_are_closed_stable_and_free_of_caller_data ... ok
+test names_are_bounded_and_not_empty ... ok
+test observations_are_presence_only_and_never_contain_response_values ... ok
+test header_observation_work_is_bounded_without_echoing_oversized_input ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/policy.rs (target/debug/deps/policy-7b9877952f6528d6)
+
+running 8 tests
+test async_membership_entry_rejects_invalid_identity_and_preserves_key_limits ... ok
+test membership_is_bound_to_tenant_issuer_subject_and_current_authority ... ok
+test all_roles_and_actions_obey_the_documented_matrix ... ok
+test keys_cannot_cross_tenants_create_other_keys_or_elevate_roles ... ok
+test credentials_are_verified_before_any_membership_lookup ... ok
+test delegation_is_bounded_and_never_grants_privileged_operations ... ok
+test invitations_bind_interactive_identity_and_current_delegation ... ok
+test membership_management_cannot_escalate_or_remove_durable_ownership ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/scope.rs (target/debug/deps/scope-5e8a23a678399640)
+
+running 4 tests
+test special_addresses_mixed_dns_and_unbounded_results_fail_closed ... ok
+test origin_and_segment_boundaries_are_exact ... ok
+test exclusions_are_validated_and_bounded ... ok
+test ambiguous_urls_are_rejected_before_normalization ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Doc-tests karate_api
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests karate_core
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+./scripts/cargo.sh build --workspace --locked --offline
+    Finished `dev` profile [unoptimized] target(s) in 0.45s
+./scripts/cargo.sh deny --offline check licenses bans sources
+bans ok, licenses ok, sources ok

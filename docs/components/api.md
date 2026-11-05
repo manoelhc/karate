@@ -33,8 +33,9 @@ event commit together; read-only retries do not create mutation audit events.
 ## Data and operations
 
 Migration 0002 adds append-only tenant-scoped project audit records. The runtime
-cannot update/delete audit rows or provision tenants/memberships.
-Existing membership administration now uses the [membership component](membership.md)
+cannot update/delete audit rows or directly provision tenants/memberships.
+Existing membership administration uses the [membership component](membership.md)
+and identity-bound enrollment uses [invitations](invitations.md)
 and narrow database capabilities; direct runtime membership writes remain denied. A privileged
 bootstrap process must create tenants and issuer/subject memberships explicitly;
 no first-login auto-admin. Bodies max 8 KiB, credentials max 8 KiB, list max 100,

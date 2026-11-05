@@ -57,3 +57,36 @@ inactive refusals use CONFLICT. Last-owner/expiring-owner assignment refusals us
 OWNER_REQUIRED (409) with localized instructions to preserve permanent ownership.
 No invitations, auto-enrollment or tenant creation are exposed. Existing 8 KiB
 body, pool and SQL timeouts apply; distributed tenant rate limits remain pending.
+
+## Identity-bound invitations
+
+| Method and path | Input | Success |
+| --- | --- | --- |
+| POST /v1/tenants/{tenant}/invitations | invitation_id, subject, role, expires_at | 200 invitation, including identical retry |
+| GET /v1/tenants/{tenant}/invitations | limit 1–100, after UUID | 200 {items,next_cursor} |
+| POST /v1/tenants/{tenant}/invitations/{invitation}/accept | No payload; addressed identity's bearer token | 200 membership |
+| POST /v1/tenants/{tenant}/invitations/{invitation}/revoke | No payload; manager's bearer token | 200 invitation |
+
+An invitation contains invitation_id, issuer, subject, role, expires_at (Unix
+seconds) and state (pending/expired/revoked/accepted). IDs locate offers and are
+not bearer secrets. Subject is the exact identity-provider subject, not an email
+address. Issuer is taken from the verified creator token; it cannot be supplied
+in the request. Expiry must be in the future and within seven days. Subject is
+bounded to 255 bytes. Creation/revocation/directory require ManageMembers; owners
+may offer admin/member/viewer, admins only member/viewer and cannot restore former
+owners/admins. Owner grants use the existing membership management endpoint.
+
+Acceptance requires the addressed signed identity and rejects service keys. An
+existing membership is not required. Both inviter and recipient state are checked
+under the tenant lock. Any inviter revision change/revocation/expiry or recipient
+revision drift invalidates the grant. Re-enrollment preserves the member ID,
+increments revision and clears expired/revoked status; accepted memberships are
+nonexpiring until revoked. Concurrent acceptance consumes an offer once. Failed
+audit insertion rolls back enrollment and leaves a pending offer usable.
+
+Expired/consumed/revoked offers and stale recipient state return CONFLICT (409).
+Wrong identity/tenant or lost inviter authority returns FORBIDDEN (403). After an
+ambiguous response, the inviter can inspect the directory/membership revision;
+never issue another offer automatically. Identical creation retries require a
+still-valid input expiry and do not duplicate audit. No invitation delivery email,
+automatic enrollment or claim-based administrator provisioning exists.

@@ -26,3 +26,10 @@ fixed function search paths and atomic audit are verified against real PostgreSQ
 The NOLOGIN capability owner bypasses RLS only inside narrow functions; runtime
 membership in that role is refused at startup. Existing GUC trust assumptions
 remain unchanged. Production retention and privileged-operator governance stay open.
+
+TASK-003b2b binds invitation acceptance to the exact signed issuer/subject. IDs
+are non-authorizing locators; no email/bearer-link identity inference. Inviter and
+recipient revision snapshots, current role/expiry checks, tenant locking and
+single-use state stop stale re-enrollment and concurrent acceptance. Enrollment
+audit failure rolls back offer and membership together. No message delivery or
+actual customer identity data is required for the fixtures.

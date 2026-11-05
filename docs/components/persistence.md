@@ -1,6 +1,6 @@
 # COMP-PERSISTENCE — tenant and project storage
 
-Owner: backend implementer. Current implementation is migrations 0001–0003 plus
+Owner: backend implementer. Current implementation is migrations 0001–0004 plus
 the Rust `karate-api::service` adapter, documented in [API component](api.md).
 Requirements: PLAT-TENANT/RBAC and REQ-001. PostgreSQL 14.20 was available for
 local verification. This is not selection of an aging major for production;
@@ -64,3 +64,9 @@ membership escalation denial, revoked/expired membership, cross-tenant writes,
 optimistic update preconditions, transaction context reset and rollback.
 `tests/postgres/restart.sql` verifies durable acknowledged writes, fresh-connection
 authority and tenant B's retained rows. See the run verification report for status.
+
+Migration 0004 adds identity-bound offers and invitation events, with forced RLS
+and named capabilities owned by the existing NOLOGIN guard. Offer issue/revoke/
+acceptance, enrollment/re-enrollment and audit are atomic. Captured inviter and
+recipient revisions prevent stale grants after later membership changes. Runtime
+has no direct offer writes; see [invitation component](invitations.md).

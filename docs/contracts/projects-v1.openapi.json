@@ -1,7 +1,7 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Karate project and membership API",
+    "title": "Karate access and project API",
     "version": "0.1.0",
     "description": "Partial platform: no assessments, API keys or browser login yet. RS256 at+jwt with configured issuer/audience and current database membership required."
   },
@@ -1368,6 +1368,755 @@
         },
         "description": "Revoke active membership with matching revision. Owner safeguards apply. Repeated or stale requests conflict; no automatic reactivation."
       }
+    },
+    "/v1/tenants/{tenant}/invitations": {
+      "parameters": [
+        {
+          "name": "tenant",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "listInvitations",
+        "responses": {
+          "200": {
+            "description": "Authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvitationPage"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid bounded input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "403": {
+            "description": "No current permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "404": {
+            "description": "Resource absent in this tenant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "409": {
+            "description": "Revision or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Exclusive UUID cursor, not an authority token."
+          }
+        ],
+        "description": "Owner/admin directory of identity-bound offers; bounded UUID pagination."
+      },
+      "post": {
+        "operationId": "createInvitation",
+        "responses": {
+          "200": {
+            "description": "Authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Invitation"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid bounded input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "403": {
+            "description": "No current permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "404": {
+            "description": "Resource absent in this tenant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "409": {
+            "description": "Revision or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InviteInput"
+              }
+            }
+          },
+          "description": "Maximum encoded body size 8192 bytes; unknown fields rejected."
+        },
+        "description": "Offer membership to the exact subject at the configured issuer. Future expiry at most seven days away. Owner grants admin/member/viewer; admin grants member/viewer only. Identical ID/payload retries return the existing offer."
+      }
+    },
+    "/v1/tenants/{tenant}/invitations/{invitation}/accept": {
+      "parameters": [
+        {
+          "name": "tenant",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "invitation",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "acceptInvitation",
+        "responses": {
+          "200": {
+            "description": "Authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Member"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid bounded input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "403": {
+            "description": "No current permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "404": {
+            "description": "Resource absent in this tenant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "409": {
+            "description": "Expired, consumed, revoked or stale offer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ],
+        "description": "Single-use acceptance by the exact signed-token identity; no existing tenant membership required. The inviter and recipient revisions must still match; stale, expired or consumed offers conflict."
+      }
+    },
+    "/v1/tenants/{tenant}/invitations/{invitation}/revoke": {
+      "parameters": [
+        {
+          "name": "tenant",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "invitation",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "revokeInvitation",
+        "responses": {
+          "200": {
+            "description": "Authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Invitation"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid bounded input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "403": {
+            "description": "No current permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "404": {
+            "description": "Resource absent in this tenant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "409": {
+            "description": "Expired, consumed, revoked or stale offer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ],
+        "description": "Revoke a pending offer using current management authority. Terminal or expired offers conflict."
+      }
     }
   },
   "components": {
@@ -1621,6 +2370,109 @@
             "format": "int64",
             "minimum": 1,
             "maximum": 9223372036854775806
+          }
+        }
+      },
+      "InviteInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "invitation_id",
+          "subject",
+          "role",
+          "expires_at"
+        ],
+        "properties": {
+          "invitation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "subject": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "admin",
+              "member",
+              "viewer"
+            ]
+          },
+          "expires_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Unix seconds, strictly future and at most seven days ahead"
+          }
+        }
+      },
+      "Invitation": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "invitation_id",
+          "issuer",
+          "subject",
+          "role",
+          "expires_at",
+          "state"
+        ],
+        "properties": {
+          "invitation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "issuer": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "admin",
+              "member",
+              "viewer"
+            ]
+          },
+          "expires_at": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "expired",
+              "revoked",
+              "accepted"
+            ]
+          }
+        }
+      },
+      "InvitationPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/Invitation"
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
           }
         }
       }

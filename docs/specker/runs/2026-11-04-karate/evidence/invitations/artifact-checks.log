@@ -1,0 +1,1 @@
+PASS: current coverage source/lock hashes; 28 named tests; unchanged MIT/license and lockfile; shell/Python syntax; whitespace; local Markdown links; OpenAPI JSON/internal references (not full schema validation).

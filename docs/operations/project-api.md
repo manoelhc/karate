@@ -75,7 +75,7 @@ for persistent environments. Audit retention/deletion and tamper detection are
 still required before customer operation.
 
 TCP TLS, reverse-proxy deployment, tenant rate limits, OTel, containers, key/session
-revocation, invitations and all assessment/provider interfaces remain
+revocation, tenant lifecycle and all assessment/provider interfaces remain
 open. Do not expose this partial service as a production-ready pentesting platform.
 
 ## Membership migration and recovery
@@ -98,7 +98,7 @@ For existing members, owners/admins can list, change allowed roles and revoke
 through the documented API. Promote a nonexpiring member to owner before demoting
 or revoking the last permanent owner. No-op role changes emit no extra audit;
 mutations require matching revisions. Revocation is irreversible through this API;
-re-enrollment awaits invitations. Provisioning/repair remains an explicit operator
+re-enrollment requires a new identity-bound invitation. Tenant provisioning/repair remains an explicit operator
 operation. Such operator changes must acquire the same tenant row lock before
 changing membership; privileged out-of-band SQL is outside runtime guarantees.
 Do not bootstrap a tenant solely with expiring owners. There is no automated
@@ -111,3 +111,38 @@ writes audit atomically. A lost response requires inspecting the current directo
 and revision before another request. Timeouts/audit failures roll back changes and
 return a closed error. Customer-facing UI, invitation lifecycle, key lifecycle,
 retention/erasure, external audit tamper detection and full OIDC are still pending.
+
+## Invitation migration and workflow
+
+Apply migration 0004 after 0003, then grant the runtime:
+
+```sql
+GRANT SELECT ON karate.invitation_events TO karate_runtime;
+GRANT EXECUTE ON FUNCTION karate.create_invitation(uuid,uuid,text,text,bigint,uuid),
+    karate.list_invitations(uuid,bigint,uuid),
+    karate.revoke_invitation(uuid,uuid,uuid),
+    karate.accept_invitation(uuid,uuid,uuid) TO karate_runtime;
+```
+
+No direct invitation-table privileges, event writes, helper execution or guard-role
+membership are needed. Migration 0004 extends the existing NOLOGIN capability
+role with membership INSERT/expiry-update and invitation/event privileges; it does
+not grant them to the runtime. All new functions revoke PUBLIC execution and use
+fixed search paths. RLS stays forced. Only local disposable clusters were migrated.
+
+A manager supplies the recipient's exact subject at the configured issuer, a UUID,
+an allowed role and an expiry at most seven days ahead. Share the resulting locator
+through an independently authorized channel; this API sends no messages. The
+recipient signs in with the addressed identity and accepts. The locator alone
+cannot enroll anyone. Owners can grant admin, while admins can grant member/viewer.
+After enrollment, use existing owner safeguards for any ownership transfer.
+
+Revoked/expired memberships can be re-enrolled with a new offer that captures
+their current revision. Older offers cannot undo subsequent membership changes.
+An inviter role change, revocation, expiry or re-enrollment invalidates its prior
+offers, even if it later regains authority. Issue a new reviewed offer as needed.
+Accepted/revoked offers are terminal. Lost responses require inspecting offer and
+membership state before retrying; no automatic retry of ambiguous acceptance.
+Audit failure rolls back the whole transition. Invitation events include enrollment
+and re-enrollment evidence; membership_events retains role/revoke evidence.
+Retention/erasure and external tamper detection remain unimplemented launch gates.

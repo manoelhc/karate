@@ -1,8 +1,8 @@
 # Membership administration — TASK-003b2a
 
 Owner: backend implementer. Requirements: PLAT-TENANT/RBAC/AUDIT. This slice
-manages existing memberships only; invitations, restoration, tenant provisioning,
-API keys and full OIDC remain in TASK-003b2. No new dependency or license change.
+manages existing memberships. [Invitations](invitations.md) now supply explicit
+re-enrollment; tenant provisioning, API keys and full OIDC remain in TASK-003b2. No new dependency or license change.
 
 Contract: GET /v1/tenants/{tenant}/memberships with limit 1–100 and after UUID;
 PATCH /v1/tenants/{tenant}/memberships/{membership} with role and expected_revision;
@@ -11,7 +11,7 @@ Responses carry membership_id, issuer, subject, role, revision, revoked and expi
 as Unix seconds (null for permanent). Lists include inactive members for review;
 mutations require an active target and matching revision. No-op role changes do
 not advance revision or audit. Lost responses require a list/read-state check
-before retry; stale mutations return CONFLICT. No reactivation endpoint exists.
+before retry; stale mutations return CONFLICT. Reactivation requires a new identity-bound invitation with a matching revision.
 
 Authenticate before database access. Shared Rust policy permits owner/admin reads;
 admins may change/revoke only members/viewers and assign only member/viewer.

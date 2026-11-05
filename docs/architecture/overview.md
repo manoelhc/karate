@@ -7,6 +7,8 @@ Implemented at the current checkpoint: [shared domain policy](../components/doma
 with async PostgreSQL service, signed access-token verification and atomic audit.
 [Existing membership administration](../components/membership.md) adds serialized
 role/revocation changes and permanent-owner safeguards through that shared service.
+[Identity-bound invitations](../components/invitations.md) provide explicit
+enrollment/re-enrollment with current delegation, expiry and single-use acceptance.
 There is no worker/frontend or full provider-login workflow yet. The diagram below
 remains the target architecture. The API calls the core membership policy after
 real credential verification and an async current-membership lookup; the original

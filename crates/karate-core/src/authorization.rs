@@ -169,7 +169,49 @@ pub fn authorize_membership(
     })
 }
 
+/// Current sponsor/recipient facts must come from the locked trusted store.
+pub fn validate_invitation_grant(
+    sponsor: Role,
+    previous: Option<Role>,
+    offered: Role,
+) -> Result<(), Error> {
+    if offered == Role::Owner
+        || !sponsor.allows(Action::ManageMembers)
+        || (sponsor == Role::Admin
+            && (offered == Role::Admin || matches!(previous, Some(Role::Owner | Role::Admin))))
+    {
+        return Err(Error::Forbidden);
+    }
+    Ok(())
+}
+
+pub fn validate_invitation_acceptor(
+    identity: &Identity,
+    issuer: &str,
+    subject: &str,
+) -> Result<(), Error> {
+    if identity.key_restriction.is_some()
+        || identity.issuer != issuer
+        || identity.subject != subject
+        || issuer.is_empty()
+        || subject.is_empty()
+    {
+        return Err(Error::Forbidden);
+    }
+    Ok(())
+}
+
 impl Principal {
+    pub fn authorize_invitation(
+        &self,
+        tenant: Uuid,
+        previous: Option<Role>,
+        offered: Role,
+    ) -> Result<(), Error> {
+        self.authorize(tenant, Action::ManageMembers)?;
+        validate_invitation_grant(self.role, previous, offered)
+    }
+
     /// The adapter must hold the tenant management lock while obtaining these
     /// current target facts and committing the resulting mutation plus audit.
     pub fn authorize_member_change(

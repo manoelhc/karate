@@ -4,13 +4,25 @@
 - Method: https://github.com/manoelhc/specker at f71612bb25bfb1951b3d0df4abb3de9bf914e9d3.
 - Reference: https://www.aikido.dev/attack/aipentest (research only; no assessment authorized).
 - Product: independent MIT-licensed AI security-assessment SaaS; copyright Manoel Carvalho preserved.
-- Current delivery base: e530e906bf0329dd9533d7c78991e3071dd1d8b3. User requires direct commits/pushes to main without PRs. No production deployment or paid resources authorized.
-- Current stage: **partial implementation**. TASK-003b1 project API and TASK-003b2a existing-member administration implemented; complete platform and reference parity still open.
+- Current delivery base: e83ee45dc13b84db89922cf1f631c8dd5aa05867. User requires direct commits/pushes to main without PRs. No production deployment or paid resources authorized.
+- Current stage: **partial implementation**. TASK-003b1 project API, TASK-003b2a existing-member administration and TASK-003b2b invitations implemented; complete platform and reference parity still open.
 - Toolchains: production Rust 1.99.1; separate coverage-only nightly-2026-11-04 (1.101.0-nightly, 708c94ef0), matching LLVM tools. PostgreSQL 14.20 local fixture; production major version not selected. Docker absent.
-- Capacity: about 2.1 GiB free at continuation start, falling near 1 GiB during builds. No new toolchain/dependency installation; workspace build outputs are removed at handoff.
+- Capacity: about 2.4 GiB free at this continuation start, falling near 1.7 GiB during builds. No new toolchain/dependency installation; workspace build outputs are removed at handoff.
 - Owner: single backend implementer using backend-engineer workflow. No sub-agents, cloud/account provisioning or provider credentials.
 
-## Latest implemented slice
+## Latest implemented slice (2026-11-05)
+
+TASK-003b2b adds invitation issue/list/revoke and identity-bound single-use
+acceptance. Offers expire within seven days, grant admin/member/viewer only, and
+bind the inviter/recipient revisions. Re-enrollment preserves the member ID and
+cannot replay older authority after revocation. Tenant locking and READ COMMITTED
+protect acceptance races; audit failure rolls back both membership and offer.
+The locator alone never authorizes acceptance, and no email/message is sent.
+Migration 0004 uses the existing NOLOGIN capability boundary in disposable fixtures.
+See [invitation verification](invitations-verification.md) for current evidence.
+Previous membership checkpoint e83ee45 passed remote CI.
+
+## Prior membership slice
 
 TASK-003b2a adds a bounded owner/admin membership directory, granular role changes,
 revisioned revocation and attributable atomic membership events. Admins can manage
@@ -23,7 +35,7 @@ refused at startup. Migration 0003 has only run in disposable local databases.
 
 The latest evidence is [membership verification](membership-verification.md).
 Project checkpoint evidence remains historical; foundation CI passed at e530e90.
-Full 003b2 remains unfinished: invitations, tenant lifecycle, keys and full OIDC.
+Full 003b2 remains unfinished: tenant lifecycle, keys and full OIDC.
 
 ## Prior implemented foundation
 
@@ -66,12 +78,10 @@ binds and unencrypted DB TCP are rejected. No frontend/worker/assessment is buil
 
 ## Exact next actions
 
-1. TASK-003b2b: implement invitation acceptance bound to verified identity, expiry/
-   replay and audited re-enrollment through the existing membership lock/policy.
-   Tenant provisioning/lifecycle, service API-key creation/
-   hashing/scopes/expiry/rotation/revocation, then real OIDC login/PKCE and bounded
-   JWKS discovery/refresh with a maintained test IdP. Preserve shared policy and
-   extend real integration and component coverage rather than adding a bypass.
+1. TASK-003b2c: implement tenant-scoped API-key creation, verifier hashing, bounded
+   scopes, expiry, rotation and revocation with real integration/coverage evidence.
+   Preserve tenant lifecycle/provisioning and full OIDC/PKCE/JWKS discovery work;
+   provider delivery/onboarding adapters and UI remain separate acceptance gates.
 2. TASK-004a after its access prerequisites: expiring target ownership, immutable
    scope, atomic budget/job publication, lease fencing and per-request authority/
    cancellation/DNS pinning. Only owned HTTP fixtures are authorized.

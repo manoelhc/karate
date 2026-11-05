@@ -464,3 +464,104 @@ fn membership_management_cannot_escalate_or_remove_durable_ownership() {
         Err(Error::Forbidden)
     );
 }
+
+#[test]
+fn invitations_bind_interactive_identity_and_current_delegation() {
+    for sponsor in [Role::Owner, Role::Admin, Role::Member, Role::Viewer] {
+        for previous in [
+            None,
+            Some(Role::Owner),
+            Some(Role::Admin),
+            Some(Role::Member),
+            Some(Role::Viewer),
+        ] {
+            for offered in [Role::Owner, Role::Admin, Role::Member, Role::Viewer] {
+                let allowed = offered != Role::Owner
+                    && (sponsor == Role::Owner
+                        || (sponsor == Role::Admin
+                            && offered != Role::Admin
+                            && matches!(previous, None | Some(Role::Member | Role::Viewer))));
+                assert_eq!(
+                    validate_invitation_grant(sponsor, previous, offered).is_ok(),
+                    allowed
+                );
+                let principal = resolve(
+                    &Auth::default(),
+                    &Store {
+                        role: sponsor,
+                        ..Store::default()
+                    },
+                    "valid",
+                    TENANT,
+                    100,
+                )
+                .unwrap();
+                assert_eq!(
+                    principal
+                        .authorize_invitation(TENANT, previous, offered)
+                        .is_ok(),
+                    allowed
+                );
+                assert_eq!(
+                    principal.authorize_invitation(OTHER, previous, offered),
+                    Err(Error::Forbidden)
+                );
+            }
+        }
+    }
+    let mut identity = Identity {
+        issuer: "https://issuer.example".into(),
+        subject: "person".into(),
+        key_restriction: None,
+    };
+    assert_eq!(
+        validate_invitation_acceptor(&identity, "https://issuer.example", "person"),
+        Ok(())
+    );
+    for (iss, sub) in [
+        ("https://foreign.example", "person"),
+        ("https://issuer.example", "another"),
+        ("", "person"),
+        ("https://issuer.example", ""),
+    ] {
+        assert_eq!(
+            validate_invitation_acceptor(&identity, iss, sub),
+            Err(Error::Forbidden)
+        );
+    }
+    identity.issuer.clear();
+    assert_eq!(
+        validate_invitation_acceptor(&identity, "", "person"),
+        Err(Error::Forbidden)
+    );
+    identity.issuer = "https://issuer.example".into();
+    identity.subject.clear();
+    assert_eq!(
+        validate_invitation_acceptor(&identity, "https://issuer.example", ""),
+        Err(Error::Forbidden)
+    );
+    identity.subject = "person".into();
+    identity.key_restriction = Some(KeyRestriction {
+        tenant_id: TENANT,
+        scopes: vec![Action::Read],
+    });
+    assert_eq!(
+        validate_invitation_acceptor(&identity, "https://issuer.example", "person"),
+        Err(Error::Forbidden)
+    );
+    let principal = resolve(
+        &Auth {
+            key: Some((TENANT, vec![Action::ManageMembers])),
+            ..Auth::default()
+        },
+        &Store::default(),
+        "valid",
+        TENANT,
+        100,
+    )
+    .unwrap();
+    assert_eq!(
+        principal.authorize_invitation(TENANT, None, Role::Viewer),
+        Err(Error::Forbidden)
+    );
+}

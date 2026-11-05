@@ -9,7 +9,8 @@ membership, PostgreSQL row-level security, paginated project reads, idempotent
 creation, revision-checked updates and atomic audit events. Errors support English
 and Brazilian Portuguese. Owners/admins can now list existing memberships, change
 allowed roles and revoke access, with atomic audit and concurrent last-owner
-protection. No assessment worker or frontend exists yet.
+protection. Identity-bound invitations now support expiry, single-use acceptance
+and revision-safe re-enrollment. No assessment worker or frontend exists yet.
 
 ```sh
 make install
@@ -29,14 +30,15 @@ and a nonsuperuser Unix-socket PostgreSQL connection, then run `make run`.
 See [API setup](docs/operations/project-api.md) for exact configuration and grants.
 There is no anonymous mode, first-login administrator or committed credential.
 
-Latest local checks: **26 Rust tests passed**, real HTTP/PostgreSQL and binary
+Latest local checks: **28 Rust tests passed**, real HTTP/PostgreSQL and binary
 startup/shutdown tests passed. Both components exceed 90% line and branch coverage:
-core 324/324 lines, 206/212 branches; API 678/696 lines, 119/122 branches.
+core 360/360 lines, 224/230 branches; API 926/947 lines, 133/138 branches.
 Full provider login, key management, containers and the complete platform remain
 unverified/unfinished; this is a partial implementation, not a ready SaaS.
 
 - [Current run and next actions](docs/specker/runs/2026-11-04-karate/run.md)
-- [Latest membership verification](docs/specker/runs/2026-11-04-karate/membership-verification.md)
+- [Latest invitation verification](docs/specker/runs/2026-11-04-karate/invitations-verification.md)
+- [Prior membership verification](docs/specker/runs/2026-11-04-karate/membership-verification.md)
 - [Prior project API verification](docs/specker/runs/2026-11-04-karate/projects-verification.md)
 - [API contract](docs/contracts/projects-v1.openapi.json) and [component](docs/components/api.md)
 - [Architecture](docs/architecture/overview.md), [plan](docs/engineering/plan.md), [traceability](docs/product/traceability.md)

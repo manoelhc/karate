@@ -46,3 +46,8 @@ and viewers, without assigning admin/owner. Owners may manage all roles. Removin
 an owner requires another active, nonexpiring owner; assigning owner requires a
 nonexpiring target. Violations of these ownership invariants return OWNER_REQUIRED.
 Adapters must hold a tenant management lock across current facts, policy and commit.
+
+Invitation grants exclude owner. Current owner/admin authority is combined with
+the inactive recipient's previous role; admins cannot restore previous owners or
+admins. Acceptance binds exact issuer/subject and excludes service keys. Locked
+storage must supply current sponsor facts, revisions and expiry before commit.

@@ -23,3 +23,6 @@ outreach and deployment have not been requested or performed.
 
 | DEC-014 | 2026-11-04 | Implement existing-member administration before invites/keys; preserve own-row RLS using narrow definer capabilities | User continuation; all domain authorization remains in Rust, with duplicate SQL storage guards. No full TASK-003b2 completion claim. |
 | DEC-015 | 2026-11-04 | Create NOLOGIN membership capability role only inside disposable PostgreSQL clusters | Local fixture role/table grants removed with each cluster; no shared account, paid resource or production migration. Runtime role is not a member. |
+
+| DEC-016 | 2026-11-05 | Identity-bound invitations use non-authorizing UUID locators and exact configured issuer/subject | ADR-0005; no bearer invitation secret, email identity assumption, mail send or new dependency. User confirmed continuing the next slice. |
+| DEC-017 | 2026-11-05 | Migration 0004 extends invitation/enrollment privileges only on the existing NOLOGIN guard inside disposable fixtures | All clusters and ephemeral signing keys removed after checks. No external account action, shared migration, paid resource or production deployment. |

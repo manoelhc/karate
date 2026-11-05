@@ -42,3 +42,10 @@ waiting on the tenant lock, revision conflicts, expiry, atomic audit failure and
 raw SQL privilege/search-path attacks. New executable modules are automatically
 inventoried by coverage. The audit test temporarily changes privileges only in
 the isolated fixture and restores them before completing.
+
+Invitation tests use the existing signed-token and real PostgreSQL fixtures.
+Exercise duplicate IDs, active versus inactive recipients, wrong subject/issuer/
+tenant, expiration, terminal replay, concurrent same/different-offer acceptance,
+current sponsor role/revision/expiry, re-enrollment after revocation, audit rollback,
+raw SQL privileges/isolation and localized HTTP failures. No mocked enrollment
+is accepted as a provider-login test.

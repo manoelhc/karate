@@ -29,7 +29,7 @@ pub struct MemberPage {
 
 // Only deliberately raised storage contract codes are public. Unexpected errors
 // (including audit failures) remain unavailable, without exposing SQL details.
-fn storage(error: tokio_postgres::Error) -> Error {
+pub(crate) fn storage(error: tokio_postgres::Error) -> Error {
     match error.code().map(|code| code.code()) {
         Some("K0001") => Error::Forbidden,
         Some("K0002") => Error::NotFound,
@@ -39,7 +39,7 @@ fn storage(error: tokio_postgres::Error) -> Error {
         _ => Error::Unavailable,
     }
 }
-fn member(row: &Row) -> Result<Member, Error> {
+pub(crate) fn member(row: &Row) -> Result<Member, Error> {
     Ok(Member {
         membership_id: row.try_get("membership_id").map_err(storage)?,
         issuer: row.try_get("issuer").map_err(storage)?,

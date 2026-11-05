@@ -1,27 +1,24 @@
 # Continuation handoff
 
-State: **partial implementation**. TASK-003b2a adds existing-member directory,
-role changes and revocation to the shared Rust service/API, with revision checks,
-atomic audit and concurrent permanent-owner protection. Admins manage member/viewer
-roles; owners manage all roles. Authority is rechecked after waiting for the tenant
-lock, under explicit READ COMMITTED isolation. Runtime SQL cannot write membership
-rows directly or assume the narrow NOLOGIN capability role.
+State: **partial implementation**. TASK-003b2b adds identity-bound invitation
+issue/list/revoke/acceptance and revision-safe re-enrollment. Signed identity,
+current inviter authority, expiry, tenant locking and captured revisions prevent
+replay and stale restoration. Enrollment and audit commit atomically. UUIDs only
+locate offers; no mail or bearer-link authentication is introduced.
 
-All 26 named Rust tests pass, including real PostgreSQL/HTTP/process checks and
-concurrency/privilege cases. Core: 324/324 lines, 206/212 branches. API: 678/696
-lines, 119/122 branches. Both exceed 90% separately. Dependency license/source,
-RustSec and secret scans pass. Snapshot hash formatting was corrected without
-scanner suppression; prior digest values were preserved and verified. See
-[membership verification](membership-verification.md) for commands and evidence.
+All 28 Rust tests pass, including real signed-token, HTTP, PostgreSQL, process,
+concurrency and rollback cases. Core: 360/360 lines, 224/230 branches. API: 926/947
+lines, 133/138 branches. Both exceed 90% separately. Dependency/license/source,
+RustSec and secret checks pass. See [invitation verification](invitations-verification.md).
 
-Production Rust remains 1.99.1; coverage uses nightly-2026-11-04. `make lint test
-build licenses test-db coverage`, `make audit`, `make secrets` verify the slice.
-`make run` requires explicit issuer/JWKS/database configuration. Migration 0003 is
-additive and has only run in disposable local fixtures; read the
-[runbook](../../../operations/project-api.md) before an authorized environment change.
+Use `make lint test build licenses test-db coverage`, `make audit`, `make secrets`.
+Production remains Rust 1.99.1; coverage uses nightly-2026-11-04. Migration 0004 has
+only run in disposable fixtures. `make run` still requires explicit identity and
+database configuration; see the [runbook](../../../operations/project-api.md).
 
-Next: invitation acceptance bound to verified identity, expiry/replay and audited
-re-enrollment, then tenant lifecycle, scoped API keys and full OIDC login. UI,
-worker, containers, providers, operations and the full platform/research baseline
-remain open. No production deployment, paid resources or third-party assessment.
-The user requires commits/pushes directly to main without PRs. Resume [run.md](run.md).
+Next: tenant-scoped API keys with hashed verifiers, limited scopes, expiry,
+rotation/revocation; retain tenant lifecycle and full OIDC work. Provider onboarding,
+UI, assessments, containers and the complete platform/research baseline remain
+open. No shared migration, production deployment, paid resource or third-party
+assessment. Direct commits/pushes to main without PRs remain authorized. Resume
+[run.md](run.md).

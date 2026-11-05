@@ -1,0 +1,12 @@
+[
+  {
+    "check": "coverage",
+    "command": [
+      "make",
+      "coverage"
+    ],
+    "started_at": "2026-11-05T10:07:02.894274+00:00",
+    "exit_code": 2,
+    "log": "coverage-initial.log"
+  }
+]

@@ -44,3 +44,11 @@ revisions, post-lock revocation, direct SQL privileges and audit rollback. UI,
 invitations/re-enrollment, tenant lifecycle, API keys, complete OIDC and retention
 remain open. Latest evidence belongs in the membership verification record; the
 project checkpoint is retained as historical evidence rather than overwritten.
+
+## TASK-003b2b update
+
+PLAT-TENANT/RBAC/AUDIT includes identity-addressed invitation issue/list/revoke/
+acceptance and revision-safe re-enrollment. Offers never grant ownership, require
+current inviter authority, and are single-use under tenant locking. No mail
+delivery or full OIDC claim is made. Tenant lifecycle, API keys, UI and remaining
+platform gates stay open; see the invitation verification checkpoint.

@@ -193,8 +193,7 @@ pub(crate) async fn authorize(
     tenant: Uuid,
     action: Action,
 ) -> Result<Principal, Error> {
-    tx.batch_execute("SET LOCAL statement_timeout='3s'; SET LOCAL lock_timeout='1s'; SET LOCAL idle_in_transaction_session_timeout='5s'").await.map_err(unavailable)?;
-    tx.execute("SELECT set_config('karate.tenant_id',$1,true),set_config('karate.issuer',$2,true),set_config('karate.subject',$3,true)", &[&tenant.to_string(),&identity.issuer,&identity.subject]).await.map_err(unavailable)?;
+    set_context(tx, identity, tenant).await?;
     let row = tx.query_opt("SELECT role FROM karate.memberships WHERE tenant_id=$1 AND issuer=$2 AND subject=$3 AND revoked_at IS NULL AND (expires_at IS NULL OR expires_at>statement_timestamp())", &[&tenant,&identity.issuer,&identity.subject]).await.map_err(unavailable)?.ok_or(Error::Forbidden)?;
     let role: String = row.try_get("role").map_err(unavailable)?;
     let membership = Membership {
@@ -219,5 +218,15 @@ async fn audit(
 ) -> Result<(), Error> {
     tx.execute("INSERT INTO karate.audit_events (tenant_id,event_id,actor_issuer,actor_subject,action,project_id) VALUES ($1,$2,$3,$4,$5,$6)",
         &[&tenant,&Uuid::new_v4(),&identity.issuer,&identity.subject,&action,&project]).await.map_err(unavailable)?;
+    Ok(())
+}
+
+pub(crate) async fn set_context(
+    tx: &Transaction<'_>,
+    identity: &Identity,
+    tenant: Uuid,
+) -> Result<(), Error> {
+    tx.batch_execute("SET LOCAL statement_timeout='3s'; SET LOCAL lock_timeout='1s'; SET LOCAL idle_in_transaction_session_timeout='5s'").await.map_err(unavailable)?;
+    tx.execute("SELECT set_config('karate.tenant_id',$1,true),set_config('karate.issuer',$2,true),set_config('karate.subject',$3,true)", &[&tenant.to_string(),&identity.issuer,&identity.subject]).await.map_err(unavailable)?;
     Ok(())
 }

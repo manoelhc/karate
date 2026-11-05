@@ -14,3 +14,8 @@ INSERT INTO karate.memberships(tenant_id,issuer,subject,role) VALUES
 ('00000000-0000-0000-0000-000000000101','https://issuer.example','viewer','viewer'),
 ('00000000-0000-0000-0000-000000000101','https://issuer.example','member','member'),
 ('00000000-0000-0000-0000-000000000102','https://issuer.example','bob','owner');
+
+GRANT SELECT ON karate.invitation_events TO karate_api_test;
+GRANT EXECUTE ON FUNCTION karate.create_invitation(uuid,uuid,text,text,bigint,uuid),
+    karate.list_invitations(uuid,bigint,uuid),karate.revoke_invitation(uuid,uuid,uuid),
+    karate.accept_invitation(uuid,uuid,uuid) TO karate_api_test;
