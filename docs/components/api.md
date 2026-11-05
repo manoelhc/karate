@@ -70,3 +70,11 @@ viewer denial, malformed bodies, list limits/cursors, concurrent revision writes
 idempotent creates, revoked membership, audit atomicity, pool reuse and outages.
 All executable API/library files require their own >90% line/branch evidence;
 missing data blocks the gate rather than borrowing the core library percentage.
+
+## Scoped credential authentication
+
+[API keys](api-keys.md) now authenticate through a bounded credential lookup and
+AWS-LC verifier comparison before membership resolution. The resulting typed
+restriction reduces authority by tenant, scopes and creator membership revision.
+JWT remains the interactive control-plane credential. Keys cannot manage keys,
+memberships or invitations. Lifecycle changes and audit are atomic.

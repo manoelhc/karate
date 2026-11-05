@@ -1,4 +1,4 @@
-use crate::{invitations::InviteInput, service::ProjectService};
+use crate::{invitations::InviteInput, keys::KeyInput, service::ProjectService};
 use axum::{
     Extension, Json, Router,
     extract::{
@@ -219,6 +219,9 @@ pub fn router(service: Arc<ProjectService>) -> Router {
             "/v1/tenants/{tenant}/invitations/{invitation}/revoke",
             post(revoke_invite),
         )
+        .route("/v1/tenants/{tenant}/keys", post(create_key).get(list_keys))
+        .route("/v1/tenants/{tenant}/keys/{key}/rotate", post(rotate_key))
+        .route("/v1/tenants/{tenant}/keys/{key}/revoke", post(revoke_key))
         .fallback(|Extension(locale): Extension<Locale>| async move {
             ApiError(Error::NotFound, locale)
         })
@@ -432,6 +435,79 @@ async fn revoke_invite(
     Ok(Json(json!(
         service
             .revoke_invitation(credential, tenant, id)
+            .await
+            .map_err(error)?
+    )))
+}
+
+async fn create_key(
+    State(service): State<Arc<ProjectService>>,
+    Extension(locale): Extension<Locale>,
+    headers: HeaderMap,
+    tenant: Result<Path<Uuid>, PathRejection>,
+    body: Result<Json<KeyInput>, JsonRejection>,
+) -> Result<Json<Value>, ApiError> {
+    let error = |e| ApiError(e, locale);
+    let credential = bearer(&headers).map_err(error)?;
+    let Path(tenant) = tenant.map_err(|_| error(Error::Validation))?;
+    let Json(input) = body.map_err(|_| error(Error::Validation))?;
+    Ok(Json(json!(
+        service
+            .create_key(credential, tenant, &input)
+            .await
+            .map_err(error)?
+    )))
+}
+async fn list_keys(
+    State(service): State<Arc<ProjectService>>,
+    Extension(locale): Extension<Locale>,
+    headers: HeaderMap,
+    tenant: Result<Path<Uuid>, PathRejection>,
+    query: Result<Query<ListInput>, QueryRejection>,
+) -> Result<Json<Value>, ApiError> {
+    let error = |e| ApiError(e, locale);
+    let credential = bearer(&headers).map_err(error)?;
+    let Path(tenant) = tenant.map_err(|_| error(Error::Validation))?;
+    let Query(input) = query.map_err(|_| error(Error::Validation))?;
+    Ok(Json(json!(
+        service
+            .list_keys(credential, tenant, input.limit.unwrap_or(25), input.after)
+            .await
+            .map_err(error)?
+    )))
+}
+async fn rotate_key(
+    State(service): State<Arc<ProjectService>>,
+    Extension(locale): Extension<Locale>,
+    headers: HeaderMap,
+    path: Result<Path<(Uuid, Uuid)>, PathRejection>,
+    body: Result<Json<RevokeInput>, JsonRejection>,
+) -> Result<Json<Value>, ApiError> {
+    let error = |e| ApiError(e, locale);
+    let credential = bearer(&headers).map_err(error)?;
+    let Path((tenant, id)) = path.map_err(|_| error(Error::Validation))?;
+    let Json(input) = body.map_err(|_| error(Error::Validation))?;
+    Ok(Json(json!(
+        service
+            .rotate_key(credential, tenant, id, input.expected_revision)
+            .await
+            .map_err(error)?
+    )))
+}
+async fn revoke_key(
+    State(service): State<Arc<ProjectService>>,
+    Extension(locale): Extension<Locale>,
+    headers: HeaderMap,
+    path: Result<Path<(Uuid, Uuid)>, PathRejection>,
+    body: Result<Json<RevokeInput>, JsonRejection>,
+) -> Result<Json<Value>, ApiError> {
+    let error = |e| ApiError(e, locale);
+    let credential = bearer(&headers).map_err(error)?;
+    let Path((tenant, id)) = path.map_err(|_| error(Error::Validation))?;
+    let Json(input) = body.map_err(|_| error(Error::Validation))?;
+    Ok(Json(json!(
+        service
+            .revoke_key(credential, tenant, id, input.expected_revision)
             .await
             .map_err(error)?
     )))

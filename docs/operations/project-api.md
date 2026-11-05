@@ -146,3 +146,42 @@ membership state before retrying; no automatic retry of ambiguous acceptance.
 Audit failure rolls back the whole transition. Invitation events include enrollment
 and re-enrollment evidence; membership_events retains role/revoke evidence.
 Retention/erasure and external tamper detection remain unimplemented launch gates.
+
+## API-key migration, custody and recovery
+
+Apply migration 0005 after 0004 in an independently authorized environment. Local
+verification only uses disposable clusters. Grant runtime:
+
+```sql
+GRANT SELECT ON karate.key_events TO karate_runtime;
+GRANT EXECUTE ON FUNCTION karate.key_verifier(uuid,uuid),
+    karate.list_keys(uuid,bigint,uuid),
+    karate.create_key(uuid,uuid,text,text[],bigint,bytea,uuid),
+    karate.change_key(uuid,uuid,bigint,bytea,uuid) TO karate_runtime;
+```
+
+The verifier function is an internal authentication capability, not an HTTP
+endpoint. Do not grant direct service_keys SELECT/writes, audit writes, guard-role
+membership or PUBLIC execution. Schema RLS remains forced; management functions
+use tenant locking and READ COMMITTED. Only the existing NOLOGIN role gets
+credential-table privileges. Never log raw Authorization headers or response
+secrets; neither raw secret nor verifier enters the event family.
+
+Interactive owner/admin creates keys for self, with explicit UUID/name/scopes and
+expiry within 90 days. Store the one-time secret in an external secret manager;
+Karate cannot recover it. A lost create response leaves metadata: rotate at its
+current revision or revoke. Rotation replaces the verifier without overlap, keeps
+scope/expiry and requires the original creator. For expiry extension, create a
+separate reviewed key and revoke the old key; there is no implicit renewal.
+Owners can revoke any tenant key, admins only own. Revoked keys stay terminal.
+
+Membership revision changes invalidate keys. After authorized role restoration,
+interactive creator rotation can rebind a still-unexpired, unrevoked key; keys
+never reactivate automatically. JWT/JWKS outage blocks interactive management but
+independent valid keys can serve scoped data requests with current membership.
+Database failure blocks authentication. Key revocation takes effect on subsequent
+authentication; it does not recall already admitted bounded operations. No cache.
+
+Secrets are never persisted in fixtures or artifacts. Future deployments still
+need HTTP/DB TLS, request-rate controls, monitoring, retention/erasure, provider
+login and container/recovery verification. This is not a production deployment.

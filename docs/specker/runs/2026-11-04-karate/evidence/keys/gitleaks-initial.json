@@ -1,0 +1,22 @@
+[
+ {
+  "RuleID": "generic-api-key",
+  "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+  "StartLine": 33,
+  "EndLine": 33,
+  "StartColumn": 29,
+  "EndColumn": 104,
+  "Match": "keys.rs\": \"REDACTED\"",
+  "Secret": "REDACTED",
+  "File": "docs/specker/runs/2026-11-04-karate/evidence/keys/coverage-summary.json",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 3.8655725,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [],
+  "Fingerprint": "docs/specker/runs/2026-11-04-karate/evidence/keys/coverage-summary.json:generic-api-key:33"
+ }
+]

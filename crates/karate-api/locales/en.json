@@ -4,8 +4,8 @@
     "Correct the input and try again."
   ],
   "UNAUTHENTICATED": [
-    "A valid access token is required.",
-    "Sign in and try again."
+    "Valid credentials are required.",
+    "Check your API key or sign in again."
   ],
   "FORBIDDEN": [
     "You do not have permission for this operation.",

@@ -2,5 +2,6 @@
 pub mod http;
 pub mod identity;
 pub mod invitations;
+pub mod keys;
 pub mod membership;
 pub mod service;

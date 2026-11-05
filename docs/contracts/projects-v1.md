@@ -1,7 +1,9 @@
 # Project HTTP contract v1
 
-All routes below require `Authorization: Bearer <RS256 access JWT>` and current
-tenant membership. Tenant selection is a UUID path parameter, not authority.
+Project routes require `Authorization: Bearer <credential>` and current tenant
+membership. Credentials can be RS256 access JWTs or tenant-bound API keys with the
+needed read/write scope. Control-plane routes require interactive JWT authority.
+Tenant selection is a UUID path parameter, not authority.
 
 | Method and path | Input | Success | Permission |
 | --- | --- | --- | --- |
@@ -29,7 +31,7 @@ the audit event. A lost PATCH response can be resolved by GET and revision;
 never automatically replay a mutation with a changed expected revision.
 
 The machine-readable contract is [OpenAPI 3.1](projects-v1.openapi.json). Tenant
-rate limiting, API keys and pagination signing remain unimplemented. UUID cursors reveal only identifiers already
+rate limiting and pagination signing remain unimplemented. UUID cursors reveal only identifiers already
 visible in authorized responses and never grant access.
 
 ## Existing membership administration
@@ -90,3 +92,38 @@ ambiguous response, the inviter can inspect the directory/membership revision;
 never issue another offer automatically. Identical creation retries require a
 still-valid input expiry and do not duplicate audit. No invitation delivery email,
 automatic enrollment or claim-based administrator provisioning exists.
+
+## Scoped API keys
+
+| Method and path | Input | Success |
+| --- | --- | --- |
+| POST /v1/tenants/{tenant}/keys | key_id, name, scopes, expires_at | 200 {key,secret} once |
+| GET /v1/tenants/{tenant}/keys | limit 1–100, after UUID | 200 {items,next_cursor} metadata |
+| POST /v1/tenants/{tenant}/keys/{key}/rotate | expected_revision | 200 {key,secret} once |
+| POST /v1/tenants/{tenant}/keys/{key}/revoke | expected_revision | 200 key metadata |
+
+These routes require an interactive JWT and ManageKeys. Create binds the current
+issuer/subject/tenant and membership revision. Scopes are a nonempty, unique
+subset of read/write/run/export, at most four; no control-plane delegation.
+Names obey the shared 120-character name validator. Expiry is future Unix seconds
+at most 90 days ahead. UUID collisions conflict; retries never recover a secret.
+
+Key metadata: key_id, name, issuer, subject, scopes, expires_at, revision, revoked.
+Owner lists/revokes any tenant key; admin only own. Rotation requires the original
+creator's current interactive authority. It replaces the verifier atomically,
+keeps scopes/expiry, increments revision and rebinds the current member revision.
+Revoked/expired keys cannot rotate. Revoke is terminal and also works on expired
+keys. Stale revisions return CONFLICT. No grace period retains an old verifier.
+
+Only create/rotation returns the secret; store it in an external secret manager.
+List/audit/other responses never return it or the verifier. Responses use no-store.
+If a response is lost, inspect metadata and explicitly rotate at the current
+revision or revoke; never retry with a new ID automatically.
+
+Use `Authorization: Bearer <kk1 credential>` for delegated project operations.
+Public UUIDs in the key are locators, not tenant authority. Verification precedes
+membership lookup; scopes intersect current role, and membership revision changes
+invalidate old keys. Keys cannot accept invitations or manage the control plane.
+Run/export scopes do not imply that assessment/export endpoints are implemented.
+JWT/JWKS failure does not invalidate separately verified API keys. Revocation is
+checked at each new authentication; admitted bounded transactions are not recalled.

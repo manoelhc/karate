@@ -14,7 +14,8 @@ ManageMembers, Billing, DeleteTenant:
 
 API-key scopes intersect role permissions. Empty scopes grant nothing; keys
 cannot create keys, manage memberships, bill or delete tenants. Identity is
-issuer+subject, never subject alone. Membership expiry uses an exclusive bound:
+issuer+subject, never subject alone. Service keys bind the current membership
+revision as well as tenant and scopes; revision drift denies authority. Membership expiry uses an exclusive bound:
 `now >= expires_at` is denied. Invalid/expired credentials must fail before a
 membership lookup. Dependency failure never produces a principal.
 
@@ -51,3 +52,7 @@ Invitation grants exclude owner. Current owner/admin authority is combined with
 the inactive recipient's previous role; admins cannot restore previous owners or
 admins. Acceptance binds exact issuer/subject and excludes service keys. Locked
 storage must supply current sponsor facts, revisions and expiry before commit.
+
+Key-management access refines ManageKeys: owner may list/revoke tenant keys, admin
+only own, and rotation always requires the original creator. Delegated scopes are
+unique, nonempty, at most four and cannot include privileged actions.

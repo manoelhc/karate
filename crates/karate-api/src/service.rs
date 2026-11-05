@@ -26,7 +26,7 @@ pub struct ProjectPage {
 
 pub struct ProjectService {
     verifier: TokenVerifier,
-    pool: Pool,
+    pub(crate) pool: Pool,
 }
 
 fn unavailable<T>(_: T) -> Error {
@@ -75,6 +75,9 @@ impl ProjectService {
 
     pub(crate) async fn connection(&self, credential: &str) -> Result<(Identity, Object), Error> {
         // No DB access can occur before the cryptographic check.
+        if credential.starts_with("kk1.") {
+            return self.key_connection(credential).await;
+        }
         let identity = self.verifier.verify(credential)?;
         let client = self.pool.get().await.map_err(unavailable)?;
         Ok((identity, client))
@@ -194,9 +197,10 @@ pub(crate) async fn authorize(
     action: Action,
 ) -> Result<Principal, Error> {
     set_context(tx, identity, tenant).await?;
-    let row = tx.query_opt("SELECT role FROM karate.memberships WHERE tenant_id=$1 AND issuer=$2 AND subject=$3 AND revoked_at IS NULL AND (expires_at IS NULL OR expires_at>statement_timestamp())", &[&tenant,&identity.issuer,&identity.subject]).await.map_err(unavailable)?.ok_or(Error::Forbidden)?;
+    let row = tx.query_opt("SELECT role,revision FROM karate.memberships WHERE tenant_id=$1 AND issuer=$2 AND subject=$3 AND revoked_at IS NULL AND (expires_at IS NULL OR expires_at>statement_timestamp())", &[&tenant,&identity.issuer,&identity.subject]).await.map_err(unavailable)?.ok_or(Error::Forbidden)?;
     let role: String = row.try_get("role").map_err(unavailable)?;
     let membership = Membership {
+        revision: row.try_get("revision").map_err(unavailable)?,
         issuer: identity.issuer.clone(),
         subject: identity.subject.clone(),
         tenant_id: tenant,

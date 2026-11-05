@@ -52,3 +52,11 @@ acceptance and revision-safe re-enrollment. Offers never grant ownership, requir
 current inviter authority, and are single-use under tenant locking. No mail
 delivery or full OIDC claim is made. Tenant lifecycle, API keys, UI and remaining
 platform gates stay open; see the invitation verification checkpoint.
+
+## TASK-003b2c update
+
+PLAT-KEYS now has real tenant-scoped random credentials, nonrecoverable verifiers,
+limited delegation, expiry, revision-safe rotation/revocation and atomic audit.
+Actual DB/HTTP tests cover data access and control-plane denial. Full OIDC, tenant
+lifecycle, UI, rate coordination and the remaining platform gates stay open; see
+the API-key verification checkpoint for current evidence.

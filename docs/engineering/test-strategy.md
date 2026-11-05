@@ -49,3 +49,10 @@ tenant, expiration, terminal replay, concurrent same/different-offer acceptance,
 current sponsor role/revision/expiry, re-enrollment after revocation, audit rollback,
 raw SQL privileges/isolation and localized HTTP failures. No mocked enrollment
 is accepted as a provider-login test.
+
+API-key tests use actual AWS-LC randomness, SHA-256 and constant-time verification
+against PostgreSQL. Cover malformed/forged/unknown credentials, verification before
+membership reads, tenant/scope/current-revision restrictions, credential and member
+expiry/revocation, concurrent rotation, audit rollback, disclosure boundaries,
+JWKS outage independence and raw SQL privileges/bounds/isolation. Current key
+material is never printed into committed logs.

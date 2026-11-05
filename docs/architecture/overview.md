@@ -9,6 +9,8 @@ with async PostgreSQL service, signed access-token verification and atomic audit
 role/revocation changes and permanent-owner safeguards through that shared service.
 [Identity-bound invitations](../components/invitations.md) provide explicit
 enrollment/re-enrollment with current delegation, expiry and single-use acceptance.
+[Scoped API keys](../components/api-keys.md) now provide hashed-verifier authentication
+and audited rotation/revocation through the same service and current policy.
 There is no worker/frontend or full provider-login workflow yet. The diagram below
 remains the target architecture. The API calls the core membership policy after
 real credential verification and an async current-membership lookup; the original

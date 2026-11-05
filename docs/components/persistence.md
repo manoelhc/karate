@@ -1,6 +1,6 @@
 # COMP-PERSISTENCE — tenant and project storage
 
-Owner: backend implementer. Current implementation is migrations 0001–0004 plus
+Owner: backend implementer. Current implementation is migrations 0001–0005 plus
 the Rust `karate-api::service` adapter, documented in [API component](api.md).
 Requirements: PLAT-TENANT/RBAC and REQ-001. PostgreSQL 14.20 was available for
 local verification. This is not selection of an aging major for production;
@@ -70,3 +70,8 @@ and named capabilities owned by the existing NOLOGIN guard. Offer issue/revoke/
 acceptance, enrollment/re-enrollment and audit are atomic. Captured inviter and
 recipient revisions prevent stale grants after later membership changes. Runtime
 has no direct offer writes; see [invitation component](invitations.md).
+
+Migration 0005 adds forced-RLS service_keys/key_events and named credential/
+management functions. Only the NOLOGIN guard can read/write verifier rows; runtime
+gets bounded function execution and scoped audit reads. SHA-256 verifiers, never
+plaintext keys, are stored. No new privileged login role is provisioned.

@@ -1,4 +1,4 @@
-EVIDENCE_DIR ?= docs/specker/runs/2026-11-04-karate/evidence/invitations
+EVIDENCE_DIR ?= docs/specker/runs/2026-11-04-karate/evidence/keys
 
 .PHONY: help install run lint format test build licenses audit secrets test-db coverage-lines coverage clean
 

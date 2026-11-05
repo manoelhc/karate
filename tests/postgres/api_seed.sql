@@ -19,3 +19,8 @@ GRANT SELECT ON karate.invitation_events TO karate_api_test;
 GRANT EXECUTE ON FUNCTION karate.create_invitation(uuid,uuid,text,text,bigint,uuid),
     karate.list_invitations(uuid,bigint,uuid),karate.revoke_invitation(uuid,uuid,uuid),
     karate.accept_invitation(uuid,uuid,uuid) TO karate_api_test;
+
+GRANT SELECT ON karate.key_events TO karate_api_test;
+GRANT EXECUTE ON FUNCTION karate.key_verifier(uuid,uuid),karate.list_keys(uuid,bigint,uuid),
+    karate.create_key(uuid,uuid,text,text[],bigint,bytea,uuid),
+    karate.change_key(uuid,uuid,bigint,bytea,uuid) TO karate_api_test;

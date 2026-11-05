@@ -33,3 +33,10 @@ recipient revision snapshots, current role/expiry checks, tenant locking and
 single-use state stop stale re-enrollment and concurrent acceptance. Enrollment
 audit failure rolls back offer and membership together. No message delivery or
 actual customer identity data is required for the fixtures.
+
+TASK-003b2c verifies high-entropy API-key hashes before membership lookup. Tenant,
+scopes, key expiry/revocation and creator membership revision restrict each request.
+Keys cannot invoke privileged control-plane actions. Plaintext appears only in the
+one-time response and test memory; audit/metadata omit both secret and verifier.
+Concurrency and audit-failure tests protect rotation/revocation; runtime SQL has no
+direct credential-table access. Distributed rate limiting remains a release gate.

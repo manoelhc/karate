@@ -30,8 +30,8 @@ when no endpoint denominator exists or counts are inconsistent.
 Role/action permissions are explicit and deny by default. Authentication runs
 before membership resolution. Membership binds issuer+subject+tenant, includes
 revocation and expiry, and is re-read for each resolution. Principals have no
-deserializer or public fields. API-key restrictions can only reduce role
-authority; privileged scope delegation is prohibited. Credential validation
+deserializer or public fields. API-key restrictions bind tenant/scopes/membership revision and only reduce role
+authority; privileged or duplicate scope delegation is prohibited. Credential validation
 is delegated to an authenticator, not implemented as homemade cryptography.
 
 No database, cache, network, process, files, secrets or environment configuration

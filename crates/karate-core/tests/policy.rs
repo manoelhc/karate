@@ -13,6 +13,7 @@ fn async_membership_entry_rejects_invalid_identity_and_preserves_key_limits() {
         key_restriction: None,
     };
     let membership = || Membership {
+        revision: 1,
         issuer: "https://id.example".into(),
         subject: "alice".into(),
         tenant_id: TENANT,
@@ -34,6 +35,7 @@ fn async_membership_entry_rejects_invalid_identity_and_preserves_key_limits() {
     }
     let mut foreign = identity();
     foreign.key_restriction = Some(KeyRestriction {
+        membership_revision: 1,
         tenant_id: OTHER,
         scopes: vec![Action::Read],
     });
@@ -43,6 +45,7 @@ fn async_membership_entry_rejects_invalid_identity_and_preserves_key_limits() {
     ));
     let mut restricted = identity();
     restricted.key_restriction = Some(KeyRestriction {
+        membership_revision: 1,
         tenant_id: TENANT,
         scopes: vec![Action::Read],
     });
@@ -94,6 +97,7 @@ impl Authenticator for Auth {
             issuer: self.issuer.into(),
             subject: self.subject.into(),
             key_restriction: self.key.as_ref().map(|(tenant_id, scopes)| KeyRestriction {
+                membership_revision: 1,
                 tenant_id: *tenant_id,
                 scopes: scopes.clone(),
             }),
@@ -139,6 +143,7 @@ impl MembershipStore for Store {
             return Ok(None);
         }
         Ok(Some(Membership {
+            revision: 1,
             issuer: self.issuer.into(),
             subject: self.subject.into(),
             tenant_id: self.tenant,
@@ -542,6 +547,7 @@ fn invitations_bind_interactive_identity_and_current_delegation() {
     );
     identity.subject = "person".into();
     identity.key_restriction = Some(KeyRestriction {
+        membership_revision: 1,
         tenant_id: TENANT,
         scopes: vec![Action::Read],
     });
@@ -564,4 +570,64 @@ fn invitations_bind_interactive_identity_and_current_delegation() {
         principal.authorize_invitation(TENANT, None, Role::Viewer),
         Err(Error::Forbidden)
     );
+}
+
+#[test]
+fn key_lifecycle_access_and_revision_binding_never_expand_authority() {
+    for role in [Role::Owner, Role::Admin, Role::Member, Role::Viewer] {
+        let principal = resolve(
+            &Auth::default(),
+            &Store {
+                role,
+                ..Store::default()
+            },
+            "valid",
+            TENANT,
+            100,
+        )
+        .unwrap();
+        for own in [false, true] {
+            for rotating in [false, true] {
+                let allowed = matches!(role, Role::Owner | Role::Admin)
+                    && (own || (role == Role::Owner && !rotating));
+                assert_eq!(
+                    principal
+                        .authorize_key_access(TENANT, own, rotating)
+                        .is_ok(),
+                    allowed
+                );
+                assert_eq!(
+                    principal.authorize_key_access(OTHER, own, rotating),
+                    Err(Error::Forbidden)
+                );
+            }
+        }
+    }
+    let principal = resolve(&Auth::default(), &Store::default(), "valid", TENANT, 100).unwrap();
+    assert_eq!(
+        principal.validate_delegation(&[Action::Read, Action::Read]),
+        Err(Error::Forbidden)
+    );
+    let identity = Identity {
+        issuer: "https://id.example".into(),
+        subject: "alice".into(),
+        key_restriction: Some(KeyRestriction {
+            tenant_id: TENANT,
+            scopes: vec![Action::Read],
+            membership_revision: 1,
+        }),
+    };
+    let membership = Membership {
+        issuer: "https://id.example".into(),
+        subject: "alice".into(),
+        tenant_id: TENANT,
+        role: Role::Owner,
+        revoked: false,
+        expires_at: None,
+        revision: 2,
+    };
+    assert!(matches!(
+        authorize_membership(identity, membership, TENANT, 100),
+        Err(Error::Forbidden)
+    ));
 }

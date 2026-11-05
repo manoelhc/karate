@@ -26,3 +26,6 @@ outreach and deployment have not been requested or performed.
 
 | DEC-016 | 2026-11-05 | Identity-bound invitations use non-authorizing UUID locators and exact configured issuer/subject | ADR-0005; no bearer invitation secret, email identity assumption, mail send or new dependency. User confirmed continuing the next slice. |
 | DEC-017 | 2026-11-05 | Migration 0004 extends invitation/enrollment privileges only on the existing NOLOGIN guard inside disposable fixtures | All clusters and ephemeral signing keys removed after checks. No external account action, shared migration, paid resource or production deployment. |
+
+| DEC-018 | 2026-11-05 | Reuse pinned AWS-LC 1.19.0 for random API keys, SHA-256 verifiers and constant-time comparison; bind membership revisions | User continuation; only a direct dependency edge added, no package versions changed. Runtime cannot read credential tables directly. No production provisioning. |
+| DEC-019 | 2026-11-05 | Represent coverage file hashes as separate path/sha256 records | Secret scanner matched a verified source hash beside keys.rs; preserve digest/counts, no suppression or credential incident. |

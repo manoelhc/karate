@@ -19,7 +19,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--require-branches", action="store_true")
     parser.add_argument("--toolchain", default="nightly-2026-11-04")
-    parser.add_argument("--output-dir", default="docs/specker/runs/2026-11-04-karate/evidence/invitations")
+    parser.add_argument("--output-dir", default="docs/specker/runs/2026-11-04-karate/evidence/keys")
     args = parser.parse_args()
     metadata = json.loads(run(["./scripts/cargo.sh", "metadata", "--no-deps", "--locked", "--offline", "--format-version=1"], capture_output=True).stdout)
     packages = [p for p in metadata["packages"] if p["id"] in metadata["workspace_members"]]
@@ -81,7 +81,7 @@ def main():
         components.append(entry)
         print(name, entry)
     summary = {"toolchain": version, "instrumentation_only": True, "production_toolchain": "1.99.1", "components": components,
-               "files": {str(Path(path).relative_to(ROOT)): hashlib.sha256(Path(path).read_bytes()).hexdigest() for path in sorted(all_sources)},
+               "files": [{"path": str(Path(path).relative_to(ROOT)), "sha256": hashlib.sha256(Path(path).read_bytes()).hexdigest()} for path in sorted(all_sources)],
                "lock_sha256": hashlib.sha256((ROOT / "Cargo.lock").read_bytes()).hexdigest(),
                "exclusions": ["Test sources", "Third-party/compiler code", "karate-api/src/lib.rs: module declarations only, enforced by source check; no executable logic"]}
     (evidence / "coverage-summary.json").write_text(json.dumps(summary, indent=2) + "\n")

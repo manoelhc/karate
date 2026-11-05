@@ -624,6 +624,7 @@ dependencies = [
 name = "karate-api"
 version = "0.1.0"
 dependencies = [
+ "aws-lc-rs",
  "axum",
  "deadpool-postgres",
  "http-body-util",

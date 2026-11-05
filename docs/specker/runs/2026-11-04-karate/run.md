@@ -4,13 +4,25 @@
 - Method: https://github.com/manoelhc/specker at f71612bb25bfb1951b3d0df4abb3de9bf914e9d3.
 - Reference: https://www.aikido.dev/attack/aipentest (research only; no assessment authorized).
 - Product: independent MIT-licensed AI security-assessment SaaS; copyright Manoel Carvalho preserved.
-- Current delivery base: e83ee45dc13b84db89922cf1f631c8dd5aa05867. User requires direct commits/pushes to main without PRs. No production deployment or paid resources authorized.
-- Current stage: **partial implementation**. TASK-003b1 project API, TASK-003b2a existing-member administration and TASK-003b2b invitations implemented; complete platform and reference parity still open.
+- Current delivery base: e9ce5d8da760c60f85f1991e58578762bda5597e. User requires direct commits/pushes to main without PRs. No production deployment or paid resources authorized.
+- Current stage: **partial implementation**. TASK-003b1 project API, TASK-003b2a existing-member administration TASK-003b2b invitations and TASK-003b2c API keys implemented; complete platform and reference parity still open.
 - Toolchains: production Rust 1.99.1; separate coverage-only nightly-2026-11-04 (1.101.0-nightly, 708c94ef0), matching LLVM tools. PostgreSQL 14.20 local fixture; production major version not selected. Docker absent.
 - Capacity: about 2.4 GiB free at this continuation start, falling near 1.7 GiB during builds. No new toolchain/dependency installation; workspace build outputs are removed at handoff.
 - Owner: single backend implementer using backend-engineer workflow. No sub-agents, cloud/account provisioning or provider credentials.
 
 ## Latest implemented slice (2026-11-05)
+
+TASK-003b2c adds real scoped API-key creation/list/rotation/revocation. Credentials
+contain 32 random bytes; only an AWS-LC SHA-256 verifier is stored. Verification
+precedes current membership lookup. Tenant/scopes/expiry/revocation/member revision
+bound authority; no key can access the control plane. Rotation is creator-only,
+revision-checked and replaces the verifier atomically with audit. Plaintext is
+returned only on creation/rotation. Owner can revoke another creator's key.
+Migration 0005 runs only in disposable fixtures. The direct AWS-LC dependency
+reuses the existing locked version. See [key verification](keys-verification.md).
+Prior invitation checkpoint e9ce5d8 passed remote CI.
+
+## Prior invitation slice (2026-11-05)
 
 TASK-003b2b adds invitation issue/list/revoke and identity-bound single-use
 acceptance. Offers expire within seven days, grant admin/member/viewer only, and
@@ -35,7 +47,7 @@ refused at startup. Migration 0003 has only run in disposable local databases.
 
 The latest evidence is [membership verification](membership-verification.md).
 Project checkpoint evidence remains historical; foundation CI passed at e530e90.
-Full 003b2 remains unfinished: tenant lifecycle, keys and full OIDC.
+Full 003b2 remains unfinished: tenant lifecycle and full OIDC.
 
 ## Prior implemented foundation
 
@@ -78,10 +90,11 @@ binds and unencrypted DB TCP are rejected. No frontend/worker/assessment is buil
 
 ## Exact next actions
 
-1. TASK-003b2c: implement tenant-scoped API-key creation, verifier hashing, bounded
-   scopes, expiry, rotation and revocation with real integration/coverage evidence.
-   Preserve tenant lifecycle/provisioning and full OIDC/PKCE/JWKS discovery work;
-   provider delivery/onboarding adapters and UI remain separate acceptance gates.
+1. TASK-003b2d: complete OIDC authorization-code/PKCE login, bounded discovery/JWKS
+   refresh and session lifecycle using maintained libraries and a maintained test
+   IdP. Preserve honest provider/container prerequisites. Tenant provisioning,
+   lifecycle and UI/provider onboarding remain unfinished; key custody and audit
+   retention/rate-control gates are not waived by the local API-key slice.
 2. TASK-004a after its access prerequisites: expiring target ownership, immutable
    scope, atomic budget/job publication, lease fencing and per-request authority/
    cancellation/DNS pinning. Only owned HTTP fixtures are authorized.

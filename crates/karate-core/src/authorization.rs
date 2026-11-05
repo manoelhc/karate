@@ -78,12 +78,14 @@ pub struct Identity {
 
 #[derive(Clone)]
 pub struct KeyRestriction {
+    pub membership_revision: i64,
     pub tenant_id: Uuid,
     pub scopes: Vec<Action>,
 }
 
 /// Trusted membership-store output, fetched afresh after authentication.
 pub struct Membership {
+    pub revision: i64,
     pub issuer: String,
     pub subject: String,
     pub tenant_id: Uuid,
@@ -154,6 +156,13 @@ pub fn authorize_membership(
     {
         return Err(Error::Forbidden);
     }
+    if identity
+        .key_restriction
+        .as_ref()
+        .is_some_and(|key| key.membership_revision != membership.revision)
+    {
+        return Err(Error::Forbidden);
+    }
     if membership.tenant_id != tenant
         || membership.subject != identity.subject
         || membership.issuer != identity.issuer
@@ -202,6 +211,19 @@ pub fn validate_invitation_acceptor(
 }
 
 impl Principal {
+    pub fn authorize_key_access(
+        &self,
+        tenant: Uuid,
+        own: bool,
+        rotating: bool,
+    ) -> Result<(), Error> {
+        self.authorize(tenant, Action::ManageKeys)?;
+        if !own && (rotating || self.role != Role::Owner) {
+            return Err(Error::Forbidden);
+        }
+        Ok(())
+    }
+
     pub fn authorize_invitation(
         &self,
         tenant: Uuid,
@@ -253,6 +275,10 @@ impl Principal {
         self.authorize(self.tenant_id, Action::ManageKeys)?;
         if scopes.is_empty()
             || scopes.len() > 4
+            || scopes
+                .iter()
+                .enumerate()
+                .any(|(i, scope)| scopes[..i].contains(scope))
             || scopes
                 .iter()
                 .any(|scope| privileged(*scope) || self.authorize(self.tenant_id, *scope).is_err())

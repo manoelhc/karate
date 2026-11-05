@@ -88,3 +88,12 @@ Both Rust components now exceed 90% line AND branch coverage with actual counter
 production compiler still 1.99.1. The old nightly/branch-data blocker no longer
 applies to current components. See the latest project verification record for
 counts and the scope of remaining release gates.
+
+## API-key continuation (2026-11-05)
+
+aws-lc-rs 1.19.0 is now also a direct API dependency for secure random fill,
+SHA-256 digest and constant-time verifier equality. Exact installed upstream
+source was inspected; the versioned docs.rs fetch was unavailable. This reuses the
+existing crypto implementation and compatible license. No resolved package version
+changed; the lockfile adds only the direct dependency edge. Updated license,
+source and RustSec reports remain required for this checkpoint.
