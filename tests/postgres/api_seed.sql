@@ -24,3 +24,7 @@ GRANT SELECT ON karate.key_events TO karate_api_test;
 GRANT EXECUTE ON FUNCTION karate.key_verifier(uuid,uuid),karate.list_keys(uuid,bigint,uuid),
     karate.create_key(uuid,uuid,text,text[],bigint,bytea,uuid),
     karate.change_key(uuid,uuid,bigint,bytea,uuid) TO karate_api_test;
+
+GRANT SELECT ON karate.session_events TO karate_api_test;
+GRANT EXECUTE ON FUNCTION karate.begin_login(uuid,bytea,bytea,text,text),karate.consume_login(uuid,bytea,bytea),
+karate.open_session(uuid,uuid,bytea,bigint),karate.session_verifier(uuid,uuid),karate.touch_session(uuid,uuid,bytea),karate.close_sessions(uuid,uuid,boolean) TO karate_api_test;

@@ -5,6 +5,9 @@ from pathlib import Path
 import ssl
 import sys
 import time
+import hashlib
+import base64
+import urllib.parse
 
 root, tls = map(Path, sys.argv[1:])
 
@@ -14,6 +17,18 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
     def log_message(self, *_):
         pass
+
+    def do_POST(self):
+        size = int(self.headers.get("Content-Length", "0"))
+        fields = urllib.parse.parse_qs(self.rfile.read(min(size, 8192)).decode())
+        plan = json.loads((root / "plan.json").read_text()).get(self.path, {})
+        challenge = base64.urlsafe_b64encode(hashlib.sha256(fields.get("code_verifier", [""])[0].encode()).digest()).decode().rstrip("=")
+        if challenge != plan.get("challenge") or fields.get("grant_type") != ["authorization_code"] or fields.get("code") != ["fixture-code"] or fields.get("client_id") != ["karate-browser"]:
+            self.send_response(400)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
+        self.do_GET()
 
     def do_GET(self):
         # Requests contain only public discovery/key paths, never credentials.

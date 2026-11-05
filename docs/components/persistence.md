@@ -75,3 +75,9 @@ Migration 0005 adds forced-RLS service_keys/key_events and named credential/
 management functions. Only the NOLOGIN guard can read/write verifier rows; runtime
 gets bounded function execution and scoped audit reads. SHA-256 verifiers, never
 plaintext keys, are stored. No new privileged login role is provisioned.
+
+Migration 0006 adds forced-RLS login_flows, browser_sessions and session_events.
+Only named authentication/lifecycle capabilities are granted to runtime. State and
+binding cookies are hashed; transient nonce/PKCE are readable only by the guard.
+Durable sessions store SHA-256 verifiers and membership revision, with atomic
+issuance/revocation audit. See [browser sessions](browser-sessions.md).

@@ -74,6 +74,13 @@ pub struct Identity {
     pub issuer: String,
     pub subject: String,
     pub key_restriction: Option<KeyRestriction>,
+    pub session_restriction: Option<SessionRestriction>,
+}
+
+#[derive(Clone)]
+pub struct SessionRestriction {
+    pub tenant_id: Uuid,
+    pub membership_revision: i64,
 }
 
 #[derive(Clone)]
@@ -126,6 +133,13 @@ pub fn resolve(
         return Err(Error::Unauthenticated);
     }
     if identity
+        .session_restriction
+        .as_ref()
+        .is_some_and(|session| session.tenant_id != tenant)
+    {
+        return Err(Error::Forbidden);
+    }
+    if identity
         .key_restriction
         .as_ref()
         .is_some_and(|key| key.tenant_id != tenant)
@@ -148,6 +162,15 @@ pub fn authorize_membership(
 ) -> Result<Principal, Error> {
     if identity.subject.is_empty() || identity.issuer.is_empty() {
         return Err(Error::Unauthenticated);
+    }
+    if identity
+        .session_restriction
+        .as_ref()
+        .is_some_and(|session| {
+            session.tenant_id != tenant || session.membership_revision != membership.revision
+        })
+    {
+        return Err(Error::Forbidden);
     }
     if identity
         .key_restriction
@@ -200,6 +223,7 @@ pub fn validate_invitation_acceptor(
     subject: &str,
 ) -> Result<(), Error> {
     if identity.key_restriction.is_some()
+        || identity.session_restriction.is_some()
         || identity.issuer != issuer
         || identity.subject != subject
         || issuer.is_empty()

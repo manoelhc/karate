@@ -1,0 +1,42 @@
+[
+ {
+  "RuleID": "generic-api-key",
+  "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+  "StartLine": 124,
+  "EndLine": 124,
+  "StartColumn": 15,
+  "EndColumn": 52,
+  "Match": "access_token\":\"REDACTED\"",
+  "Secret": "REDACTED",
+  "File": ".local/oidc-eval/openid-0.25.0/src/bearer.rs",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 4.2776136,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [],
+  "Fingerprint": ".local/oidc-eval/openid-0.25.0/src/bearer.rs:generic-api-key:124"
+ },
+ {
+  "RuleID": "generic-api-key",
+  "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+  "StartLine": 127,
+  "EndLine": 127,
+  "StartColumn": 15,
+  "EndColumn": 53,
+  "Match": "refresh_token\":\"REDACTED\"",
+  "Secret": "REDACTED",
+  "File": ".local/oidc-eval/openid-0.25.0/src/bearer.rs",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 4.3685226,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [],
+  "Fingerprint": ".local/oidc-eval/openid-0.25.0/src/bearer.rs:generic-api-key:127"
+ }
+]

@@ -123,3 +123,32 @@ rauthy-client 0.15.1. Some indexed docs still show older versions. The first two
 require rsa 0.9 with RUSTSEC-2023-0071; neither was adopted. Rauthy's optional RSA
 and supported-provider behavior need further review. The [decision](../adr/0007-bounded-provider-key-refresh.md)
 records primary evidence and leaves browser client selection explicitly open.
+
+## Browser-session continuation (2026-11-05)
+
+openid 0.25.0 is pinned (MIT selected from MIT OR Unlicense), with defaults disabled
+and rustls enabled. Upstream exact source/license were inspected; only pure PKCE,
+authorization-URL and ID-token verification APIs are called. Network helpers are
+not used because they collect before checking response size. The version uses
+biscuit 0.7.0/ring 0.17.14; it does not add the previously rejected rsa package.
+base64 0.23.1 becomes a direct dependency at the already locked version. The lock
+adds 34 packages; existing resolved versions are preserved. [ADR-0008](../adr/0008-browser-oidc-sessions.md)
+records rejected alternatives and replacement boundaries. Latest audit checks the
+253-package graph without advisory ignores; see dated session evidence.
+
+foldhash 0.2.0 carries Zlib. Its installed license was read: preserve origin,
+mark modified sources, retain notice in source distributions. No upstream source
+was modified; an exact package/version allowance and [notice](../licenses/foldhash-0.2.0-Zlib.txt)
+are retained. windows-sys 0.52.0 is an exact duplicate seam for ring's older target
+API versus current platform libraries. No blanket license or duplicate exception.
+
+Dex v2.46.1 is the maintained test provider, with upstream Apache-2.0 LICENSE read.
+The fixture uses official ghcr.io/dexidp/dex architecture manifests:
+
+- arm64: sha256:331e0a33d66b182302fd906c435cfcdcd2fe065cee5bd5346668e06379449e8c
+- amd64: sha256:ca5daa7da6be22465702e0d93ef74e064231460681093ac253e1479960c829b3
+
+These are fixture pins, not selected product images. Local arm64 runs use the
+existing Podman machine; Linux CI uses Docker and the amd64 manifest. Only the
+synthetic upstream connector is tested; human/upstream-provider journeys and
+Karate's full container stack remain unverified. No system runtime provisioning.

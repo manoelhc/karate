@@ -64,7 +64,7 @@ impl Provider {
         let mut jwks: Value =
             serde_json::from_str(&std::fs::read_to_string(file).unwrap()).unwrap();
         jwks["keys"][0]["kid"] = json!(kid);
-        json!({"/issuer/.well-known/openid-configuration":{"body":json!({"issuer":self.issuer,"jwks_uri":format!("{}/keys",self.issuer)}).to_string()},
+        json!({"/issuer/.well-known/openid-configuration":{"body":json!({"issuer":self.issuer,"jwks_uri":format!("{}/keys",self.issuer),"authorization_endpoint":format!("{}/authorize",self.issuer),"token_endpoint":format!("{}/token",self.issuer),"response_types_supported":["code"],"id_token_signing_alg_values_supported":["RS256"],"code_challenge_methods_supported":["S256"]}).to_string()},
             "/issuer/keys":{"body":jwks.to_string()}})
     }
     pub fn configure(&self, plan: Value) {

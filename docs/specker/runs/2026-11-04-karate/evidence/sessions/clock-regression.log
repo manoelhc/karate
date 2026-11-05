@@ -1,0 +1,324 @@
+BEGIN
+CREATE SCHEMA
+REVOKE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+CREATE POLICY
+CREATE POLICY
+CREATE POLICY
+COMMIT
+BEGIN
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+CREATE POLICY
+COMMIT
+BEGIN
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+CREATE ROLE
+GRANT
+GRANT
+GRANT
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+REVOKE
+REVOKE
+COMMIT
+BEGIN
+CREATE TABLE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+GRANT
+GRANT
+GRANT
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+REVOKE
+REVOKE
+COMMIT
+BEGIN
+CREATE TABLE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+GRANT
+GRANT
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+REVOKE
+REVOKE
+COMMIT
+BEGIN
+CREATE TABLE
+CREATE INDEX
+CREATE TABLE
+CREATE INDEX
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+GRANT
+GRANT
+GRANT
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+REVOKE
+REVOKE
+COMMIT
+CREATE ROLE
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+INSERT 0 2
+INSERT 0 4
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+Dex v2.46.1 pinned container is ready; TLS verification enabled.
+Dex clock-skew regression 1
+    Finished `test` profile [unoptimized] target(s) in 0.10s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+Dex clock-skew regression 2
+    Finished `test` profile [unoptimized] target(s) in 0.11s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+Dex clock-skew regression 3
+    Finished `test` profile [unoptimized] target(s) in 0.10s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+Dex clock-skew regression 4
+    Finished `test` profile [unoptimized] target(s) in 0.08s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+Dex clock-skew regression 5
+    Finished `test` profile [unoptimized] target(s) in 0.07s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+Dex clock-skew regression 6
+    Finished `test` profile [unoptimized] target(s) in 0.10s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+Dex clock-skew regression 7
+    Finished `test` profile [unoptimized] target(s) in 0.10s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+Dex clock-skew regression 8
+    Finished `test` profile [unoptimized] target(s) in 0.08s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+Dex clock-skew regression 9
+    Finished `test` profile [unoptimized] target(s) in 0.08s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+Dex clock-skew regression 10
+    Finished `test` profile [unoptimized] target(s) in 0.07s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+Dex clock-skew regression 11
+    Finished `test` profile [unoptimized] target(s) in 0.07s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+Dex clock-skew regression 12
+    Finished `test` profile [unoptimized] target(s) in 0.07s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+Dex clock-skew regression 13
+    Finished `test` profile [unoptimized] target(s) in 0.07s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+Dex clock-skew regression 14
+    Finished `test` profile [unoptimized] target(s) in 0.07s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+Dex clock-skew regression 15
+    Finished `test` profile [unoptimized] target(s) in 0.07s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+Dex clock-skew regression 16
+    Finished `test` profile [unoptimized] target(s) in 0.08s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+Dex clock-skew regression 17
+    Finished `test` profile [unoptimized] target(s) in 0.08s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+Dex clock-skew regression 18
+    Finished `test` profile [unoptimized] target(s) in 0.07s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+Dex clock-skew regression 19
+    Finished `test` profile [unoptimized] target(s) in 0.09s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+Dex clock-skew regression 20
+    Finished `test` profile [unoptimized] target(s) in 0.09s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s

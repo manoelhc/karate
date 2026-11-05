@@ -23,6 +23,8 @@ fn command() -> Command {
         "KARATE_OIDC_DISCOVERY",
         "KARATE_OIDC_KEY_TTL",
         "KARATE_OIDC_CA_FILE",
+        "KARATE_BROWSER_CLIENT_ID",
+        "KARATE_PUBLIC_ORIGIN",
     ] {
         cmd.env_remove(key);
     }
@@ -51,6 +53,8 @@ fn startup_fails_closed_without_exposing_configuration() {
         ("KARATE_JWKS_FILE", "/missing-private-key-location"),
         ("KARATE_JWKS_EXPIRES_AT", "wrong"),
         ("KARATE_DATABASE_URL", "private-invalid-dsn"),
+        ("KARATE_BROWSER_CLIENT_ID", "unpaired"),
+        ("KARATE_PUBLIC_ORIGIN", "https://karate.example"),
         ("KARATE_BIND", "not-an-address"),
         ("KARATE_BIND", "0.0.0.0:8080"),
     ] {
@@ -77,6 +81,15 @@ fn startup_fails_closed_without_exposing_configuration() {
                 .success()
         );
     }
+    assert!(
+        !configured()
+            .env("KARATE_BROWSER_CLIENT_ID", "karate-browser")
+            .env("KARATE_PUBLIC_ORIGIN", "https://karate.example")
+            .output()
+            .unwrap()
+            .status
+            .success()
+    );
     // Already-bound socket must produce a bounded startup failure.
     let listener = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
     assert!(
@@ -183,6 +196,8 @@ async fn real_process_discovers_https_keys_and_checks_membership() {
         .env("KARATE_OIDC_KEY_TTL", "600")
         .env("KARATE_ISSUER", &p.issuer)
         .env("KARATE_OIDC_CA_FILE", p.root.join("trusted-ca.pem"))
+        .env("KARATE_BROWSER_CLIENT_ID", "karate-browser")
+        .env("KARATE_PUBLIC_ORIGIN", "https://karate.example")
         .env("HTTPS_PROXY", "http://127.0.0.1:9")
         .env("ALL_PROXY", "http://127.0.0.1:9");
     serve(cmd, Some(p.token("fixture"))).await;

@@ -6,11 +6,18 @@ name = "webpki-root-certs"
 version = "=1.0.11"
 allow = ["CDLA-Permissive-2.0"]
 
+[[licenses.exceptions]]
+name = "foldhash"
+version = "=0.2.0"
+allow = ["Zlib"]
+
 [bans]
 multiple-versions = "deny"
 # Upstream major-version seams: JWT/signature vs PostgreSQL RNG APIs,
 # proc macros migrating to syn 3, and WASI generations. Exact older versions only.
 skip = [
+    # ring (OIDC signatures) retains the older Windows API binding.
+    { name = "windows-sys", version = "=0.52.0" },
     # Existing JWT/Postgres APIs vs reqwest; AWS-LC vs rustls-webpki.
     { name = "base64", version = "=0.22.1" },
     { name = "untrusted", version = "=0.7.1" },

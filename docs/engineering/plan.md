@@ -45,3 +45,20 @@ Release controls and the full compliance/access lifecycle remain open. Delivery 
 2026-11-04 instruction. Publication does not change the verification gate status.
 
 Migration strategy: initial schema is additive; future updates use expand/backfill/verify/contract with snapshots before destructive changes. Production provisioning, billing activation and deployment require their own authority. No production environment has been selected.
+
+TASK-003b2d2 implementation: browser-sessions component, openid 0.25.0 bounded adapter,
+additive local session migration, PKCE/nonce/state/browser binding, durable
+session logout/revocation, current membership and maintained Dex verification.
+Acceptance: make lint test build licenses test-db coverage; make test-oidc;
+audit/secrets and exact-commit CI. No shared infrastructure or migration action.
+
+Next access slice TASK-003b2e: explicit tenant provisioning/lifecycle and owner
+bootstrap, with deletion/retention boundaries; define its component contract first.
+TASK-006a can then wire the real browser login/session API to the React shell,
+including localized recovery, accessibility and a real browser/provider journey.
+The synthetic Dex connector does not close that human integration gate.
+
+TASK-003b2d2 final local verification: 40 named tests; core 397/397 lines,
+242/248 branches; API 2027/2069 lines, 342/374 branches. Maintained Dex code/PKCE
+and local session lifecycle pass. No skipped prerequisite is counted as complete.
+See the sessions verification record; exact-commit CI is checked after push.

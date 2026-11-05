@@ -68,7 +68,31 @@ async fn run() -> Result<(), Error> {
     if !address.ip().is_loopback() {
         return Err(Error::Validation);
     }
-    let service = ProjectService::connect(verifier, &connection).await?;
+    let service = match (
+        env::var("KARATE_BROWSER_CLIENT_ID"),
+        env::var("KARATE_PUBLIC_ORIGIN"),
+    ) {
+        (Err(env::VarError::NotPresent), Err(env::VarError::NotPresent)) => {
+            ProjectService::connect(verifier, &connection).await?
+        }
+        (Ok(client_id), Ok(origin)) => {
+            if env::var("KARATE_OIDC_DISCOVERY").as_deref() != Ok("true") {
+                return Err(Error::Validation);
+            }
+            let ca = env::var("KARATE_OIDC_CA_FILE")
+                .ok()
+                .map(|path| public_file(&path))
+                .transpose()?;
+            let browser = karate_api::browser::BrowserProvider::new(
+                &issuer,
+                &client_id,
+                &origin,
+                ca.as_ref().map(|v| v.as_bytes()),
+            )?;
+            ProjectService::connect_browser(verifier, &connection, browser).await?
+        }
+        _ => return Err(Error::Validation),
+    };
     let listener = tokio::net::TcpListener::bind(address)
         .await
         .map_err(|_| Error::Unavailable)?;

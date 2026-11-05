@@ -25,6 +25,7 @@ pub struct ProjectPage {
 }
 
 pub struct ProjectService {
+    pub(crate) browser: Option<crate::browser::BrowserProvider>,
     verifier: AccessVerifier,
     pub(crate) pool: Pool,
 }
@@ -56,6 +57,7 @@ impl ProjectService {
         {
             return Err(Error::Validation);
         }
+        config.options("-c statement_timeout=3000 -c lock_timeout=1000 -c idle_in_transaction_session_timeout=5000");
         config.connect_timeout(Duration::from_secs(2));
         let pool = Pool::builder(Manager::new(config, NoTls))
             .max_size(8)
@@ -74,6 +76,7 @@ impl ProjectService {
         }
         drop(client);
         Ok(Arc::new(Self {
+            browser: None,
             verifier: verifier.into(),
             pool,
         }))
@@ -83,6 +86,9 @@ impl ProjectService {
         // No DB access can occur before the cryptographic check.
         if credential.starts_with("kk1.") {
             return self.key_connection(credential).await;
+        }
+        if credential.starts_with("ks1.") {
+            return self.session_connection(credential).await;
         }
         let identity = self.verifier.verify(credential).await?;
         let client = self.pool.get().await.map_err(unavailable)?;

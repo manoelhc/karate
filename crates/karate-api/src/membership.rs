@@ -36,6 +36,7 @@ pub(crate) fn storage(error: tokio_postgres::Error) -> Error {
         Some("K0003") => Error::Conflict,
         Some("K0004") => Error::Validation,
         Some("K0005") => Error::OwnerRequired,
+        Some("K0006") => Error::LimitReached,
         _ => Error::Unavailable,
     }
 }

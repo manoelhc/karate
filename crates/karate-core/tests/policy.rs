@@ -10,6 +10,7 @@ fn async_membership_entry_rejects_invalid_identity_and_preserves_key_limits() {
     let identity = || Identity {
         issuer: "https://id.example".into(),
         subject: "alice".into(),
+        session_restriction: None,
         key_restriction: None,
     };
     let membership = || Membership {
@@ -72,6 +73,7 @@ struct Auth {
     issuer: &'static str,
     subject: &'static str,
     key: Option<(Uuid, Vec<Action>)>,
+    session: Option<SessionRestriction>,
     calls: Cell<usize>,
 }
 
@@ -82,6 +84,7 @@ impl Default for Auth {
             issuer: "https://id.example",
             subject: "alice",
             key: None,
+            session: None,
             calls: Cell::new(0),
         }
     }
@@ -96,6 +99,7 @@ impl Authenticator for Auth {
         Ok(Identity {
             issuer: self.issuer.into(),
             subject: self.subject.into(),
+            session_restriction: self.session.clone(),
             key_restriction: self.key.as_ref().map(|(tenant_id, scopes)| KeyRestriction {
                 membership_revision: 1,
                 tenant_id: *tenant_id,
@@ -517,6 +521,7 @@ fn invitations_bind_interactive_identity_and_current_delegation() {
     let mut identity = Identity {
         issuer: "https://issuer.example".into(),
         subject: "person".into(),
+        session_restriction: None,
         key_restriction: None,
     };
     assert_eq!(
@@ -611,6 +616,7 @@ fn key_lifecycle_access_and_revision_binding_never_expand_authority() {
     let identity = Identity {
         issuer: "https://id.example".into(),
         subject: "alice".into(),
+        session_restriction: None,
         key_restriction: Some(KeyRestriction {
             tenant_id: TENANT,
             scopes: vec![Action::Read],
@@ -630,4 +636,60 @@ fn key_lifecycle_access_and_revision_binding_never_expand_authority() {
         authorize_membership(identity, membership, TENANT, 100),
         Err(Error::Forbidden)
     ));
+}
+
+#[test]
+fn sessions_bind_tenant_revision_and_current_role_before_delegation() {
+    for (tenant, revision) in [(OTHER, 1), (TENANT, 2)] {
+        let auth = Auth {
+            session: Some(SessionRestriction {
+                tenant_id: tenant,
+                membership_revision: revision,
+            }),
+            ..Auth::default()
+        };
+        let store = Store::default();
+        assert!(matches!(
+            resolve(&auth, &store, "session", TENANT, 10),
+            Err(Error::Forbidden)
+        ));
+        assert_eq!(store.calls.get(), if tenant == OTHER { 0 } else { 1 });
+        let identity = auth.authenticate("session", 10).unwrap();
+        let member = Store::default()
+            .membership(&identity, TENANT)
+            .unwrap()
+            .unwrap();
+        assert!(matches!(
+            authorize_membership(identity, member, TENANT, 10),
+            Err(Error::Forbidden)
+        ));
+    }
+    let auth = Auth {
+        session: Some(SessionRestriction {
+            tenant_id: TENANT,
+            membership_revision: 1,
+        }),
+        ..Auth::default()
+    };
+    let viewer = Store {
+        role: Role::Viewer,
+        ..Store::default()
+    };
+    let actor = resolve(&auth, &viewer, "session", TENANT, 10).unwrap();
+    assert_eq!(actor.authorize(TENANT, Action::Read), Ok(()));
+    assert_eq!(
+        actor.authorize(TENANT, Action::Write),
+        Err(Error::Forbidden)
+    );
+    assert_eq!(actor.authorize(OTHER, Action::Read), Err(Error::Forbidden));
+    let owner = resolve(&auth, &Store::default(), "session", TENANT, 10).unwrap();
+    assert_eq!(owner.authorize(TENANT, Action::ManageKeys), Ok(()));
+    assert_eq!(
+        validate_invitation_acceptor(
+            &auth.authenticate("session", 10).unwrap(),
+            "https://id.example",
+            "alice"
+        ),
+        Err(Error::Forbidden)
+    );
 }

@@ -127,6 +127,7 @@ impl TokenVerifier {
         Ok(Identity {
             issuer: self.issuer.clone(),
             subject: claims.sub,
+            session_restriction: None,
             key_restriction: None,
         })
     }

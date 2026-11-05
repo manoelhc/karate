@@ -179,6 +179,9 @@
         "security": [
           {
             "AccessToken": []
+          },
+          {
+            "browserSession": []
           }
         ],
         "parameters": [
@@ -386,6 +389,9 @@
         "security": [
           {
             "AccessToken": []
+          },
+          {
+            "browserSession": []
           }
         ],
         "requestBody": {
@@ -584,6 +590,9 @@
         "security": [
           {
             "AccessToken": []
+          },
+          {
+            "browserSession": []
           }
         ]
       },
@@ -748,6 +757,9 @@
         "security": [
           {
             "AccessToken": []
+          },
+          {
+            "browserSession": []
           }
         ],
         "requestBody": {
@@ -947,6 +959,9 @@
         "security": [
           {
             "AccessToken": []
+          },
+          {
+            "browserSession": []
           }
         ],
         "parameters": [
@@ -1155,6 +1170,9 @@
         "security": [
           {
             "AccessToken": []
+          },
+          {
+            "browserSession": []
           }
         ],
         "requestBody": {
@@ -1353,6 +1371,9 @@
         "security": [
           {
             "AccessToken": []
+          },
+          {
+            "browserSession": []
           }
         ],
         "requestBody": {
@@ -1542,6 +1563,9 @@
         "security": [
           {
             "AccessToken": []
+          },
+          {
+            "browserSession": []
           }
         ],
         "parameters": [
@@ -1728,6 +1752,9 @@
         "security": [
           {
             "AccessToken": []
+          },
+          {
+            "browserSession": []
           }
         ],
         "requestBody": {
@@ -2113,6 +2140,9 @@
         "security": [
           {
             "AccessToken": []
+          },
+          {
+            "browserSession": []
           }
         ],
         "description": "Revoke a pending offer using current management authority. Terminal or expired offers conflict."
@@ -2291,6 +2321,9 @@
         "security": [
           {
             "AccessToken": []
+          },
+          {
+            "browserSession": []
           }
         ],
         "parameters": [
@@ -2477,6 +2510,9 @@
         "security": [
           {
             "AccessToken": []
+          },
+          {
+            "browserSession": []
           }
         ],
         "requestBody": {
@@ -2675,6 +2711,9 @@
         "security": [
           {
             "AccessToken": []
+          },
+          {
+            "browserSession": []
           }
         ],
         "requestBody": {
@@ -2873,6 +2912,9 @@
         "security": [
           {
             "AccessToken": []
+          },
+          {
+            "browserSession": []
           }
         ],
         "requestBody": {
@@ -2887,6 +2929,519 @@
           "description": "Maximum encoded body size 8192 bytes; unknown fields rejected."
         },
         "description": "Interactive owner revokes any tenant key; admin only own. Expected revision required."
+      }
+    },
+    "/v1/tenants/{tenant}/login": {
+      "parameters": [
+        {
+          "name": "tenant",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "startBrowserLogin",
+        "security": [],
+        "parameters": [
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Exact configured HTTPS origin"
+          },
+          {
+            "name": "X-Karate-CSRF",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "1"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Navigate to authorization_url; fresh five-minute __Host-karate-login binding cookie",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrowserLogin"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/callback": {
+      "get": {
+        "operationId": "completeBrowserLogin",
+        "security": [],
+        "parameters": [
+          {
+            "name": "state",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "error",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iss",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "__Host-karate-login",
+            "in": "cookie",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "303": {
+            "description": "Fixed public-origin redirect; session cookie set and login binding cleared; no-referrer"
+          }
+        }
+      }
+    },
+    "/v1/session": {
+      "get": {
+        "operationId": "currentBrowserSession",
+        "security": [
+          {
+            "browserSession": []
+          },
+          {
+            "AccessToken": []
+          }
+        ],
+        "description": "Requires an opaque session credential; access JWT/API key is not a session.",
+        "responses": {
+          "400": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Current session metadata only",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrowserSession"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/session/logout": {
+      "post": {
+        "operationId": "logoutBrowserSession",
+        "security": [
+          {
+            "browserSession": []
+          },
+          {
+            "AccessToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Exact configured HTTPS origin"
+          },
+          {
+            "name": "X-Karate-CSRF",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "1"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Revoke current session and clear cookie; no IdP SSO logout"
+          }
+        }
+      }
+    },
+    "/v1/session/revoke-all": {
+      "post": {
+        "operationId": "revokeBrowserSessions",
+        "security": [
+          {
+            "browserSession": []
+          },
+          {
+            "AccessToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Exact configured HTTPS origin"
+          },
+          {
+            "name": "X-Karate-CSRF",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "1"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Localized stable error; no state/code/token/provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Revoke live sessions for current identity in current tenant and clear cookie; no IdP SSO logout"
+          }
+        }
       }
     }
   },
@@ -3386,6 +3941,42 @@
             "format": "uuid"
           }
         }
+      },
+      "BrowserLogin": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "authorization_url"
+        ],
+        "properties": {
+          "authorization_url": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+      "BrowserSession": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "tenant_id",
+          "session_id",
+          "expires_at"
+        ],
+        "properties": {
+          "tenant_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "session_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expires_at": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
       }
     },
     "securitySchemes": {
@@ -3394,6 +3985,12 @@
         "scheme": "bearer",
         "bearerFormat": "RS256 access JWT or kk1 API key",
         "description": "Interactive JWT required for control-plane operations. kk1 keys can use only their delegated data-plane scopes in their bound tenant. JWT signing keys use trusted file configuration or bounded HTTPS discovery; expired key trust fails closed. Full browser login and sessions remain pending."
+      },
+      "browserSession": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "__Host-karate-session",
+        "description": "Opaque tenant-bound session. Unsafe methods also require exact Origin and X-Karate-CSRF: 1. Cannot be combined with Authorization."
       }
     }
   }

@@ -1,0 +1,61 @@
+[
+  {
+    "check": "rust-checks",
+    "command": [
+      "make",
+      "lint",
+      "test",
+      "build",
+      "licenses"
+    ],
+    "started_at": "2026-11-05T17:01:57.738823+00:00",
+    "finished_at": "2026-11-05T17:02:21.691548+00:00",
+    "exit_code": 0,
+    "log": "rust-checks.log"
+  },
+  {
+    "check": "postgres",
+    "command": [
+      "make",
+      "test-db"
+    ],
+    "started_at": "2026-11-05T17:02:21.692010+00:00",
+    "finished_at": "2026-11-05T17:02:23.108440+00:00",
+    "exit_code": 0,
+    "log": "postgres.log"
+  },
+  {
+    "check": "oidc",
+    "command": [
+      "make",
+      "test-oidc"
+    ],
+    "started_at": "2026-11-05T17:02:23.108715+00:00",
+    "finished_at": "2026-11-05T17:02:26.131490+00:00",
+    "exit_code": 0,
+    "log": "oidc.log"
+  },
+  {
+    "check": "audit",
+    "command": [
+      "./scripts/cargo.sh",
+      "audit",
+      "--json"
+    ],
+    "started_at": "2026-11-05T17:02:26.131779+00:00",
+    "finished_at": "2026-11-05T17:02:27.962747+00:00",
+    "exit_code": 0,
+    "log": "audit.log"
+  },
+  {
+    "check": "coverage",
+    "command": [
+      "make",
+      "coverage"
+    ],
+    "started_at": "2026-11-05T17:02:27.963382+00:00",
+    "finished_at": "2026-11-05T17:03:13.165124+00:00",
+    "exit_code": 0,
+    "log": "coverage.log"
+  }
+]

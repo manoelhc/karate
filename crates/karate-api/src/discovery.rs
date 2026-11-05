@@ -52,7 +52,7 @@ pub struct RefreshingVerifier {
     snapshot: Mutex<Snapshot>,
     refresh: AsyncMutex<()>,
 }
-fn https_url(value: &str) -> Result<Url, Error> {
+pub(crate) fn https_url(value: &str) -> Result<Url, Error> {
     let url = Url::parse(value).map_err(|_| Error::Validation)?;
     if value.len() > 2048
         || url.scheme() != "https"
@@ -66,12 +66,15 @@ fn https_url(value: &str) -> Result<Url, Error> {
     }
     Ok(url)
 }
-async fn document(client: &Client, url: Url) -> Result<String, Error> {
-    let mut response = client
+pub(crate) async fn document(client: &Client, url: Url) -> Result<String, Error> {
+    let response = client
         .get(url)
         .send()
         .await
         .map_err(|_| Error::Unavailable)?;
+    response_document(response).await
+}
+pub(crate) async fn response_document(mut response: reqwest::Response) -> Result<String, Error> {
     let media = response
         .headers()
         .get("content-type")
@@ -133,30 +136,7 @@ impl RefreshingVerifier {
             origin.as_str().trim_end_matches('/')
         ))
         .map_err(|_| Error::Validation)?;
-        let mut builder = Client::builder()
-            .https_only(true)
-            .http1_only()
-            .redirect(reqwest::redirect::Policy::none())
-            .no_proxy()
-            .referer(false)
-            .retry(reqwest::retry::never())
-            .connect_timeout(Duration::from_secs(2))
-            .read_timeout(Duration::from_secs(2))
-            .timeout(Duration::from_secs(5))
-            .http1_max_headers(32)
-            .pool_max_idle_per_host(1)
-            .pool_idle_timeout(Duration::from_secs(30));
-        if let Some(pem) = ca_pem {
-            if pem.len() > 65_536 {
-                return Err(Error::Validation);
-            }
-            let certs = Certificate::from_pem_bundle(pem).map_err(|_| Error::Validation)?;
-            if certs.len() != 1 {
-                return Err(Error::Validation);
-            }
-            builder = builder.tls_certs_merge(certs);
-        }
-        let client = builder.build().map_err(|_| Error::Unavailable)?;
+        let client = transport(ca_pem)?;
         let verifier = load(&client, &discovery, issuer, audience, lifetime).await?;
         Ok(Self {
             issuer: issuer.into(),
@@ -223,4 +203,31 @@ impl RefreshingVerifier {
             .clone();
         verifier.verify(token)
     }
+}
+
+pub(crate) fn transport(ca_pem: Option<&[u8]>) -> Result<Client, Error> {
+    let mut builder = Client::builder()
+        .https_only(true)
+        .http1_only()
+        .redirect(reqwest::redirect::Policy::none())
+        .no_proxy()
+        .referer(false)
+        .retry(reqwest::retry::never())
+        .connect_timeout(Duration::from_secs(2))
+        .read_timeout(Duration::from_secs(2))
+        .timeout(Duration::from_secs(5))
+        .http1_max_headers(32)
+        .pool_max_idle_per_host(1)
+        .pool_idle_timeout(Duration::from_secs(30));
+    if let Some(pem) = ca_pem {
+        if pem.len() > 65_536 {
+            return Err(Error::Validation);
+        }
+        let certs = Certificate::from_pem_bundle(pem).map_err(|_| Error::Validation)?;
+        if certs.len() != 1 {
+            return Err(Error::Validation);
+        }
+        builder = builder.tls_certs_merge(certs);
+    }
+    builder.build().map_err(|_| Error::Unavailable)
 }

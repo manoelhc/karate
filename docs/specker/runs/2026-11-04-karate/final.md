@@ -1,27 +1,28 @@
 # Continuation handoff
 
-State: **partial implementation**. TASK-003b2d1 adds opt-in trusted HTTPS discovery
-and bounded automatic JWKS refresh to the Rust API. Exact issuer/same-origin keys,
-TLS, response/time/header limits and no redirects/proxies constrain retrieval.
-Single-producer replacement and cooldown preserve original-expiry enforcement;
-current tenant membership is never cached. File-mode configuration remains usable.
+State: **partial implementation**. TASK-003b2d2 adds browser authorization-code/
+PKCE login, browser-bound one-use state, strict ID-token verification, current
+membership and durable opaque HttpOnly sessions. Current/all local revocation is
+atomic with audit. Session expiry and membership revision are checked on every
+request; CSRF checks protect cookie mutations. Existing access JWT/API-key paths
+remain available. No provider token reaches browser JavaScript.
 
-All 36 Rust tests pass, including real HTTPS/signatures, fault/time limits,
-rotation/concurrency/cancellation, current PostgreSQL membership and actual binary
-startup/shutdown. Core: 382/382 lines, 234/240 branches. API: 1448/1472 lines,
-228/238 branches. Both independently exceed 90%. License/source/bans, refreshed
-RustSec and secrets checks pass. See [discovery verification](discovery-verification.md)
-for exact command records, source hashes and limitations.
+All 40 named Rust tests pass. Core: 397/397 lines, 242/248 branches. API:
+2027/2069 lines, 342/374 branches. Both independently exceed 90%. Real PostgreSQL,
+signed HTTPS fault fixtures, maintained digest-pinned Dex protocol tests and
+process startup/shutdown are included. License/source/bans and refreshed RustSec
+pass; final secrets/artifact/cleanup evidence is in [sessions verification](sessions-verification.md).
 
-Run `make lint test build licenses test-db coverage`, `make audit`, `make secrets`.
-Production stays Rust 1.99.1; coverage uses nightly-2026-11-04. No schema migration
-was added. Configuration, overlap/recovery and supported-provider restrictions are
-in the [runbook](../../../operations/project-api.md). Temporary fixture state and
-workspace build artifacts are removed at handoff.
+Run `make lint test build licenses test-db coverage`, `make test-oidc`, `make audit`
+and `make secrets`. Production stays Rust 1.99.1; coverage uses nightly-2026-11-04.
+Docker or a running Podman machine is required for Dex. Migration 0006 has only
+run in disposable databases; no shared migration/deployment occurred. See the
+[runbook](../../../operations/project-api.md) for configuration and boundaries.
 
-Next: TASK-003b2d2 audited maintained OIDC client/provider, authorization-code/PKCE
-and session lifecycle. Client selection is open; common candidates still pull an
-unresolved RSA advisory, while Rauthy's optional algorithm support needs review.
-No hand-written browser auth was substituted. Maintained IdP, full platform,
-container/research and deployment gates remain open. Continue direct commits and
-pushes to main without PRs. Resume [run.md](run.md).
+Next: tenant provisioning/lifecycle and explicit owner bootstrap, then React
+sign-in/session integration with localized recovery/a11y and a human-provider
+journey. The Dex synthetic connector is maintained protocol evidence, not human
+login or a production integration. Provider SSO/backchannel logout, retention,
+distributed abuse controls, full Karate containers/recovery/telemetry and the
+complete assessment/MCP/voice/billing/research baseline remain open. Continue
+committing/pushing directly to main without PRs. Resume [run.md](run.md).

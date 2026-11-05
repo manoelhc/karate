@@ -23,3 +23,10 @@ Gitleaks 8.30.1. No credentials or raw private fixtures are saved in reports.
 
 `make clean` removes Cargo outputs in this workspace, retaining run evidence.
 No Docker runtime or complete production/container verification is available yet.
+
+Browser-session tests require Docker or a running Podman machine. Both `make test`
+and strict coverage include digest-pinned Dex v2.46.1; `make test-oidc` runs its
+protocol test alone. The upstream synthetic connector exercises actual OIDC, not
+a human/password or external connector journey. Python 3.14 strict TLS checks
+require the fixture CA's explicit critical keyCertSign/cRLSign extension.
+No insecure certificate bypass or system trust modification is used.

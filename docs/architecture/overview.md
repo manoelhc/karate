@@ -12,8 +12,9 @@ enrollment/re-enrollment with current delegation, expiry and single-use acceptan
 [Scoped API keys](../components/api-keys.md) now provide hashed-verifier authentication
 and audited rotation/revocation through the same service and current policy.
 [Trusted provider discovery](../components/identity-refresh.md) now supports bounded
-HTTPS key refresh with fail-closed expiry. There is no worker/frontend or full
-provider-login workflow yet. The diagram below
+HTTPS key refresh with fail-closed expiry. [Browser sessions](../components/browser-sessions.md)
+add code/PKCE login and tenant-bound durable cookies. There is no worker/frontend
+or human-provider/SSO logout integration yet. The diagram below
 remains the target architecture. The API calls the core membership policy after
 real credential verification and an async current-membership lookup; the original
 synchronous authentication seam remains useful for deterministic domain tests.
@@ -47,7 +48,7 @@ Cache keys include tenant, permission context and version. Reads requiring curre
 
 ## Identity and trust
 
-Browser OIDC authorization-code + PKCE uses a maintained client, in-memory token storage and a configured trusted issuer. Rust verifies token signature, issuer, audience, expiry and algorithm, then looks up tenant membership in PostgreSQL. OIDC claims do not themselves grant Karate tenant ownership. API keys are random tenant-bound scoped credentials with hashed verifiers, expiry and revocation. Key secrets are returned only on creation.
+Browser OIDC authorization-code + PKCE uses a maintained client and configured trusted issuer. The Rust callback retains no provider token; a durable opaque HttpOnly cookie replaces browser in-memory token storage, per [ADR-0008](../adr/0008-browser-oidc-sessions.md). Rust verifies token signature, issuer, audience, expiry and algorithm, then looks up tenant membership in PostgreSQL. OIDC claims do not themselves grant Karate tenant ownership. API keys are random tenant-bound scoped credentials with hashed verifiers, expiry and revocation. Key secrets are returned only on creation.
 
 Control plane: tenant/membership, keys, configuration, budgets and identity onboarding. Data plane: assessment execution and evidence. Already authorized work can continue within its immutable lease/scope and short bounded authority window during control-plane outage; new jobs and changes fail closed. Cancellation and membership revocation are checked between bounded requests. Provider/model failure records partial results and never converts an unchecked endpoint into a pass.
 

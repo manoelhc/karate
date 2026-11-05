@@ -130,3 +130,37 @@ invalidate old keys. Keys cannot accept invitations or manage the control plane.
 Run/export scopes do not imply that assessment/export endpoints are implemented.
 JWT/JWKS failure does not invalidate separately verified API keys. Revocation is
 checked at each new authentication; admitted bounded transactions are not recalled.
+
+## Browser sign-in and sessions
+
+| Method and path | Input | Success |
+| --- | --- | --- |
+| POST /v1/tenants/{tenant}/login | Origin and X-Karate-CSRF: 1; no body | 200 {authorization_url}, binding cookie |
+| GET /v1/auth/callback | state, code or error, optional iss; binding cookie | 303 to fixed public origin; session cookie |
+| GET /v1/session | session cookie or opaque session bearer | 200 {tenant_id,session_id,expires_at} |
+| POST /v1/session/logout | session; Origin and X-Karate-CSRF: 1 | 204; current session revoked, cookie cleared |
+| POST /v1/session/revoke-all | session; Origin and X-Karate-CSRF: 1 | 204; identity's live sessions in this tenant revoked |
+
+Browser routes require configured browser support and existing tenant membership.
+Start requests must originate from the exact configured HTTPS public origin. The
+caller navigates to authorization_url; callback redirect is fixed, never supplied
+by the caller. Cookies are __Host-karate-login (5 minutes) and
+__Host-karate-session (at most 1 hour), Secure/HttpOnly/SameSite=Lax/Path=/, no Domain.
+The callback clears the binding after a matched success/failure and uses
+Referrer-Policy: no-referrer. Missing/malformed query or missing binding fails
+without exchanging a code. State/nonce/code/token details are never error copy.
+
+Cookie-authenticated mutations on all existing endpoints require exact Origin and
+X-Karate-CSRF: 1; no CORS credential sharing is enabled. Cookie and Authorization
+together, repeated credential cookies/headers and invalid credentials fail closed.
+A valid current session can access the existing interactive control plane within
+its tenant/current role, including keys and member management. Invitation acceptance
+requires an addressed access JWT because browser login requires existing membership.
+Provider ID tokens are never resource API credentials. Responses are no-store and
+errors retain stable codes and en/pt-BR recovery copy.
+
+Invalid/replayed/expired state or claims return UNAUTHENTICATED (401), unavailable
+provider/DB returns UNAVAILABLE (503), CSRF or lost membership returns FORBIDDEN
+(403), capacity returns LIMIT_REACHED (429). An ambiguous token exchange consumes
+the flow; start a new login instead of replaying. Local session revocation does
+not promise IdP SSO logout. A changed member revision requires a fresh login.

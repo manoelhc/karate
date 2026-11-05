@@ -4,13 +4,13 @@
 - Method: https://github.com/manoelhc/specker at f71612bb25bfb1951b3d0df4abb3de9bf914e9d3.
 - Reference: https://www.aikido.dev/attack/aipentest (research only; no assessment authorized).
 - Product: independent MIT-licensed AI security-assessment SaaS; copyright Manoel Carvalho preserved.
-- Current delivery base: 0d577b40673ffa7e80a59789412b981342f6e359. User requires direct commits/pushes to main without PRs. No production deployment or paid resources authorized.
-- Current stage: **partial implementation**. TASK-003b1 project API, TASK-003b2a existing-member administration TASK-003b2b invitations and TASK-003b2c API keys and TASK-003b2d1 discovery/key refresh implemented; complete platform and reference parity still open.
-- Toolchains: production Rust 1.99.1; separate coverage-only nightly-2026-11-04 (1.101.0-nightly, 708c94ef0), matching LLVM tools. PostgreSQL 14.20 local fixture; production major version not selected. Docker absent.
+- Current delivery base: e68bdbc0948505d2dfcd309601293217a31d82b8. User requires direct commits/pushes to main without PRs. No production deployment or paid resources authorized.
+- Current stage: **partial implementation**. TASK-003b1 project API, TASK-003b2a existing-member administration TASK-003b2b invitations and TASK-003b2c API keys and TASK-003b2d1 discovery/key refresh plus TASK-003b2d2 browser sessions implemented; complete platform and reference parity still open.
+- Toolchains: production Rust 1.99.1; separate coverage-only nightly-2026-11-04 (1.101.0-nightly, 708c94ef0), matching LLVM tools. PostgreSQL 14.20 local fixture; production major version not selected. Docker absent; existing Podman machine supports the pinned Dex fixture.
 - Capacity: about 1.9 GiB free at this continuation start, falling near 1.1 GiB during builds. Added pinned HTTP/TLS dependencies; no new toolchain installation; workspace build outputs are removed at handoff.
 - Owner: single backend implementer using backend-engineer workflow. No sub-agents, cloud/account provisioning or provider credentials.
 
-## Latest implemented slice (2026-11-05): discovery/key refresh
+## Prior implemented slice (2026-11-05): discovery/key refresh
 
 TASK-003b2d1 adds opt-in trusted HTTPS discovery and automatic bounded JWKS refresh.
 Metadata cannot select a new issuer or origin. TLS certificates/hostnames, response
@@ -21,10 +21,16 @@ cannot extend trust. Current membership and API-key behavior remain unchanged.
 pass; see [discovery verification](discovery-verification.md). Previous 0d577b4 CI
 passed. New exact-commit CI is checked after push. No schema/shared account action.
 
-Full browser OIDC/PKCE/session implementation is still open. Current upstream
-openidconnect/oidc-client dependency metadata requires rsa with an unresolved
-audit advisory; neither was added. Rauthy-client is a candidate needing review.
-The owned fault fixture is not a maintained IdP. No prerequisite is waived.
+## Latest continuation: browser code/PKCE and sessions
+
+TASK-003b2d2 implements a maintained openid 0.25.0 adapter with bounded transport,
+browser-bound one-use state, verified ID claims and current membership, then opaque
+HttpOnly tenant sessions with idle/absolute expiry and atomic local revocation.
+Real PostgreSQL, signed fault fixtures and maintained Dex protocol tests run locally.
+See [sessions verification](sessions-verification.md) for final gate evidence.
+No human-provider/React or IdP SSO logout claim is made. Migration 0006 runs only
+in disposable clusters; the existing Podman VM hosts disposable Dex containers.
+
 
 ## Prior API-key slice (2026-11-05)
 
@@ -98,21 +104,19 @@ an open frontier and uninspected media. Preserve provisional source IDs and newl
 advertised iOS parity until detailed research resolves it. English/pt-BR and the
 web/API SaaS buyer remain unvalidated market assumptions.
 
-The access-token verifier is not complete OIDC login: browser PKCE, live provider
-sign-in/logout and session revocation remain pending. Bounded discovery/key
-refresh is now implemented separately. The local issuer fixture generates real signatures but is not evidence
-of a commercial IdP integration. DB runtime is Unix-socket only; non-loopback API
-binds and unencrypted DB TCP are rejected. No frontend/worker/assessment is built.
+The Rust API now provides browser code/PKCE/session endpoints, but only for
+existing members. Human/provider connector integration, provider logout, React,
+tenant lifecycle and full platform gates remain open. The synthetic Dex connector
+is real protocol evidence, not a human sign-in journey. DB runtime is Unix-socket
+only; non-loopback API binds and unencrypted DB TCP are rejected. No frontend,
+worker or assessment executor is built.
 
 ## Exact next actions
 
-1. TASK-003b2d2: resolve the audited maintained OIDC client (evaluate Rauthy
-   supported algorithms/claim validation/backend first), then authorization-code/
-   PKCE login and session lifecycle with a maintained local IdP. Discovery/JWKS
-   refresh is implemented; retain its authority/transport bounds. Preserve honest
-   provider/container prerequisites. Tenant provisioning,
-   lifecycle and UI/provider onboarding remain unfinished; key custody and audit
-   retention/rate-control gates are not waived by the local API-key slice.
+1. TASK-003b2e: explicit tenant provisioning/lifecycle and owner bootstrap; define
+   its contract and retention/deletion boundaries first. Then TASK-006a React
+   sign-in/session journey, localized recovery/a11y and real browser/provider
+   integration. Provider SSO/backchannel logout remains separately open.
 2. TASK-004a after its access prerequisites: expiring target ownership, immutable
    scope, atomic budget/job publication, lease fencing and per-request authority/
    cancellation/DNS pinning. Only owned HTTP fixtures are authorized.

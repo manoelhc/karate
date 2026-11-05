@@ -1,0 +1,105 @@
+[
+  {
+    "check": "oidc",
+    "command": [
+      "make",
+      "test-oidc"
+    ],
+    "started_at": "2026-11-05T17:02:23.108715+00:00",
+    "finished_at": "2026-11-05T17:02:26.131490+00:00",
+    "exit_code": 0,
+    "log": "oidc.log"
+  },
+  {
+    "check": "audit",
+    "command": [
+      "./scripts/cargo.sh",
+      "audit",
+      "--json"
+    ],
+    "started_at": "2026-11-05T17:02:26.131779+00:00",
+    "finished_at": "2026-11-05T17:02:27.962747+00:00",
+    "exit_code": 0,
+    "log": "audit.log"
+  },
+  {
+    "check": "rust-checks",
+    "command": [
+      "make",
+      "lint",
+      "test",
+      "build",
+      "licenses"
+    ],
+    "started_at": "2026-11-05T17:03:56.038796+00:00",
+    "finished_at": "2026-11-05T17:04:26.236236+00:00",
+    "exit_code": 0,
+    "log": "rust-checks.log"
+  },
+  {
+    "check": "postgres",
+    "command": [
+      "make",
+      "test-db"
+    ],
+    "started_at": "2026-11-05T17:04:26.237208+00:00",
+    "finished_at": "2026-11-05T17:04:27.712948+00:00",
+    "exit_code": 0,
+    "log": "postgres.log"
+  },
+  {
+    "check": "coverage",
+    "command": [
+      "make",
+      "coverage"
+    ],
+    "started_at": "2026-11-05T17:04:27.713809+00:00",
+    "finished_at": "2026-11-05T17:04:58.497211+00:00",
+    "exit_code": 0,
+    "log": "coverage.log"
+  },
+  {
+    "check": "secrets-initial",
+    "command": [
+      "make",
+      "secrets"
+    ],
+    "started_at": "2026-11-05T17:07:07.869283+00:00",
+    "finished_at": "2026-11-05T17:07:08.445707+00:00",
+    "exit_code": 2,
+    "log": "secrets-initial.log"
+  },
+  {
+    "check": "cleanup",
+    "command": [
+      "make",
+      "clean"
+    ],
+    "started_at": "2026-11-05T17:08:39.736790+00:00",
+    "finished_at": "2026-11-05T17:08:54.619218+00:00",
+    "exit_code": 0,
+    "log": "cleanup.log"
+  },
+  {
+    "check": "secrets",
+    "command": [
+      "make",
+      "secrets"
+    ],
+    "started_at": "2026-11-05T17:09:59.583285+00:00",
+    "finished_at": "2026-11-05T17:09:59.977546+00:00",
+    "exit_code": 0,
+    "log": "secrets.log"
+  },
+  {
+    "check": "artifact-checks",
+    "command": [
+      "python3",
+      "docs/specker/runs/2026-11-04-karate/evidence/sessions/check-artifacts.py"
+    ],
+    "started_at": "2026-11-05T17:10:31.651065+00:00",
+    "finished_at": "2026-11-05T17:10:31.907625+00:00",
+    "exit_code": 0,
+    "log": "artifact-checks.log"
+  }
+]

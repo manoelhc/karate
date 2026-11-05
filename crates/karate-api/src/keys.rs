@@ -128,6 +128,7 @@ impl ProjectService {
             Identity {
                 issuer: row.try_get("issuer").map_err(storage)?,
                 subject: row.try_get("subject").map_err(storage)?,
+                session_restriction: None,
                 key_restriction: Some(KeyRestriction {
                     tenant_id: tenant,
                     scopes: scopes(&row)?,

@@ -1,0 +1,336 @@
+BEGIN
+CREATE SCHEMA
+REVOKE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+CREATE POLICY
+CREATE POLICY
+CREATE POLICY
+COMMIT
+BEGIN
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+CREATE POLICY
+COMMIT
+BEGIN
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+CREATE ROLE
+GRANT
+GRANT
+GRANT
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+REVOKE
+REVOKE
+COMMIT
+BEGIN
+CREATE TABLE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+GRANT
+GRANT
+GRANT
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+REVOKE
+REVOKE
+COMMIT
+BEGIN
+CREATE TABLE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+GRANT
+GRANT
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+REVOKE
+REVOKE
+COMMIT
+BEGIN
+CREATE TABLE
+CREATE INDEX
+CREATE TABLE
+CREATE INDEX
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+GRANT
+GRANT
+GRANT
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+REVOKE
+REVOKE
+COMMIT
+CREATE ROLE
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+INSERT 0 2
+INSERT 0 4
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+Dex v2.46.1 pinned container is ready; TLS verification enabled.
+Dex diagnostic run 0
+    Finished `test` profile [unoptimized] target(s) in 0.37s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+diagnostic: iat offset 0 lifetime 3600
+diagnostic: standard claims
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+
+Dex diagnostic run 1
+    Finished `test` profile [unoptimized] target(s) in 0.07s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+diagnostic: iat offset 0 lifetime 3600
+diagnostic: standard claims
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+Dex diagnostic run 2
+    Finished `test` profile [unoptimized] target(s) in 0.07s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+diagnostic: iat offset 0 lifetime 3600
+diagnostic: standard claims
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+Dex diagnostic run 3
+    Finished `test` profile [unoptimized] target(s) in 0.07s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+diagnostic: iat offset 0 lifetime 3600
+diagnostic: standard claims
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+Dex diagnostic run 4
+    Finished `test` profile [unoptimized] target(s) in 0.07s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+diagnostic: iat offset 0 lifetime 3600
+diagnostic: standard claims
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+Dex diagnostic run 5
+    Finished `test` profile [unoptimized] target(s) in 0.07s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+diagnostic: iat offset 0 lifetime 3600
+diagnostic: standard claims
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+Dex diagnostic run 6
+    Finished `test` profile [unoptimized] target(s) in 0.07s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+diagnostic: iat offset 0 lifetime 3600
+diagnostic: standard claims
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+Dex diagnostic run 7
+    Finished `test` profile [unoptimized] target(s) in 0.09s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+diagnostic: iat offset 0 lifetime 3600
+diagnostic: standard claims
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+Dex diagnostic run 8
+    Finished `test` profile [unoptimized] target(s) in 0.07s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+diagnostic: iat offset 0 lifetime 3600
+diagnostic: standard claims
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+Dex diagnostic run 9
+    Finished `test` profile [unoptimized] target(s) in 0.07s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+diagnostic: iat offset 0 lifetime 3600
+diagnostic: standard claims
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+Dex diagnostic run 10
+    Finished `test` profile [unoptimized] target(s) in 0.07s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+diagnostic: iat offset 0 lifetime 3600
+diagnostic: standard claims
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+Dex diagnostic run 11
+    Finished `test` profile [unoptimized] target(s) in 0.08s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+diagnostic: iat offset 0 lifetime 3600
+diagnostic: standard claims
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+Dex diagnostic run 12
+    Finished `test` profile [unoptimized] target(s) in 0.08s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+diagnostic: iat offset 0 lifetime 3600
+diagnostic: standard claims
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+Dex diagnostic run 13
+    Finished `test` profile [unoptimized] target(s) in 0.07s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+diagnostic: iat offset 0 lifetime 3600
+diagnostic: standard claims
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+Dex diagnostic run 14
+    Finished `test` profile [unoptimized] target(s) in 0.07s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+diagnostic: iat offset 0 lifetime 3600
+diagnostic: standard claims
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+Dex diagnostic run 15
+    Finished `test` profile [unoptimized] target(s) in 0.07s
+     Running tests/dex.rs (target/debug/deps/dex-86486a4c78d45f06)
+
+running 1 test
+diagnostic: iat offset 1 lifetime 3600
+
+thread 'maintained_dex_code_pkce_nonce_replay_and_session_lifecycle' (5156401) panicked at crates/karate-api/tests/dex.rs:98:10:
+called `Result::unwrap()` on an `Err` value: Unauthenticated
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... FAILED
+
+failures:
+
+failures:
+    maintained_dex_code_pkce_nonce_replay_and_session_lifecycle
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+error: test failed, to rerun pass `-p karate-api --test dex`
+Traceback (most recent call last):
+  File "<stdin>", line 4, in <module>
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['./scripts/cargo.sh', 'test', '--locked', '--offline', '-p', 'karate-api', '--test', 'dex', '--', '--nocapture']' returned non-zero exit status 101.

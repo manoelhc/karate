@@ -26,6 +26,7 @@ psql -X -v ON_ERROR_STOP=1 -f migrations/0002_project_audit.sql
 psql -X -v ON_ERROR_STOP=1 -f migrations/0003_membership_administration.sql
 psql -X -v ON_ERROR_STOP=1 -f migrations/0004_identity_invitations.sql
 psql -X -v ON_ERROR_STOP=1 -f migrations/0005_scoped_api_keys.sql
+psql -X -v ON_ERROR_STOP=1 -f migrations/0006_browser_sessions.sql
 if [ "$#" -gt 0 ]; then
     psql -X -v ON_ERROR_STOP=1 -f tests/postgres/api_seed.sql
     openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out "$fixture/key.pem" 2>/dev/null
@@ -40,7 +41,7 @@ for suffix in ('','2'):
     n=base64.urlsafe_b64encode(bytes.fromhex(modulus)).decode().rstrip('=')
     (p/f'jwks{suffix}.json').write_text(json.dumps({'keys':[{'kty':'RSA','alg':'RS256','use':'sig','kid':'fixture','n':n,'e':'AQAB'}]}))
 PY
-    openssl req -x509 -newkey rsa:2048 -nodes -keyout "$fixture/ca-key.pem" -out "$fixture/ca.pem" -days 1 -subj '/CN=Karate isolated fixture CA' -addext 'basicConstraints=critical,CA:TRUE' 2>/dev/null
+    openssl req -x509 -newkey rsa:2048 -nodes -keyout "$fixture/ca-key.pem" -out "$fixture/ca.pem" -days 1 -subj '/CN=Karate isolated fixture CA' -addext 'basicConstraints=critical,CA:TRUE' -addext 'keyUsage=critical,keyCertSign,cRLSign' 2>/dev/null
     openssl req -new -key "$fixture/key.pem" -out "$fixture/tls.csr" -subj '/CN=localhost' 2>/dev/null
     cat > "$fixture/tls.ext" <<'EXT'
 basicConstraints=critical,CA:FALSE
@@ -53,7 +54,7 @@ EXT
     export KARATE_TEST_DATABASE_URL="host=$fixture port=55439 user=karate_api_test dbname=postgres"
     export KARATE_TEST_ADMIN_URL="host=$fixture port=55439 user=karate_fixture dbname=postgres"
     export KARATE_TEST_KEY="$fixture/key.der" KARATE_TEST_JWKS="$fixture/jwks.json"
-    "$@"
+    ./scripts/test-dex.sh "$@"
     exit 0
 fi
 psql -X -v ON_ERROR_STOP=1 -f tests/postgres/tenant_isolation.sql

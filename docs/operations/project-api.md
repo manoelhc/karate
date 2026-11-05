@@ -227,3 +227,55 @@ The owned HTTPS fixture exercises cryptography and failure boundaries, not a ful
 OIDC IdP. Provider/client registration, maintained-provider sign-in, PKCE callback,
 session revocation/logout and container gates still require implementation and
 verification. This change applies no database migration or shared account action.
+
+## Browser configuration, migration and local logout
+
+Enable discovery as above, plus both KARATE_BROWSER_CLIENT_ID and
+KARATE_PUBLIC_ORIGIN. The public origin is an HTTPS origin without path/query;
+register exactly `<origin>/v1/auth/callback` as the provider redirect URI. Use a
+public client supporting authorization code, S256 PKCE and RS256 ID tokens with
+lifetime at most one hour. Authorization, token and JWKS endpoints must stay on
+the issuer's HTTPS origin. No dynamic registration or client secret is used.
+The API still binds loopback; trusted TLS termination and React same-origin serving
+are deployment work, not supplied by this local backend checkpoint.
+
+Migration 0006 follows 0005. It has only run in disposable local databases. A
+separately authorized environment would grant its runtime the following capabilities:
+
+```sql
+GRANT SELECT ON karate.session_events TO karate_runtime;
+GRANT EXECUTE ON FUNCTION karate.begin_login(uuid,bytea,bytea,text,text),
+    karate.consume_login(uuid,bytea,bytea), karate.open_session(uuid,uuid,bytea,bigint),
+    karate.session_verifier(uuid,uuid), karate.touch_session(uuid,uuid,bytea),
+    karate.close_sessions(uuid,uuid,boolean) TO karate_runtime;
+```
+
+Never grant raw login_flows/browser_sessions, session_member helper, event writes
+or guard-role membership. Transient PKCE/nonce rows are sensitive; apply encrypted
+storage and retention/deletion before deployment. Pending flow cleanup is bounded
+and tenant-local; expired sessions/events require a future retention process.
+All pooled SQL, including preauthentication capabilities, has 3s statement, 1s lock
+and 5s idle-transaction timeouts. Provider work has four permits per process,
+8s metadata/key deadline and 5s token POST deadline with bounded body reads.
+These are concurrency bounds, not distributed abuse protection.
+
+Bootstrap a membership only through the separately controlled administration path;
+provider claims/email never create one. Start login, navigate to the returned URL,
+and let the callback set the cookie. An expired/failed/consumed flow requires a
+fresh start. Role changes invalidate the captured membership revision. Sessions
+survive service recreation in PostgreSQL and expire after 15 idle minutes or at
+most 1 hour absolute, whichever is first. No token refresh extends that deadline.
+
+Local logout revokes current session; revoke-all affects the same identity in the
+selected tenant. Both require same-origin CSRF headers and current membership.
+Expired/revoked sessions already have no authority; the client can discard stale
+cookies. Do not interpret local logout as IdP SSO logout or recall of in-flight
+bounded transactions. Never log cookies, callback query strings, token POST bodies
+or provider tokens in a future proxy/trace integration.
+
+Use `make test-oidc` for the real Dex protocol test, or `make test`/`make coverage`
+for all tests including Dex. Docker or an already-running Podman machine is
+required; absence fails the gate. The fixture pulls the exact architecture digest,
+uses loopback HTTPS/private temporary CA and an upstream synthetic connector, then
+removes only its own named container and private fixture. It creates no shared
+provider client/account and does not modify the system trust store.

@@ -66,3 +66,13 @@ refresh. Implementation: discovery.rs, shared AccessVerifier and binary config.
 Evidence: real TLS, signing-key rotation, concurrency, expiry and fault tests; strict
 component coverage. PLAT-OAUTH is still partial: full PKCE/session and maintained
 IdP integration remain open; no overall requirement is marked complete here.
+
+## TASK-003b2d2 update
+
+PLAT-OAUTH/TENANT/RBAC/AUDIT includes bounded maintained-client code/PKCE login,
+browser-bound one-use state, strict ID claims, durable opaque HttpOnly sessions,
+current tenant/member revision and atomic local logout/revoke-all. Real PostgreSQL,
+HTTPS fault responses and digest-pinned Dex synthetic-connector protocol tests
+supply evidence. [Sessions verification](../specker/runs/2026-11-04-karate/sessions-verification.md)
+records exact checks. Human-provider/React integration, IdP logout, tenant lifecycle,
+retention, distributed abuse controls and the complete platform baseline stay open.
