@@ -27,6 +27,8 @@ psql -X -v ON_ERROR_STOP=1 -f migrations/0003_membership_administration.sql
 psql -X -v ON_ERROR_STOP=1 -f migrations/0004_identity_invitations.sql
 psql -X -v ON_ERROR_STOP=1 -f migrations/0005_scoped_api_keys.sql
 psql -X -v ON_ERROR_STOP=1 -f migrations/0006_browser_sessions.sql
+psql -X -v ON_ERROR_STOP=1 -f migrations/0007_tenant_lifecycle.sql
+psql -X -v ON_ERROR_STOP=1 -f tests/postgres/tenant_lifecycle.sql
 if [ "$#" -gt 0 ]; then
     psql -X -v ON_ERROR_STOP=1 -f tests/postgres/api_seed.sql
     openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out "$fixture/key.pem" 2>/dev/null

@@ -1,0 +1,453 @@
+{
+  "base_commit": "4225dc9b1852c2b6b896848088a4fd1461ab6287",
+  "files": [
+    {
+      "path": ".github/workflows/foundation.yml",
+      "sha256": "31d7bbdb8a43ce3c697bcb1395d6797025996d5cf525a6488ddffecc04277bcf"
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "b86e6741ef05f4d8ae34eff1b72e941b8c8760662fc33a8c1bbd79bbfaa20c87"
+    },
+    {
+      "path": ".gitleaks.toml",
+      "sha256": "8b3a39bc9667e5fd0d88d95453d6b9f62a2928d1e8f7f67fa4de665f73c91f3d"
+    },
+    {
+      "path": ".pre-commit-config.yaml",
+      "sha256": "58c9b55ce13f2b3749ed89df6cb7e7403232dc3cab37c281192f433007371a94"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "868f5a77360bf66204d96cb8e1d68c37e843ae2eddf428b0471e292375ee1b6b"
+    },
+    {
+      "path": "Cargo.lock",
+      "sha256": "4220c98cc3372327b1cf17ec67753d7879b6263c6192130322694cae31628c5f"
+    },
+    {
+      "path": "Cargo.toml",
+      "sha256": "2917dc25292dec2b7bb4723fe8fba0cb117b1d9cf977d1a38b2b7a55a11f8535"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "66292e4ef1490a2cd7dcdfd3b4f507717de5b27ee17d2aa877bb10775b5cc0ed"
+    },
+    {
+      "path": "Makefile",
+      "sha256": "f192ca5436e7ddebdd6c321bade0802300f4afabbccdd5d6b695be858212c23e"
+    },
+    {
+      "path": "README.md",
+      "sha256": "d299abdd30016464dfbe9ba69d598f374619c9c73dc2d6da6edb93246ea27c77"
+    },
+    {
+      "path": "crates/karate-api/Cargo.toml",
+      "sha256": "affc5aee04c87b9157b37925ddaafc98e8661880ceaccf5b57716c257c660402"
+    },
+    {
+      "path": "crates/karate-api/locales/en.json",
+      "sha256": "c7be18890ea55d835fbe19cc2a4bcf9e9f111869dbeed18d00b36ee1e81ab838"
+    },
+    {
+      "path": "crates/karate-api/locales/pt-BR.json",
+      "sha256": "cb75b8ce91e71e4ad2276bf1733db438bbf5d14b8c9d4b10d35dc407e14a9d1b"
+    },
+    {
+      "path": "crates/karate-api/src/browser.rs",
+      "sha256": "8d21b62450d5a45cc7cfec24adfe739218d2bf3590596e6c71bcbca9498fc425"
+    },
+    {
+      "path": "crates/karate-api/src/discovery.rs",
+      "sha256": "3fef52d1cf60078f1770a820daeaeae9789293ef2b160cd75aa262947d5ea1c0"
+    },
+    {
+      "path": "crates/karate-api/src/http.rs",
+      "sha256": "8f0719282b149b41ffcdb11e9e652d699a55583dd3102172702da2b4ae86ea4d"
+    },
+    {
+      "path": "crates/karate-api/src/identity.rs",
+      "sha256": "759260ad33609d30c9f48a7e124f62c7df813656e6b81d8c43f0ac13968c007c"
+    },
+    {
+      "path": "crates/karate-api/src/invitations.rs",
+      "sha256": "06aa29c572516df0de0fdad9870d66c8d0c9c4b12547287a692f370fa38c78ac"
+    },
+    {
+      "path": "crates/karate-api/src/keys.rs",
+      "sha256": "ce2da5f2e64c047147be50a76da66e6e50e7e410801a0d7ada2cb68b79cf1a7d"
+    },
+    {
+      "path": "crates/karate-api/src/lib.rs",
+      "sha256": "d3b1a17b4b57c546a58fec2dd7c5e052d43750053eb976439478af6d2fdd0a13"
+    },
+    {
+      "path": "crates/karate-api/src/main.rs",
+      "sha256": "7ec62f7686b78e616037a55747bba5b9c7adebc68ac369cd98a2dbac6be8f78d"
+    },
+    {
+      "path": "crates/karate-api/src/membership.rs",
+      "sha256": "9a53662520259c1c037ea862337d75f8170643471e15a7851b410c6a72ab40b9"
+    },
+    {
+      "path": "crates/karate-api/src/service.rs",
+      "sha256": "f5b00f25cfddbf3111f6946c61ed927269f7d43f5e038a298d583324489c22e8"
+    },
+    {
+      "path": "crates/karate-api/src/tenants.rs",
+      "sha256": "b919ccb9c4ed89694ccf4bda806479e1e85a422b6dd665aa3b77ae2ce7ca4d5c"
+    },
+    {
+      "path": "crates/karate-api/tests/browser.rs",
+      "sha256": "151aca9cff6aea4c120efa31caf3d063c9f4a62a6e1dcadc1501b74a3ae96b6b"
+    },
+    {
+      "path": "crates/karate-api/tests/dex.rs",
+      "sha256": "e549069bc11a80d3ec5b7b51034600d97552ff477c3f3ef474d1467511acfb80"
+    },
+    {
+      "path": "crates/karate-api/tests/discovery.rs",
+      "sha256": "c58987ff0e44976174e32f31469b3eba1d0c8a383ab591e87ea924cbb192003c"
+    },
+    {
+      "path": "crates/karate-api/tests/integration.rs",
+      "sha256": "14d955dcf5014bc7b1e505c980ee2e57c466ef37132bb9dc85e91600262293ac"
+    },
+    {
+      "path": "crates/karate-api/tests/invitations.rs",
+      "sha256": "1c6e9ee9a5b82c5e5025d278a7e4fc735ca4f90960b45f8cd573e0dd7eb84fe7"
+    },
+    {
+      "path": "crates/karate-api/tests/keys.rs",
+      "sha256": "8132eec76e841289a6fc1c9cf149f1688c7a5afa2c94250fb4b225bb96454059"
+    },
+    {
+      "path": "crates/karate-api/tests/membership.rs",
+      "sha256": "8e70c706379ca8091c069b508aced03cea232022c7984be836d5a3920728c542"
+    },
+    {
+      "path": "crates/karate-api/tests/process.rs",
+      "sha256": "e802698746ac0a621d3198f0815f3ba2ccb26e99c8d7481a4025f041c6959e01"
+    },
+    {
+      "path": "crates/karate-api/tests/support/provider.rs",
+      "sha256": "f6c0d247fd0b6c67c517869c6a7633476ba3466e2ee09a0987b1a7dc15b763d2"
+    },
+    {
+      "path": "crates/karate-api/tests/tenants.rs",
+      "sha256": "0e282d6e60b38035ccf9ce650554e00c55b7788f27a8016359788ead87798caf"
+    },
+    {
+      "path": "crates/karate-core/Cargo.toml",
+      "sha256": "3afeb981507cc11a579c61cd7d827b9468af16aca43d73e1584d88698c3deb50"
+    },
+    {
+      "path": "crates/karate-core/src/assessment.rs",
+      "sha256": "13afd9ab0552f3d2c7c69d5956c1143bde122cc364ab55fbc8499edefb717a0a"
+    },
+    {
+      "path": "crates/karate-core/src/authorization.rs",
+      "sha256": "98c4bc3710135e457b86a3f5a08d56829b501ee271678ad84d47cc9403a77c2d"
+    },
+    {
+      "path": "crates/karate-core/src/evidence.rs",
+      "sha256": "a80b1e31826da6ad60feef030819702f09eae00108b1b27c18008c4cd369f69b"
+    },
+    {
+      "path": "crates/karate-core/src/lib.rs",
+      "sha256": "2b709c1a1a5227a4efadb5f965a3cc2f6217e6ac227abad749cd5fe88fa936bf"
+    },
+    {
+      "path": "crates/karate-core/src/scope.rs",
+      "sha256": "b8b8d35a69ce8fca174cb55b5dc33029565708a58ac4fcc57042441217d5512d"
+    },
+    {
+      "path": "crates/karate-core/src/tenant.rs",
+      "sha256": "b3ac1e53e295301baf152ebbaf82cabf2811e6e1cf0e0aa7a4880e7b1cb90223"
+    },
+    {
+      "path": "crates/karate-core/tests/domain.rs",
+      "sha256": "3cb6b1493f91f8895af35405e343e2f2aac5456c2c4f2a32972f03e7639fcabd"
+    },
+    {
+      "path": "crates/karate-core/tests/policy.rs",
+      "sha256": "287f42ac77c469902a5bd2bbaa24630a8bce9623464685b63d58fc14388cf5b2"
+    },
+    {
+      "path": "crates/karate-core/tests/scope.rs",
+      "sha256": "3ae18982049a9e13599fb4fbcf752d6765b37766ef2d46138057c4a74502fa2e"
+    },
+    {
+      "path": "crates/karate-core/tests/tenant.rs",
+      "sha256": "218ffa2a3cd2aac0b210d0ea54f1810a4fd6b9f8a5655c731f28f215bf7353e5"
+    },
+    {
+      "path": "deny.toml",
+      "sha256": "19f8b0d84e773139938dbad54e3acb05454d1eed2247fa6d3ec5ab5de928686b"
+    },
+    {
+      "path": "docs/adr/0001-rust-modular-services.md",
+      "sha256": "2a8c91cffd0d1b407a3bea268e81100e27862f4b4628331a6d72d44baff04a94"
+    },
+    {
+      "path": "docs/adr/0002-evidence-and-scope.md",
+      "sha256": "7dc2ac74e6ff4ad60930446033e320987cc0c69a908b743ea8286d8cbfaf184e"
+    },
+    {
+      "path": "docs/adr/0003-project-resource-server.md",
+      "sha256": "aab5f079603eff31e50725828951ea58b12ee28afa63809b79298c62059cd380"
+    },
+    {
+      "path": "docs/adr/0004-membership-management-capabilities.md",
+      "sha256": "b5bdced5cf50920a70323c1cadd586ca4e3722caef0b7bd0f6d89fd0207aa1e8"
+    },
+    {
+      "path": "docs/adr/0005-identity-bound-invitations.md",
+      "sha256": "bf54889aaafdc258fc926f45630460e1986be336cecc37287071e591d5f3979b"
+    },
+    {
+      "path": "docs/adr/0006-scoped-api-key-verifiers.md",
+      "sha256": "eda3ab0acc322afe0ace42aebc463090f89d31a05eb26e368a2aebbf65a375cf"
+    },
+    {
+      "path": "docs/adr/0007-bounded-provider-key-refresh.md",
+      "sha256": "3130c7fe3e6e469dd8d7989d91b892de887177ca8c694b6edde5b6f499c7c397"
+    },
+    {
+      "path": "docs/adr/0008-browser-oidc-sessions.md",
+      "sha256": "28b18c7b660e6fa2485837e094514a7386c3b559722abd58fd2062e40fd37ac8"
+    },
+    {
+      "path": "docs/adr/0009-explicit-tenant-provisioning.md",
+      "sha256": "43064dbdb5301f8278f58f68964a2446539b473afc8650754fcde6bbf79c980c"
+    },
+    {
+      "path": "docs/architecture/overview.md",
+      "sha256": "924fbbaec4f3001b7dd43df8d0f9ecae08fbb521e2ff0354455d0a3ce7f0e769"
+    },
+    {
+      "path": "docs/architecture/versions.md",
+      "sha256": "388a6c4f321ae9311a31811883615e5f1d42bf791cb5085fafa7e44f6742aa43"
+    },
+    {
+      "path": "docs/business/plan.md",
+      "sha256": "e285575bac15b35b3254c759dc8a3f0de0180fe0050692730078c3306f27739e"
+    },
+    {
+      "path": "docs/components/api-keys.md",
+      "sha256": "d9fcab8e72f38c597cee047ace11093bbcd6a2c75819597d317c639051d43b54"
+    },
+    {
+      "path": "docs/components/api.md",
+      "sha256": "39ab8c2eb0ac2cb3d1080d79da9bd2456a9f5cb3409b82b3041eae69dcce0caf"
+    },
+    {
+      "path": "docs/components/browser-sessions.md",
+      "sha256": "7560fd0c651ee73eee9766adcc1e1877cd2d19d142b4cff78213ba01adb9373d"
+    },
+    {
+      "path": "docs/components/domain.md",
+      "sha256": "4df844559e5e610b5e220fcf459a665f46e7b2216369dae8a142eaee46a787f6"
+    },
+    {
+      "path": "docs/components/identity-refresh.md",
+      "sha256": "ed758d9cd3a2ac4f30427ca083b6e9d0518bacde4aaf337bc1dd5dbad0c7844e"
+    },
+    {
+      "path": "docs/components/invitations.md",
+      "sha256": "7c8c8371c6237a50fe3e954f9b1e93c24dfca305c56b7b4f0baf83c6667e330d"
+    },
+    {
+      "path": "docs/components/membership.md",
+      "sha256": "221207936616daa54d8ec142fdea876e98afeed976743dc16d0ccf8a5b3881f6"
+    },
+    {
+      "path": "docs/components/persistence.md",
+      "sha256": "c282115167fff6010ea0a03000c0b64eef45fc1532cbf71176438824ab188768"
+    },
+    {
+      "path": "docs/components/tenants.md",
+      "sha256": "15557cd08468be9f150c993f5b8d43f69ed404032cddc2a8c9ea0c2627e8a703"
+    },
+    {
+      "path": "docs/contracts/domain-v1.md",
+      "sha256": "4b0a787f5caa51cae43e27be421d24bd4d793a4ab2551a0536b1ba3ee1d0f4d7"
+    },
+    {
+      "path": "docs/contracts/projects-v1.md",
+      "sha256": "d492906202679699dadd5aba9818de134ab27b505ba5f748ede8d6057aae51f9"
+    },
+    {
+      "path": "docs/contracts/projects-v1.openapi.json",
+      "sha256": "910d230617cbdb4f7f02bbc06fbb11f6e3f3032a67bc417d5048d7dbb7973d41"
+    },
+    {
+      "path": "docs/engineering/plan.md",
+      "sha256": "ba44dde762113245c0cb3264a76704c0e1fb3ef38e0f4116273d353646d6631b"
+    },
+    {
+      "path": "docs/engineering/risks.md",
+      "sha256": "f95ab758cc21a1930d89ba121ae61f5a1f8ea655904befcf652090a3e9768109"
+    },
+    {
+      "path": "docs/engineering/test-strategy.md",
+      "sha256": "c5102ec9512626ec1070c820d79609947172be748cb3105410003c21478c1259"
+    },
+    {
+      "path": "docs/licenses/foldhash-0.2.0-Zlib.txt",
+      "sha256": "b1181a40b2a7b25cf66fd01481713bc1005df082c53ef73e851e55071b102744"
+    },
+    {
+      "path": "docs/licenses/webpki-root-certs-CDLA-2.0.txt",
+      "sha256": "e271993808fec50ab29350b39539cdec611a9103f827e0aa26d61da70e2d33f8"
+    },
+    {
+      "path": "docs/operations/local-development.md",
+      "sha256": "f20ede65b6d152c8d688c5fbc2a5b53bb9b33ccbb9de87e1b2537ab51828883b"
+    },
+    {
+      "path": "docs/operations/project-api.md",
+      "sha256": "39bea72dc171d7e6d40604882fe7641c608b5e40d95f3ce9f6c6905363dcc1ba"
+    },
+    {
+      "path": "docs/product/prd.md",
+      "sha256": "d794a1ebaeada7ca117905faa513552ef0e8d84024ee863e7b255a8fb7f97895"
+    },
+    {
+      "path": "docs/product/traceability.md",
+      "sha256": "e2ebd2cf6e540a529e2fd2c53eed0f5946b4922fa14d668fab6ce22f263adbe2"
+    },
+    {
+      "path": "docs/security/threat-model.md",
+      "sha256": "6e4b64bd6a7c0ca1189d0911f7c5dba389bbfa1593cb70b1f14de6cb4e934115"
+    },
+    {
+      "path": "docs/specker/runs/2026-11-04-karate/decisions.md",
+      "sha256": "a5db84880fd80e2b3cd1dcd7ae07de34cd25b2e793b8fa827d4e39e71325b19d"
+    },
+    {
+      "path": "docs/specker/runs/2026-11-04-karate/discovery-verification.md",
+      "sha256": "44c43251f2e39e78e43d3f0b5767e73ad254099cdc4c90e3fb92e4a52045ba8e"
+    },
+    {
+      "path": "docs/specker/runs/2026-11-04-karate/final.md",
+      "sha256": "bb0434c1690dfec82f91502d7dc5c5a0f00abd15523bae7aceffa349d0a67751"
+    },
+    {
+      "path": "docs/specker/runs/2026-11-04-karate/invitations-verification.md",
+      "sha256": "7a49cd3c629e76330b8628393ccf58e59009c2cf127246a7f7231bbca4aa5b5f"
+    },
+    {
+      "path": "docs/specker/runs/2026-11-04-karate/keys-verification.md",
+      "sha256": "7289f4af91ac7bf9280da83179f28de3e8c1172dbc5c1677eb3b54c00a38d06c"
+    },
+    {
+      "path": "docs/specker/runs/2026-11-04-karate/membership-verification.md",
+      "sha256": "7239d144320921960da514a12ab836216d84e6213a97e3c350636da9a3882584"
+    },
+    {
+      "path": "docs/specker/runs/2026-11-04-karate/projects-verification.md",
+      "sha256": "1d9cd9ff1530fde56b734af5f0b96318e009f370a526d3b8e0499a24c5b50047"
+    },
+    {
+      "path": "docs/specker/runs/2026-11-04-karate/research-pages.json",
+      "sha256": "9a7e8d930fa033fd69527b271f7c9700fb7b5547a7e5964e56dc752e519d2129"
+    },
+    {
+      "path": "docs/specker/runs/2026-11-04-karate/research.md",
+      "sha256": "1988d62f9637084aea08a703e7d4361d523bb22a0b8f24e2c567fb0c16a433d3"
+    },
+    {
+      "path": "docs/specker/runs/2026-11-04-karate/run.md",
+      "sha256": "82a9406661a3da793213711cd04da05ade0cfc0879434731c945d750425533c3"
+    },
+    {
+      "path": "docs/specker/runs/2026-11-04-karate/sessions-verification.md",
+      "sha256": "f6854b1e4600fc88bd53ea2f6545e12af62eeea2d787fdc006e44bcd2d091fa0"
+    },
+    {
+      "path": "docs/specker/runs/2026-11-04-karate/tenants-verification.md",
+      "sha256": "4fdf003eb3ab5128e279767d00ba3b616762c40f3ddfdcd70885382c9fbfeaf1"
+    },
+    {
+      "path": "docs/specker/runs/2026-11-04-karate/verification.md",
+      "sha256": "213d3633917d6b3aa38c94ba58d2b40278c0a182f67ef2e9dca130d7568bc44c"
+    },
+    {
+      "path": "migrations/0001_tenants_projects.sql",
+      "sha256": "e3a968f7a1425ee857edb85f161ee63f1ceb8eac6a369a4d43d3c2d69f8d0264"
+    },
+    {
+      "path": "migrations/0002_project_audit.sql",
+      "sha256": "2f913ae6fd9696159a4087a6d69cd19bebd9fdd1c2e45b42b3f6a8127d3852d0"
+    },
+    {
+      "path": "migrations/0003_membership_administration.sql",
+      "sha256": "1e6fe75cf60db2a1801dc1fb703c5137f3c9620b87de9d6c07794552d0abe985"
+    },
+    {
+      "path": "migrations/0004_identity_invitations.sql",
+      "sha256": "63c093e28c3aec0a95acf10fad60a7c44eef052b7ab827fb5dd344962dd398f7"
+    },
+    {
+      "path": "migrations/0005_scoped_api_keys.sql",
+      "sha256": "19e35c685149a1436ce09cd420b1549c58e19b9a88077d426f9bf279958ff8af"
+    },
+    {
+      "path": "migrations/0006_browser_sessions.sql",
+      "sha256": "10c6cc0d00b22765408128e0bae4796ea192172df323996f59476993486e120e"
+    },
+    {
+      "path": "migrations/0007_tenant_lifecycle.sql",
+      "sha256": "e517c6a4afde1ad459d2dbe670f11ae35dc7135257fa2ff7a7b5e0d55ab90da2"
+    },
+    {
+      "path": "rust-toolchain.toml",
+      "sha256": "d13306be0ecda81ce779baa290ffb417380d525928477f16200884b5169cca33"
+    },
+    {
+      "path": "scripts/cargo.sh",
+      "sha256": "746b8b190b103a14fb3d7f2abb38f403868a87b3f1a6fba10aff8f57025538fc"
+    },
+    {
+      "path": "scripts/test-dex.sh",
+      "sha256": "adf6ac91642d8ab3d99638f56f1c42dbccec1142d3fc6c5808b5e252b6defbb7"
+    },
+    {
+      "path": "scripts/test-postgres.sh",
+      "sha256": "e60dd87232929b77d78b78d11e37ff4d5822ad63a2f92aa164ade573165a0d2d"
+    },
+    {
+      "path": "tests/fixtures/oidc_https.py",
+      "sha256": "a00ee0031dc1764a8e3734860cc839f2634069688719f691c031658dd1aa1ce0"
+    },
+    {
+      "path": "tests/postgres/api_seed.sql",
+      "sha256": "512deb79b4a1333a9bf546ab3f59b22045c6bcffa5242040c083b25f63e3d19b"
+    },
+    {
+      "path": "tests/postgres/restart.sql",
+      "sha256": "f13affb0a38bf15539cff4e8347cb1bb558451c9c8d0866409b4df44c913c232"
+    },
+    {
+      "path": "tests/postgres/tenant_isolation.sql",
+      "sha256": "58b469918b147e828bd168a0ef055b72e143b8a25ee48767ed9709c5d250f57e"
+    },
+    {
+      "path": "tests/postgres/tenant_lifecycle.sql",
+      "sha256": "9c43f0fa18d10f50813cdf4fb2ff62cbd3c9e6c48dc32d000ca036696fb0412c"
+    },
+    {
+      "path": "tools/coverage.py",
+      "sha256": "1b21b62b5f995106304f17d3f53852784b0dae19239704b9b97b4aadaeb1850d"
+    },
+    {
+      "path": "tools/pyproject.toml",
+      "sha256": "d87f9718ea2ae0602c4d275d574e600a2113ec34f552509c152452e89dd2d5da"
+    },
+    {
+      "path": "tools/uv.lock",
+      "sha256": "ea97f02590654d4d597c5a3c7406bb7f2210c65e36772391217f6385aea6dcea"
+    }
+  ]
+}

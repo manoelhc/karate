@@ -279,3 +279,56 @@ required; absence fails the gate. The fixture pulls the exact architecture diges
 uses loopback HTTPS/private temporary CA and an upstream synthetic connector, then
 removes only its own named container and private fixture. It creates no shared
 provider client/account and does not modify the system trust store.
+
+## Operator grants and tenant recovery
+
+Migration 0007 adds provisioning_grants and tenant_events and active/revision
+fields. It has only run in disposable fixtures. Existing tenants default to active
+revision 1. An independently authorized rollout must apply schema/grants first,
+drain older binaries, and then enable lifecycle usage. Old application versions
+lack the shared lifecycle guard; do not mix them with suspension-capable instances.
+For an authorized runtime role, the new capabilities are:
+
+```sql
+GRANT SELECT ON karate.tenant_events TO karate_runtime;
+GRANT EXECUTE ON FUNCTION karate.lock_tenant_grant(uuid,uuid),
+    karate.provision_tenant(uuid,uuid), karate.lock_tenant(uuid,boolean),
+    karate.tenant_active(uuid), karate.change_tenant(uuid,text,text,bigint)
+    TO karate_runtime;
+```
+
+A separately controlled operator role may receive only issue_tenant_grant and
+revoke_tenant_grant execution, plus schema USAGE. Never grant those functions to
+runtime, PUBLIC or the browser. Operator approval must independently establish
+intended issuer/subject, name, tenant UUID and nonsecret approval reference. Use
+parameter binding through the operator's approved DB client:
+
+```sql
+SELECT karate.issue_tenant_grant($1::uuid,$2::uuid,$3::text,$4::text,
+    $5::text,$6::bigint,$7::text);
+-- tenant UUID, grant UUID, name, issuer, subject, expiry epoch, approval reference
+SELECT karate.revoke_tenant_grant($1::uuid,$2::uuid);
+```
+
+Expiry must be future and within seven days. Record operator authorization
+separately; issued_by/issued_at/approval_reference persist with the tenant-scoped
+grant. No external account or production role was created by this implementation.
+Grant identity values are sensitive: restrict operator access, encrypt storage and
+exclude them from logs. No mail is sent. Grants cannot be reassigned/refreshed;
+expired or revoked UUID reservations stay reserved, and require a newly approved
+tenant UUID. Consumed grants never reset ownership, including after suspension.
+
+The addressed user redeems with a verified access JWT, then may use browser login
+as the permanent owner. Browser onboarding before membership is still future UI/
+provider work. An interrupted response is recovered with GET tenant. Owner PATCH
+requires current revision, explicit name and active/suspended state. Suspension
+waits for admitted bounded operations; lock/statement timeouts return UNAVAILABLE
+without a fabricated success. Read current state after an ambiguous result.
+
+Suspended owners can log in, inspect metadata and resume. They cannot read projects
+or administer members/keys/invitations until resume. Independent revoked/expired
+memberships cannot recover the tenant; use the separately controlled operator
+support process, never reset a provisioning grant. Logout remains available for
+current identities. Suspension retains every data/audit row and does not revoke
+credentials; only still-valid authority resumes. Retention/deletion/backup policies,
+operator support tooling and erasure proof remain separate release work.

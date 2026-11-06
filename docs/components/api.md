@@ -12,7 +12,7 @@ subject, iat and exp. A configured public JWKS file or [trusted discovery snapsh
 algorithm, signature, issuer, audience, expiry and optional nbf are validated by
 jsonwebtoken plus bounded claims checks. The snapshot has an absolute expiry and
 fails closed after it. No discovery from token-supplied URLs, auth bypass or
-client-controlled role/tenant claim. Browser authorization-code/PKCE and sessions remain separate work; discovery and
+client-controlled role/tenant claim. Browser authorization-code/PKCE and sessions are implemented in [browser sessions](browser-sessions.md); discovery and
 bounded JWKS refresh are an opt-in resource-server capability.
 
 The shared ProjectService authenticates before acquiring a DB connection or
@@ -79,3 +79,8 @@ AWS-LC verifier comparison before membership resolution. The resulting typed
 restriction reduces authority by tenant, scopes and creator membership revision.
 JWT remains the interactive control-plane credential. Keys cannot manage keys,
 memberships or invitations. Lifecycle changes and audit are atomic.
+
+[Tenant lifecycle](tenants.md) now supplies operator-granted bootstrap and
+owner-only metadata/suspend/resume. Shared normal authorization takes an active
+tenant guard through commit and re-resolves member authority after waiting. Only
+owner recovery and current-identity logout remain available when suspended.

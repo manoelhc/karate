@@ -3443,6 +3443,553 @@
           }
         }
       }
+    },
+    "/v1/tenants/{tenant}": {
+      "parameters": [
+        {
+          "name": "tenant",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "getTenant",
+        "security": [
+          {
+            "AccessToken": []
+          },
+          {
+            "browserSession": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tenant"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid bounded input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "403": {
+            "description": "No current permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "404": {
+            "description": "Resource absent in this tenant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "409": {
+            "description": "Revision or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          }
+        },
+        "description": "Current interactive membership; suspended access and all changes require owner. Cookie mutations require exact Origin and X-Karate-CSRF: 1."
+      },
+      "patch": {
+        "operationId": "changeTenant",
+        "security": [
+          {
+            "AccessToken": []
+          },
+          {
+            "browserSession": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tenant"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid bounded input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "403": {
+            "description": "No current permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "404": {
+            "description": "Resource absent in this tenant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "409": {
+            "description": "Revision or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TenantChange"
+              }
+            }
+          }
+        },
+        "description": "Current interactive membership; suspended access and all changes require owner. Cookie mutations require exact Origin and X-Karate-CSRF: 1."
+      }
+    },
+    "/v1/tenants/{tenant}/provision": {
+      "parameters": [
+        {
+          "name": "tenant",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "provisionTenant",
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid bounded input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "403": {
+            "description": "No current permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "404": {
+            "description": "Resource absent in this tenant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "409": {
+            "description": "Revision or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          },
+          "201": {
+            "description": "Authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tenant"
+                }
+              }
+            },
+            "headers": {
+              "Content-Language": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "en",
+                    "pt-BR"
+                  ]
+                },
+                "description": "Negotiated response language"
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TenantProvision"
+              }
+            }
+          }
+        },
+        "description": "Addressed access JWT plus separately issued operator grant. Single-use; no session/API-key bootstrap."
+      }
     }
   },
   "components": {
@@ -3975,6 +4522,81 @@
           "expires_at": {
             "type": "integer",
             "format": "int64"
+          }
+        }
+      },
+      "Tenant": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "tenant_id",
+          "name",
+          "state",
+          "revision"
+        ],
+        "properties": {
+          "tenant_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "active",
+              "suspended"
+            ]
+          },
+          "revision": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1
+          }
+        }
+      },
+      "TenantChange": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "state",
+          "expected_revision"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "active",
+              "suspended"
+            ]
+          },
+          "expected_revision": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854775806
+          }
+        }
+      },
+      "TenantProvision": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "grant_id"
+        ],
+        "properties": {
+          "grant_id": {
+            "type": "string",
+            "format": "uuid"
           }
         }
       }

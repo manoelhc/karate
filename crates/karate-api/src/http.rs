@@ -207,6 +207,11 @@ struct RevokeInput {
 pub fn router(service: Arc<ProjectService>) -> Router {
     Router::new()
         .route("/healthz", get(|| async { StatusCode::NO_CONTENT }))
+        .route(
+            "/v1/tenants/{tenant}",
+            get(tenant_info).patch(tenant_change),
+        )
+        .route("/v1/tenants/{tenant}/provision", post(tenant_provision))
         .route("/v1/tenants/{tenant}/projects", post(create).get(list))
         .route(
             "/v1/tenants/{tenant}/projects/{project}",
@@ -697,4 +702,62 @@ async fn browser_revoke_all(
     headers: HeaderMap,
 ) -> Result<Response, ApiError> {
     close_browser(service, locale, headers, true).await
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct ProvisionInput {
+    grant_id: Uuid,
+}
+async fn tenant_provision(
+    State(service): State<Arc<ProjectService>>,
+    Extension(locale): Extension<Locale>,
+    headers: HeaderMap,
+    tenant: Result<Path<Uuid>, PathRejection>,
+    body: Result<Json<ProvisionInput>, JsonRejection>,
+) -> Result<(StatusCode, Json<Value>), ApiError> {
+    let error = |e| ApiError(e, locale);
+    let credential = bearer(&headers).map_err(error)?;
+    let Path(tenant) = tenant.map_err(|_| error(Error::Validation))?;
+    let Json(input) = body.map_err(|_| error(Error::Validation))?;
+    Ok((
+        StatusCode::CREATED,
+        Json(json!(
+            service
+                .provision_tenant(credential, tenant, input.grant_id)
+                .await
+                .map_err(error)?
+        )),
+    ))
+}
+async fn tenant_info(
+    State(service): State<Arc<ProjectService>>,
+    Extension(locale): Extension<Locale>,
+    headers: HeaderMap,
+    tenant: Result<Path<Uuid>, PathRejection>,
+) -> Result<Json<Value>, ApiError> {
+    let error = |e| ApiError(e, locale);
+    let credential = bearer(&headers).map_err(error)?;
+    let Path(tenant) = tenant.map_err(|_| error(Error::Validation))?;
+    Ok(Json(json!(
+        service.tenant(credential, tenant).await.map_err(error)?
+    )))
+}
+async fn tenant_change(
+    State(service): State<Arc<ProjectService>>,
+    Extension(locale): Extension<Locale>,
+    headers: HeaderMap,
+    tenant: Result<Path<Uuid>, PathRejection>,
+    body: Result<Json<crate::tenants::TenantChange>, JsonRejection>,
+) -> Result<Json<Value>, ApiError> {
+    let error = |e| ApiError(e, locale);
+    let credential = bearer(&headers).map_err(error)?;
+    let Path(tenant) = tenant.map_err(|_| error(Error::Validation))?;
+    let Json(input) = body.map_err(|_| error(Error::Validation))?;
+    Ok(Json(json!(
+        service
+            .change_tenant(credential, tenant, &input)
+            .await
+            .map_err(error)?
+    )))
 }

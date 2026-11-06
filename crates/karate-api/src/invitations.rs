@@ -186,6 +186,7 @@ impl ProjectService {
             .await
             .map_err(storage)?;
         set_context(&tx, &identity, tenant).await?;
+        crate::tenants::require_active(&tx, tenant).await?;
         let row=tx.query_one("SELECT (r.enrolled).membership_id,(r.enrolled).issuer,(r.enrolled).subject,(r.enrolled).role,(r.enrolled).revision,(r.enrolled).revoked_at IS NOT NULL AS revoked,floor(extract(epoch FROM (r.enrolled).expires_at))::bigint AS expires_at,r.sponsor_role,r.previous_role FROM karate.accept_invitation($1,$2,$3) r",&[&tenant,&id,&Uuid::new_v4()]).await.map_err(storage)?;
         let result = member(&row)?;
         validate_invitation_acceptor(&identity, &result.issuer, &result.subject)?;

@@ -40,3 +40,4 @@ __pycache__/
 !docs/specker/runs/2026-11-04-karate/evidence/keys/*.log
 !docs/specker/runs/2026-11-04-karate/evidence/discovery/*.log
 !docs/specker/runs/2026-11-04-karate/evidence/sessions/*.log
+!docs/specker/runs/2026-11-04-karate/evidence/tenants/*.log

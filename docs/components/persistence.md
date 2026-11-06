@@ -1,6 +1,6 @@
 # COMP-PERSISTENCE — tenant and project storage
 
-Owner: backend implementer. Current implementation is migrations 0001–0005 plus
+Owner: backend implementer. Current implementation is migrations 0001–0007 plus
 the Rust `karate-api::service` adapter, documented in [API component](api.md).
 Requirements: PLAT-TENANT/RBAC and REQ-001. PostgreSQL 14.20 was available for
 local verification. This is not selection of an aging major for production;
@@ -81,3 +81,9 @@ Only named authentication/lifecycle capabilities are granted to runtime. State a
 binding cookies are hashed; transient nonce/PKCE are readable only by the guard.
 Durable sessions store SHA-256 verifiers and membership revision, with atomic
 issuance/revocation audit. See [browser sessions](browser-sessions.md).
+
+Migration 0007 adds operator-only provisioning grants, atomic permanent-owner
+bootstrap, tenant events and active/suspended revisioned metadata. KEY SHARE
+normal-operation guards serialize with exclusive lifecycle changes; existing
+membership locks stay compatible. Restrictive project/audit RLS and capability
+state checks add defense in depth. See [tenant component](tenants.md).

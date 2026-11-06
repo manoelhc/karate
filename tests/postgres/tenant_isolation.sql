@@ -3,6 +3,7 @@ CREATE ROLE karate_runtime_test NOLOGIN NOSUPERUSER NOBYPASSRLS;
 GRANT USAGE ON SCHEMA karate TO karate_runtime_test;
 GRANT SELECT ON karate.tenants, karate.memberships TO karate_runtime_test;
 GRANT SELECT, INSERT, UPDATE, DELETE ON karate.projects TO karate_runtime_test;
+GRANT EXECUTE ON FUNCTION karate.tenant_active(uuid) TO karate_runtime_test;
 
 INSERT INTO karate.tenants (tenant_id, name) VALUES
 ('00000000-0000-0000-0000-000000000001', 'Same tenant name'),

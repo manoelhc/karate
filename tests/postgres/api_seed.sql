@@ -28,3 +28,6 @@ GRANT EXECUTE ON FUNCTION karate.key_verifier(uuid,uuid),karate.list_keys(uuid,b
 GRANT SELECT ON karate.session_events TO karate_api_test;
 GRANT EXECUTE ON FUNCTION karate.begin_login(uuid,bytea,bytea,text,text),karate.consume_login(uuid,bytea,bytea),
 karate.open_session(uuid,uuid,bytea,bigint),karate.session_verifier(uuid,uuid),karate.touch_session(uuid,uuid,bytea),karate.close_sessions(uuid,uuid,boolean) TO karate_api_test;
+
+GRANT SELECT ON karate.tenant_events TO karate_api_test;
+GRANT EXECUTE ON FUNCTION karate.lock_tenant_grant(uuid,uuid),karate.provision_tenant(uuid,uuid),karate.lock_tenant(uuid,boolean),karate.tenant_active(uuid),karate.change_tenant(uuid,text,text,bigint) TO karate_api_test;

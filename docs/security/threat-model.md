@@ -51,3 +51,10 @@ Current membership remains uncached. A compromised trusted provider can issue
 identities but cannot grant tenant membership; provider compromise and fleet-wide
 rate coordination still require operational controls. Full OIDC/browser/session
 threat cases remain open and are not discharged by discovery tests.
+
+Tenant lifecycle continuation: ownership requires an independently issued operator
+grant addressed to the verified issuer/subject. Network claims and locators never
+issue it. Bootstrap and audit roll back together. Suspension serializes against
+normal work, while current owners retain a narrow recovery path; scoped credentials
+cannot bootstrap or change lifecycle. Retention/erasure, operator access custody,
+distributed rate controls and deployment controls remain open launch requirements.

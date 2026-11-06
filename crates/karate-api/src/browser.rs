@@ -3,7 +3,7 @@ use crate::{
     discovery::{document, https_url, response_document, transport},
     identity::{TokenVerifier, unix_now},
     membership::storage,
-    service::{ProjectService, authorize},
+    service::{ProjectService, member_principal},
 };
 use aws_lc_rs::{
     constant_time::verify_slices_are_equal,
@@ -369,14 +369,14 @@ impl ProjectService {
             .start()
             .await
             .map_err(storage)?;
-        authorize(&tx, &identity, tenant, Action::Read).await?;
+        crate::tenants::authorize_recovery(&tx, &identity, tenant).await?;
         tx.query_one(
             "SELECT * FROM karate.open_session($1,$2,$3,$4)",
             &[&tenant, &id, &hash(&credential), &expires],
         )
         .await
         .map_err(storage)?;
-        authorize(&tx, &identity, tenant, Action::Read).await?;
+        crate::tenants::authorize_recovery(&tx, &identity, tenant).await?;
         tx.commit().await.map_err(storage)?;
         Ok(LoginSession {
             credential,
@@ -426,8 +426,13 @@ impl ProjectService {
     pub async fn session_info(&self, credential: &str) -> Result<SessionInfo, Error> {
         let (tenant, id) = session_locator(credential)?;
         let (identity, mut client) = self.session_connection(credential).await?;
-        let tx = client.transaction().await.map_err(storage)?;
-        authorize(&tx, &identity, tenant, Action::Read).await?;
+        let tx = client
+            .build_transaction()
+            .isolation_level(IsolationLevel::ReadCommitted)
+            .start()
+            .await
+            .map_err(storage)?;
+        crate::tenants::authorize_recovery(&tx, &identity, tenant).await?;
         let row = tx
             .query_one(
                 "SELECT * FROM karate.session_verifier($1,$2)",
@@ -452,7 +457,9 @@ impl ProjectService {
             .start()
             .await
             .map_err(storage)?;
-        authorize(&tx, &identity, tenant, Action::Read).await?;
+        member_principal(&tx, &identity, tenant)
+            .await?
+            .authorize(tenant, Action::Read)?;
         tx.execute(
             "SELECT karate.close_sessions($1,$2,$3)",
             &[&tenant, &id, &all],

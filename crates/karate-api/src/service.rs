@@ -104,7 +104,12 @@ impl ProjectService {
     ) -> Result<(Project, bool), Error> {
         let (identity, mut client) = self.connection(credential).await?;
         validate_name(name)?;
-        let tx = client.transaction().await.map_err(unavailable)?;
+        let tx = client
+            .build_transaction()
+            .isolation_level(tokio_postgres::IsolationLevel::ReadCommitted)
+            .start()
+            .await
+            .map_err(unavailable)?;
         authorize(&tx, &identity, tenant, Action::Write).await?;
         let inserted = tx.query_opt("INSERT INTO karate.projects (tenant_id,project_id,name) VALUES ($1,$2,$3) ON CONFLICT (tenant_id,project_id) DO NOTHING RETURNING project_id,name,revision", &[&tenant,&id,&name]).await.map_err(unavailable)?;
         let (result, created) = match inserted {
@@ -127,7 +132,12 @@ impl ProjectService {
 
     pub async fn get(&self, credential: &str, tenant: Uuid, id: Uuid) -> Result<Project, Error> {
         let (identity, mut client) = self.connection(credential).await?;
-        let tx = client.transaction().await.map_err(unavailable)?;
+        let tx = client
+            .build_transaction()
+            .isolation_level(tokio_postgres::IsolationLevel::ReadCommitted)
+            .start()
+            .await
+            .map_err(unavailable)?;
         authorize(&tx, &identity, tenant, Action::Read).await?;
         let row = tx.query_opt("SELECT project_id,name,revision FROM karate.projects WHERE tenant_id=$1 AND project_id=$2", &[&tenant,&id]).await.map_err(unavailable)?.ok_or(Error::NotFound)?;
         let result = project(&row)?;
@@ -146,7 +156,12 @@ impl ProjectService {
         if !(1..=100).contains(&limit) {
             return Err(Error::Validation);
         }
-        let tx = client.transaction().await.map_err(unavailable)?;
+        let tx = client
+            .build_transaction()
+            .isolation_level(tokio_postgres::IsolationLevel::ReadCommitted)
+            .start()
+            .await
+            .map_err(unavailable)?;
         authorize(&tx, &identity, tenant, Action::Read).await?;
         let rows = tx.query("SELECT project_id,name,revision FROM karate.projects WHERE tenant_id=$1 AND ($2::uuid IS NULL OR project_id>$2) ORDER BY project_id LIMIT $3", &[&tenant,&after,&(limit+1)]).await.map_err(unavailable)?;
         let more = rows.len() > limit as usize;
@@ -177,7 +192,12 @@ impl ProjectService {
         if !(1..i64::MAX).contains(&revision) {
             return Err(Error::Validation);
         }
-        let tx = client.transaction().await.map_err(unavailable)?;
+        let tx = client
+            .build_transaction()
+            .isolation_level(tokio_postgres::IsolationLevel::ReadCommitted)
+            .start()
+            .await
+            .map_err(unavailable)?;
         authorize(&tx, &identity, tenant, Action::Write).await?;
         let row = tx.query_opt("UPDATE karate.projects SET name=$3,revision=revision+1 WHERE tenant_id=$1 AND project_id=$2 AND revision=$4 RETURNING project_id,name,revision", &[&tenant,&id,&name,&revision]).await.map_err(unavailable)?;
         let Some(row) = row else {
@@ -208,6 +228,18 @@ pub(crate) async fn authorize(
     tenant: Uuid,
     action: Action,
 ) -> Result<Principal, Error> {
+    let principal = member_principal(tx, identity, tenant).await?;
+    principal.authorize(tenant, action)?;
+    crate::tenants::require_active(tx, tenant).await?;
+    let principal = member_principal(tx, identity, tenant).await?;
+    principal.authorize(tenant, action)?;
+    Ok(principal)
+}
+pub(crate) async fn member_principal(
+    tx: &Transaction<'_>,
+    identity: &Identity,
+    tenant: Uuid,
+) -> Result<Principal, Error> {
     set_context(tx, identity, tenant).await?;
     let row = tx.query_opt("SELECT role,revision FROM karate.memberships WHERE tenant_id=$1 AND issuer=$2 AND subject=$3 AND revoked_at IS NULL AND (expires_at IS NULL OR expires_at>statement_timestamp())", &[&tenant,&identity.issuer,&identity.subject]).await.map_err(unavailable)?.ok_or(Error::Forbidden)?;
     let role: String = row.try_get("role").map_err(unavailable)?;
@@ -221,7 +253,6 @@ pub(crate) async fn authorize(
         expires_at: None,
     };
     let principal = authorize_membership(identity.clone(), membership, tenant, unix_now()?)?;
-    principal.authorize(tenant, action)?;
     Ok(principal)
 }
 

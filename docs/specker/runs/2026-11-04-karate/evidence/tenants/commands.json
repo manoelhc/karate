@@ -1,0 +1,83 @@
+[
+  {
+    "check": "rust-checks",
+    "command": [
+      "make",
+      "lint",
+      "test",
+      "build",
+      "licenses"
+    ],
+    "started_at": "2026-11-06T12:47:52.153781+00:00",
+    "finished_at": "2026-11-06T12:48:21.416011+00:00",
+    "exit_code": 0,
+    "log": "rust-checks.log"
+  },
+  {
+    "check": "postgres",
+    "command": [
+      "make",
+      "test-db"
+    ],
+    "started_at": "2026-11-06T12:48:21.417204+00:00",
+    "finished_at": "2026-11-06T12:48:22.875467+00:00",
+    "exit_code": 0,
+    "log": "postgres.log"
+  },
+  {
+    "check": "audit",
+    "command": [
+      "./scripts/cargo.sh",
+      "audit",
+      "--json"
+    ],
+    "started_at": "2026-11-06T12:48:22.876540+00:00",
+    "finished_at": "2026-11-06T12:48:24.998510+00:00",
+    "exit_code": 0,
+    "log": "audit.log"
+  },
+  {
+    "check": "coverage",
+    "command": [
+      "make",
+      "coverage"
+    ],
+    "started_at": "2026-11-06T12:48:24.999276+00:00",
+    "finished_at": "2026-11-06T12:48:54.531438+00:00",
+    "exit_code": 0,
+    "log": "coverage.log"
+  },
+  {
+    "check": "secrets",
+    "command": [
+      "make",
+      "secrets"
+    ],
+    "started_at": "2026-11-06T12:51:37.677680+00:00",
+    "finished_at": "2026-11-06T12:51:38.118223+00:00",
+    "exit_code": 0,
+    "log": "secrets.log"
+  },
+  {
+    "check": "cleanup",
+    "command": [
+      "make",
+      "clean"
+    ],
+    "started_at": "2026-11-06T12:51:38.119704+00:00",
+    "finished_at": "2026-11-06T12:51:42.027906+00:00",
+    "exit_code": 0,
+    "log": "cleanup.log"
+  },
+  {
+    "check": "artifact-checks",
+    "command": [
+      "python3",
+      "docs/specker/runs/2026-11-04-karate/evidence/tenants/check-artifacts.py"
+    ],
+    "started_at": "2026-11-06T12:52:58.792423+00:00",
+    "finished_at": "2026-11-06T12:52:59.060122+00:00",
+    "exit_code": 0,
+    "log": "artifact-checks.log"
+  }
+]

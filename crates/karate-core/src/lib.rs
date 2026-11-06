@@ -5,6 +5,7 @@ pub mod assessment;
 pub mod authorization;
 pub mod evidence;
 pub mod scope;
+pub mod tenant;
 
 use serde::{Deserialize, Serialize};
 

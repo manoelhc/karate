@@ -62,3 +62,19 @@ TASK-003b2d2 final local verification: 40 named tests; core 397/397 lines,
 242/248 branches; API 2027/2069 lines, 342/374 branches. Maintained Dex code/PKCE
 and local session lifecycle pass. No skipped prerequisite is counted as complete.
 See the sessions verification record; exact-commit CI is checked after push.
+
+Implemented TASK-003b2e1: tenant component contract, identity-addressed operator grants,
+atomic tenant/permanent-owner/audit bootstrap, owner-only metadata and suspension/
+resume with serialized current-authority checks. No automatic owner or destructive
+delete. Run complete backend checks and strict coverage; maintain full erasure,
+React, provider and platform gates as pending. Single implementer; no delegation.
+
+Backend checklist for this slice: [x] model/contract and impact scan; [x] identity/
+retention and threat review; [x] local-only migration boundary (no shared action);
+[x] implementation/test/lint/build; [ ] exact-commit CI. Bounded state, no new
+libraries, no cache and no external account/customer-data action are planned.
+
+TASK-003b2e1 final local checks: 43 tests, real SQL lifecycle/RLS and lock ordering;
+core 462/462 lines and 266/272 branches, API 2262/2308 lines and 346/378 branches.
+Strict component thresholds pass. Next TASK-006a React session/tenant recovery
+journey; 003b2e2 erasure/retention remains explicit. See tenant verification.

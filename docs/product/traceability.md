@@ -76,3 +76,12 @@ HTTPS fault responses and digest-pinned Dex synthetic-connector protocol tests
 supply evidence. [Sessions verification](../specker/runs/2026-11-04-karate/sessions-verification.md)
 records exact checks. Human-provider/React integration, IdP logout, tenant lifecycle,
 retention, distributed abuse controls and the complete platform baseline stay open.
+
+## TASK-003b2e1 update
+
+PLAT-TENANT/RBAC/AUDIT now has operator-granted identity-bound bootstrap, permanent
+ownership, atomic creation/lifecycle audit, owner-only rename/suspend/resume and
+current state/permission checks shared by transports. Tests cover replay, roles,
+rollback, actual lock ordering and browser owner recovery. [Tenant verification](../specker/runs/2026-11-04-karate/tenants-verification.md)
+records counters and limits. Suspension retains data; erasure/retention and the
+remaining platform baseline are not completed by this slice.

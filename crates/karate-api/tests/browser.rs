@@ -490,6 +490,42 @@ async fn browser_binding_claims_durable_sessions_authority_cookies_and_atomic_re
             .status(),
         StatusCode::UNAUTHORIZED
     );
+    // A suspended owner can sign in and recover, without gaining project access.
+    let owner = login(&p, &s, t).await;
+    let update = karate_api::tenants::TenantChange {
+        name: "Suspended fixture".into(),
+        state: karate_core::tenant::TenantState::Suspended,
+        expected_revision: 1,
+    };
+    s.change_tenant(&owner, t, &update).await.unwrap();
+    assert!(matches!(
+        s.list(&owner, t, 1, None).await,
+        Err(Error::Forbidden)
+    ));
+    let recovery = login(&p, &s, t).await;
+    assert!(s.session_info(&recovery).await.is_ok());
+    assert_eq!(
+        s.tenant(&recovery, t).await.unwrap().state,
+        karate_core::tenant::TenantState::Suspended
+    );
+    assert!(matches!(
+        s.provision_tenant(&recovery, Uuid::new_v4(), Uuid::new_v4())
+            .await,
+        Err(Error::Forbidden)
+    ));
+    s.change_tenant(
+        &recovery,
+        t,
+        &karate_api::tenants::TenantChange {
+            name: "Resumed fixture".into(),
+            state: karate_core::tenant::TenantState::Active,
+            expected_revision: 2,
+        },
+    )
+    .await
+    .unwrap();
+    assert!(s.list(&recovery, t, 1, None).await.is_ok());
+    s.logout(&recovery, true).await.unwrap();
 }
 
 #[tokio::test]
