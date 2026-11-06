@@ -363,7 +363,7 @@
     },
     {
       "path": "docs/specker/runs/2026-11-04-karate/run.md",
-      "sha256": "dc76a8b2c7e2a553fa91d37542bc042641bdffaa02f1584e32725facb78b0d99"
+      "sha256": "62f5b5f942b886b533a0e4e803dc34f87ef45dd0a40b17aed2f3b48a11273c8c"
     },
     {
       "path": "docs/specker/runs/2026-11-04-karate/sessions-verification.md",
@@ -379,7 +379,7 @@
     },
     {
       "path": "docs/specker/runs/2026-11-04-karate/web-verification.md",
-      "sha256": "ceb1074ab8378a5f853090c89213d25e9bdcbb513565c3b52f7fb7783988040b"
+      "sha256": "873af3b5979585cd3007d33ab12603aae821ab2665683deb372d7a2688433081"
     },
     {
       "path": "migrations/0001_tenants_projects.sql",
@@ -567,7 +567,7 @@
     },
     {
       "path": "web/tests/workspace.e2e.ts",
-      "sha256": "e7144e846b01c9793073757b263dfcda900354f239b68fa83406f28ca951b292"
+      "sha256": "cbb98d6a4f3da2a0084065769c861d4f158c8b585c8dc5f0322cfd85a96fb14c"
     },
     {
       "path": "web/tsconfig.json",

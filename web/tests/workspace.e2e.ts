@@ -53,6 +53,13 @@ test('real HTTPS code/PKCE, owner recovery, localization, access and cookie boun
   });
   await page.goto('/');
   await expect(page.getByLabel('Workspace ID', { exact: true })).toBeVisible();
+  // Input can finalize LCP before Chromium has delivered the first paint entry.
+  // Observe an actual paint before the keyboard journey; never accept a zero sample.
+  await page.waitForFunction(
+    () =>
+      (window as unknown as { __karateLab: { lcp: number } }).__karateLab.lcp >
+      0,
+  );
   await page.keyboard.press('Tab');
   await expect(
     page.getByRole('link', { name: 'Skip to workspace' }),

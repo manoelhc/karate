@@ -91,3 +91,20 @@ assessment execution, MCP/voice/billing/observability, and the full Specker plat
 baseline. No production readiness, full WCAG conformance or deployment is claimed.
 Next bounded engineering slice is TASK-003b2e2 tenant retention/deletion contracts
 and implementation, followed by TASK-004a verified-target scope/budget controls.
+
+
+## CI paint-observer follow-up
+
+The first push, 7728fae, passed remote Rust tests/licenses, PostgreSQL and strict
+Rust coverage. The web job passed lint/tests/build/audit/licenses, then rejected
+an LCP sample of zero in Chromium 158 before the keyboard journey. See
+[initial CI](evidence/web/initial-ci.json). Zero is not a valid performance pass.
+The browser test now waits for the first observed LCP entry before any keyboard
+interaction can finalize LCP; it still enforces positive LCP, <=2.5s and CLS<=0.1.
+No application behavior, thresholds, retry policy or coverage exclusions changed.
+
+A local follow-up attempt was blocked by disk exhaustion during rebuilding the
+unchanged Rust fixture binary; that attempt did not run the browser and is not
+counted as a pass. Task-owned partial build output was removed. The amended test
+is checked by the full CI browser journey after its follow-up direct push. Prior
+local application/coverage evidence remains valid for the unchanged product code.

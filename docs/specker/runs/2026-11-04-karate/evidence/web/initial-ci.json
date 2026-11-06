@@ -1,0 +1,28 @@
+{
+  "conclusion": "failure",
+  "headSha": "7728fae591320693190728235e137a499d620937",
+  "jobs": [
+    {
+      "conclusion": "success",
+      "name": "rust",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "postgres",
+      "status": "completed"
+    },
+    {
+      "conclusion": "failure",
+      "name": "React checks and real browser journey",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Strict per-component line and branch coverage",
+      "status": "completed"
+    }
+  ],
+  "status": "completed",
+  "url": "https://github.com/manoelhc/karate/actions/runs/42240079402"
+}

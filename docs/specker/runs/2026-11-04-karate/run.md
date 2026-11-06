@@ -19,7 +19,10 @@ HTTPS browser/Rust/PostgreSQL/Dex journey pass, with axe, keyboard and responsiv
 checks. See [web verification](web-verification.md) for evidence and remaining gates.
 Rust 1.99.1 retains all authorization/domain logic. No deployment or account action.
 Prior tenant checkpoint 2568528 passed exact-commit CI; this checkpoint's exact CI
-is checked after its direct push. The human-provider connector gate remains open.
+is checked after its direct push. First CI at 7728fae passed Rust/PostgreSQL/coverage
+but failed a zero LCP sample before keyboard input. The test now waits for an actual
+paint entry; thresholds stay unchanged and the follow-up requires the full CI
+browser journey. See web verification. The human-provider connector gate remains open.
 
 ## Latest continuation (2026-11-06): explicit tenant provisioning and lifecycle
 
