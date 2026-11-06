@@ -379,7 +379,7 @@
     },
     {
       "path": "docs/specker/runs/2026-11-04-karate/web-verification.md",
-      "sha256": "873af3b5979585cd3007d33ab12603aae821ab2665683deb372d7a2688433081"
+      "sha256": "feb652e0e261dcb968baef6172965cf7112a8242574eb332b465df29e80c8c8d"
     },
     {
       "path": "migrations/0001_tenants_projects.sql",
@@ -551,7 +551,7 @@
     },
     {
       "path": "web/src/style.css",
-      "sha256": "77f06af640074568c1dbf2b0b41bd7c6328a7c9bb71fd1f7a6cf5fb1b9d9985d"
+      "sha256": "d73862b09ef29aad51f1c7ab913124cf9c8431d1f5bd0f13840f6bbfecd3382e"
     },
     {
       "path": "web/tests/App.test.tsx",
@@ -567,7 +567,7 @@
     },
     {
       "path": "web/tests/workspace.e2e.ts",
-      "sha256": "cbb98d6a4f3da2a0084065769c861d4f158c8b585c8dc5f0322cfd85a96fb14c"
+      "sha256": "2c2070353fbb8a067d038ceaa4151ca5b3eaf1dfb56e1e864f5d427aaeb07f86"
     },
     {
       "path": "web/tsconfig.json",

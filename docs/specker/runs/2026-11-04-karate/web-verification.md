@@ -108,3 +108,11 @@ unchanged Rust fixture binary; that attempt did not run the browser and is not
 counted as a pass. Task-owned partial build output was removed. The amended test
 is checked by the full CI browser journey after its follow-up direct push. Prior
 local application/coverage evidence remains valid for the unchanged product code.
+
+
+The second CI run at 4d46ec2 passed the positive LCP check and exposed real 320px
+horizontal overflow under Linux font metrics. The header now allows wrapping
+between the brand and language control. Viewport assertions retain their exact
+bounds and now report the measured document/viewport widths. The full job is
+required again after this CSS correction. Earlier macOS screenshots are identified
+by their local browser version; they do not establish Linux layout behavior.

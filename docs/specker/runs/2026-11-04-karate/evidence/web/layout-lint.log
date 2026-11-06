@@ -1,0 +1,8 @@
+./scripts/node.sh npm --prefix web run lint
+
+> karate-web@0.1.0 lint
+> tsc --noEmit && eslint src tests && stylelint "src/**/*.css" && prettier --check . ../tools/web && node ../tools/web/check.mjs locales
+
+Checking formatting...
+All matched files use Prettier code style!
+Locale parity: 58 translated keys.

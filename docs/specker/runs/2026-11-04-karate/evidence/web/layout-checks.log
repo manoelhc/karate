@@ -1,0 +1,38 @@
+./scripts/node.sh npm --prefix web run lint
+
+> karate-web@0.1.0 lint
+> tsc --noEmit && eslint src tests && stylelint "src/**/*.css" && prettier --check . ../tools/web && node ../tools/web/check.mjs locales
+
+Checking formatting...
+All matched files use Prettier code style!
+Locale parity: 58 translated keys.
+./scripts/node.sh npm --prefix web run build
+
+> karate-web@0.1.0 build
+> tsc --noEmit && vite build && node ../tools/web/check.mjs bundle
+
+vite v8.3.6 building client environment for production...
+transforming...
+✓ 91 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.67 kB │ gzip:   0.37 kB
+dist/assets/index-Bcea6-k7.css    5.07 kB │ gzip:   1.73 kB
+dist/assets/index-Bs4CbmS6.js   328.95 kB │ gzip: 102.21 kB
+
+✓ built in 375ms
+{
+  "baseline": 0,
+  "bytesAndDelta": {
+    "js": {
+      "raw": 328955,
+      "gzip": 101100,
+      "brotli": 87867
+    },
+    "css": {
+      "raw": 5072,
+      "gzip": 1729,
+      "brotli": 1463
+    }
+  }
+}

@@ -59,11 +59,14 @@
     },
     {
       "path": "web/src/style.css",
-      "sha256": "77f06af640074568c1dbf2b0b41bd7c6328a7c9bb71fd1f7a6cf5fb1b9d9985d"
+      "sha256": "d73862b09ef29aad51f1c7ab913124cf9c8431d1f5bd0f13840f6bbfecd3382e"
     }
   ],
   "lock_sha256": "b6ed290be7a12c28a1ad00bf31a49d50098996566b0bb8fe8245d64e3fe04788",
   "exclusions": [
     "Test sources and third-party dependencies; every executable application source included"
+  ],
+  "non_executable_changes_after_measurement": [
+    "Header CSS now wraps on narrower font metrics; full browser verification required in final CI."
   ]
 }

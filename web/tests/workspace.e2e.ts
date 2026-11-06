@@ -28,6 +28,26 @@ async function a11y(page: Page) {
     ).violations,
   ).toEqual([]);
 }
+async function expectFits(page: Page) {
+  const width = await page.evaluate(() => ({
+    viewport: innerWidth,
+    document: document.documentElement.scrollWidth,
+    overflowing: Array.from(document.querySelectorAll('body *'))
+      .filter(
+        (element) =>
+          getComputedStyle(element).position !== 'absolute' &&
+          element.getBoundingClientRect().right > innerWidth,
+      )
+      .map((element) => ({
+        tag: element.tagName,
+        class: element.className,
+        right: element.getBoundingClientRect().right,
+      })),
+  }));
+  expect(width.document, JSON.stringify(width)).toBeLessThanOrEqual(
+    width.viewport,
+  );
+}
 test('real HTTPS code/PKCE, owner recovery, localization, access and cookie boundaries', async ({
   page,
   context,
@@ -80,18 +100,10 @@ test('real HTTPS code/PKCE, owner recovery, localization, access and cookie boun
   expect(lab.lcp).toBeLessThanOrEqual(2500);
   expect(lab.cls).toBeLessThanOrEqual(0.1);
   await page.setViewportSize({ width: 3840, height: 2160 });
-  expect(
-    await page.evaluate(
-      () => document.documentElement.scrollWidth <= innerWidth,
-    ),
-  ).toBe(true);
+  await expectFits(page);
   await page.setViewportSize({ width: 320, height: 900 });
   await a11y(page);
-  expect(
-    await page.evaluate(
-      () => document.documentElement.scrollWidth <= innerWidth,
-    ),
-  ).toBe(true);
+  await expectFits(page);
   await page.screenshot({
     path: `${evidence}/signin-mobile.png`,
     fullPage: true,
@@ -176,11 +188,7 @@ test('real HTTPS code/PKCE, owner recovery, localization, access and cookie boun
   ).toBeVisible();
   await page.setViewportSize({ width: 320, height: 900 });
   await a11y(page);
-  expect(
-    await page.evaluate(
-      () => document.documentElement.scrollWidth <= innerWidth,
-    ),
-  ).toBe(true);
+  await expectFits(page);
   await page.screenshot({
     path: `${evidence}/workspace-mobile-pt.png`,
     fullPage: true,
