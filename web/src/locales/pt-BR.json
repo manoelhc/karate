@@ -56,5 +56,22 @@
   "signingOut": "Saindo…",
   "signedOut": "Você saiu.",
   "footer": "Controle consciente. Limites claros.",
-  "nameHint": "Escolha um nome entre 1 e 120 caracteres."
+  "nameHint": "Escolha um nome entre 1 e 120 caracteres.",
+  "deletionTitle": "Retenção e exclusão",
+  "deletionIntro": "Agende a exclusão permanente dos registros deste espaço no banco principal. A exclusão de backups e dados de provedores externos exige procedimentos separados.",
+  "deletionConfirmation": "Confirme o ID do espaço",
+  "deletionHint": "Digite {{id}} para confirmar este espaço.",
+  "retentionDays": "Prazo de recuperação (dias)",
+  "retentionHint": "Escolha entre 7 e 30 dias. O acesso comum é suspenso imediatamente.",
+  "deletionReview": "Revisar exclusão",
+  "deletionDialogTitle": "Agendar a exclusão do espaço?",
+  "deletionDialogDetail": "O acesso será suspenso agora. Após {{days}} dias, o processo de exclusão poderá começar. Um proprietário pode cancelar até o início. Depois disso, a exclusão no banco principal não poderá ser desfeita.",
+  "deletionSchedule": "Agendar exclusão",
+  "deletionPending": "A exclusão está agendada. Cancele antes do início para manter o espaço.",
+  "deletionDue": "Exclusão permitida a partir de {{time}}",
+  "deletionCancel": "Cancelar exclusão",
+  "deletionCancelled": "A exclusão foi cancelada. O espaço permanece suspenso até um proprietário retomar o acesso.",
+  "deletionBlocked": "A exclusão está bloqueada porque o solicitante não é mais proprietário. Cancele esta solicitação para revisar o espaço.",
+  "deletionErasing": "A exclusão começou. Esta operação não pode ser cancelada.",
+  "deletionLifecycle": "O acesso comum fica suspenso enquanto a exclusão está pendente ou em andamento."
 }

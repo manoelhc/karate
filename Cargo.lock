@@ -930,6 +930,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "karate-erasure"
+version = "0.1.0"
+dependencies = [
+ "karate-core",
+ "serde_json",
+ "tokio",
+ "tokio-postgres",
+]
+
+[[package]]
 name = "libc"
 version = "0.2.191"
 source = "registry+https://github.com/rust-lang/crates.io-index"

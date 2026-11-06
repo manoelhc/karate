@@ -2,7 +2,7 @@
 
 React/TypeScript presentation for the existing Rust browser-session and tenant
 APIs. Existing members sign in through the configured OIDC provider. Owners can
-rename, suspend and resume their workspace; other members see read-only settings.
+rename, suspend, resume and schedule/cancel primary-database deletion of their workspace; other members see read-only settings.
 English and Brazilian Portuguese are included. No token is stored in JavaScript.
 
 From the repository root:

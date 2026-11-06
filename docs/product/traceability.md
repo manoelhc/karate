@@ -85,3 +85,16 @@ current state/permission checks shared by transports. Tests cover replay, roles,
 rollback, actual lock ordering and browser owner recovery. [Tenant verification](../specker/runs/2026-11-04-karate/tenants-verification.md)
 records counters and limits. Suspension retains data; erasure/retention and the
 remaining platform baseline are not completed by this slice.
+
+
+## TASK-006a / TASK-003b2e2 update
+
+PLAT-TENANT/RBAC/AUDIT now includes localized browser access/recovery and current-owner
+confirmed delayed deletion, cancellation, bounded primary-database erasure and
+minimal non-reusable tenant receipts. Real browser/Rust/PostgreSQL/Dex fixtures
+cover the end-to-end path, rollback, concurrent runners/cancellation and foreign
+tenant preservation. Four runtime components independently pass >90% line and
+branch coverage. See [erasure verification](../specker/runs/2026-11-04-karate/erasure-verification.md).
+Backup/WAL/replica/provider propagation, restore reconciliation, support/legal
+holds, general age retention, human IdP and complete platform gates remain open.
+This does not claim full erasure compliance or production readiness.

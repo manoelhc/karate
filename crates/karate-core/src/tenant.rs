@@ -93,3 +93,23 @@ pub fn change(
     }
     Ok(())
 }
+
+/// A delayed destructive request always requires current owner authority and an
+/// explicit tenant confirmation. Retention bounds are product policy, not law.
+pub fn request_deletion(
+    principal: &Principal,
+    tenant: Uuid,
+    confirmation: Uuid,
+    days: i32,
+    expected: i64,
+    current: i64,
+) -> Result<(), Error> {
+    principal.authorize(tenant, Action::DeleteTenant)?;
+    if confirmation != tenant || !(7..=30).contains(&days) || !(1..i64::MAX).contains(&expected) {
+        return Err(Error::Validation);
+    }
+    if expected != current {
+        return Err(Error::Conflict);
+    }
+    Ok(())
+}

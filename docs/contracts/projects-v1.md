@@ -200,3 +200,21 @@ Browser workspace additions: tenant responses include required boolean
 A callback navigation accepting `text/html` returns 303 to the fixed public origin
 `/?signin=failed` on failure; non-browser JSON errors retain their status. All
 callback responses clear login binding, prevent referrer leakage and disable cache.
+
+
+## Tenant deletion (TASK-003b2e2)
+
+POST `/v1/tenants/{tenant}/deletion` and `/deletion/cancel` accept
+`{confirmation: UUID, retention_days: 7..30, expected_revision: positive int64}`.
+Confirmation must equal the path UUID; unknown fields are rejected. Both return
+200 tenant metadata with nullable `deletion` (request_id, state, requested_at,
+erase_after, retention_days). Only current interactive owners may use either;
+API keys cannot. Cookie calls require same-origin and X-Karate-CSRF: 1.
+Scheduling suspends atomically; cancellation leaves suspended. Pending intent
+interlocks rename/resume. Erasing closes recovery and cannot be cancelled.
+GET recovers unknown POST outcomes; no mutation retry is automatic. Current
+revision prevents stale submissions. All errors retain the closed localized
+contract: 400 validation, 401 authentication, 403 authorization/CSRF, 409 stale
+revision/state, 503 storage/unavailable. Bodies use the existing 8 KiB HTTP bound;
+one current deletion row per tenant; process-wide admission/rate limits remain
+open. See [contract](../components/tenant-erasure.md) for exact erasure limits.

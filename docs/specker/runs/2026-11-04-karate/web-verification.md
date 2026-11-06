@@ -116,3 +116,9 @@ between the brand and language control. Viewport assertions retain their exact
 bounds and now report the measured document/viewport widths. The full job is
 required again after this CSS correction. Earlier macOS screenshots are identified
 by their local browser version; they do not establish Linux layout behavior.
+
+
+Exact CI at e075ec520ab971b4acaf4988d66b04e16ab65d3f subsequently passed both Rust
+and the full Chromium 158 journey: [run 42242274685](https://github.com/manoelhc/karate/actions/runs/42242274685).
+The LCP and 320px Linux layout failures above are resolved. The next deletion
+checkpoint preserves those assertions and records its own evidence separately.

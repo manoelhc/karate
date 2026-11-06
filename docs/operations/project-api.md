@@ -332,3 +332,15 @@ support process, never reset a provisioning grant. Logout remains available for
 current identities. Suspension retains every data/audit row and does not revoke
 credentials; only still-valid authority resumes. Retention/deletion/backup policies,
 operator support tooling and erasure proof remain separate release work.
+
+
+## Deletion capability (migration 0008)
+
+Current API startup expects the erasure roles and functions from migration 0008.
+After the existing grants, the controlled migration operator would grant the API
+role EXECUTE on `karate.deletion_state(uuid)`, `karate.deletion_info(uuid)` and
+`karate.request_deletion(uuid,bigint,integer,boolean)`. No raw deletion/receipt
+privilege or erasure role membership belongs to the API. Runtime startup rejects
+both erasure capability roles. This run applied these grants only to disposable
+fixtures. See the [erasure runbook](tenant-erasure.md) for scheduling, cancellation,
+runner isolation and the remaining release requirements.

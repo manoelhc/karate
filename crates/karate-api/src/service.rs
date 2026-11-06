@@ -70,7 +70,7 @@ impl ProjectService {
             .build()
             .map_err(unavailable)?;
         let client = pool.get().await.map_err(unavailable)?;
-        let role = client.query_one("SELECT rolsuper OR rolbypassrls OR pg_has_role(current_user, 'karate_membership_guard', 'MEMBER') OR EXISTS (SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='karate' AND c.relowner=r.oid) AS unsafe_role FROM pg_roles r WHERE rolname=current_user", &[]).await.map_err(unavailable)?;
+        let role = client.query_one("SELECT rolsuper OR rolbypassrls OR pg_has_role(current_user, 'karate_membership_guard', 'MEMBER') OR pg_has_role(current_user, 'karate_erasure_runner', 'MEMBER') OR pg_has_role(current_user, 'karate_erasure_guard', 'MEMBER') OR EXISTS (SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='karate' AND c.relowner=r.oid) AS unsafe_role FROM pg_roles r WHERE rolname=current_user", &[]).await.map_err(unavailable)?;
         if role.get::<_, bool>("unsafe_role") {
             return Err(Error::Forbidden);
         }

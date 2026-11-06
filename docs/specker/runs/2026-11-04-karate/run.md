@@ -4,11 +4,23 @@
 - Method: https://github.com/manoelhc/specker at f71612bb25bfb1951b3d0df4abb3de9bf914e9d3.
 - Reference: https://www.aikido.dev/attack/aipentest (research only; no assessment authorized).
 - Product: independent MIT-licensed AI security-assessment SaaS; copyright Manoel Carvalho preserved.
-- Current delivery base: 256852839805b5dcbb46a6ba5a61f1b5a1911b19. User requires direct commits/pushes to main without PRs. No production deployment or paid resources authorized.
-- Current stage: **partial implementation**. TASK-003b1 project API, TASK-003b2a existing-member administration TASK-003b2b invitations and TASK-003b2c API keys and TASK-003b2d1 discovery/key refresh plus TASK-003b2d2 browser sessions and TASK-003b2e1 explicit provisioning/lifecycle and TASK-006a React access/recovery implemented; complete platform and reference parity still open.
+- Current delivery base: e075ec520ab971b4acaf4988d66b04e16ab65d3f. User requires direct commits/pushes to main without PRs. No production deployment or paid resources authorized.
+- Current stage: **partial implementation**. TASK-003b1 project API, TASK-003b2a existing-member administration TASK-003b2b invitations and TASK-003b2c API keys and TASK-003b2d1 discovery/key refresh plus TASK-003b2d2 browser sessions and TASK-003b2e1 explicit provisioning/lifecycle and TASK-006a React access/recovery and TASK-003b2e2 primary-database erasure implemented; complete platform and reference parity still open.
 - Toolchains: production Rust 1.99.1; separate coverage-only nightly-2026-11-04 (1.101.0-nightly, 708c94ef0), matching LLVM tools. PostgreSQL 14.20 local fixture; production major version not selected. Docker absent; existing Podman machine supports the pinned Dex fixture.
-- Capacity was constrained (under 2 GiB); run rebuildable Rust/frontend artifacts sequentially. Node/npm were installed only in the workspace; see web verification for cleanup.
-- Owner: single implementer using frontend-engineer plus existing backend workflow; Sites guidance routes this repository to local-only work. No sub-agents, cloud/account provisioning or provider credentials.
+- Capacity at this continuation: 16 GiB free before builds; workspace-local Node/npm and Rust artifacts only. Earlier low-disk web follow-ups remain historical.
+- Owner: single implementer using backend-engineer and the existing frontend workflow; Sites guidance routes this repository to local-only work. No sub-agents, cloud/account provisioning or provider credentials.
+
+## Latest continuation (2026-11-06): tenant deletion and bounded erasure
+
+TASK-003b2e2 implements current-owner scheduling/cancellation, a 7–30 day recovery
+window, suspension/interlocks, typed attributable audit and the localized React
+journey. A separate least-privilege Rust process removes at most 100 customer rows
+per transaction, with durable phase checkpoints, requester-authority revalidation,
+foreign-tenant isolation and minimal anti-resurrection receipts. This is logical
+primary-database deletion only. See [erasure verification](erasure-verification.md).
+Exact CI at prior e075ec5 passed both Rust and full browser jobs; the earlier LCP
+and Linux layout failures are resolved. Current exact CI is checked after push.
+No shared migration, operator account, production schedule or deployment action.
 
 ## Latest continuation (2026-11-06): React workspace access and recovery
 
@@ -131,15 +143,17 @@ web/API SaaS buyer remain unvalidated market assumptions.
 
 The Rust API now provides browser code/PKCE/session endpoints, but only for
 existing members. Human/provider connector integration, provider logout,
-tenant deletion/retention and full platform gates remain open. The synthetic Dex connector
+backup/provider deletion, full retention policies and platform gates remain open. The synthetic Dex connector
 is real protocol evidence, not a human sign-in journey. DB runtime is Unix-socket
-only; non-loopback API binds and unencrypted DB TCP are rejected. React access/recovery is now built; no worker or assessment executor is built.
+only; non-loopback API binds and unencrypted DB TCP are rejected. React access/recovery and a bounded database erasure runner are built; no assessment executor is built.
 
 ## Exact next actions
 
-1. TASK-003b2e2: define and implement tenant retention/deletion and operator-support
-   boundaries. React access/recovery is implemented. Human IdP connector integration,
-   SSO/backchannel logout, manual screen-reader and field performance remain open.
+1. Complete deletion release prerequisites: restore-time tombstone reconciliation,
+   backups/WAL/replica/provider handling, support/legal holds and real product
+   container/recovery verification. General age retention remains unfinished.
+   Human IdP connector integration, SSO/backchannel logout, manual screen-reader
+   and field performance also remain open.
 2. TASK-004a after its access prerequisites: expiring target ownership, immutable
    scope, atomic budget/job publication, lease fencing and per-request authority/
    cancellation/DNS pinning. Only owned HTTP fixtures are authorized.

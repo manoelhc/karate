@@ -3,12 +3,20 @@ export interface Session {
   session_id: string;
   expires_at: number;
 }
+export interface Deletion {
+  request_id: string;
+  state: 'pending' | 'blocked_authority' | 'erasing' | 'cancelled';
+  requested_at: number;
+  erase_after: number;
+  retention_days: number;
+}
 export interface Tenant {
   tenant_id: string;
   name: string;
   state: 'active' | 'suspended';
   revision: number;
   can_manage: boolean;
+  deletion: Deletion | null;
 }
 export class ApiError extends Error {
   constructor(
@@ -42,6 +50,36 @@ export function sessionValue(v: unknown): Session {
     expires_at: v.expires_at,
   };
 }
+export function deletionValue(v: unknown): Deletion | null {
+  if (v === null) return null;
+  if (
+    !object(v) ||
+    typeof v.request_id !== 'string' ||
+    !uuid.test(v.request_id) ||
+    !['pending', 'blocked_authority', 'erasing', 'cancelled'].includes(
+      String(v.state),
+    ) ||
+    typeof v.requested_at !== 'number' ||
+    !Number.isSafeInteger(v.requested_at) ||
+    v.requested_at < 0 ||
+    typeof v.erase_after !== 'number' ||
+    !Number.isSafeInteger(v.erase_after) ||
+    v.erase_after < 0 ||
+    v.erase_after > 8640000000000 ||
+    typeof v.retention_days !== 'number' ||
+    !Number.isInteger(v.retention_days) ||
+    v.retention_days < 7 ||
+    v.retention_days > 30
+  )
+    throw new ApiError(502);
+  return {
+    request_id: v.request_id,
+    state: v.state as Deletion['state'],
+    requested_at: v.requested_at,
+    erase_after: v.erase_after,
+    retention_days: v.retention_days,
+  };
+}
 export function tenantValue(v: unknown): Tenant {
   if (
     !object(v) ||
@@ -63,6 +101,7 @@ export function tenantValue(v: unknown): Tenant {
     state: v.state,
     revision: v.revision,
     can_manage: v.can_manage,
+    deletion: deletionValue(v.deletion),
   };
 }
 async function boundedJson(response: Response): Promise<unknown> {
@@ -194,4 +233,25 @@ export function errorKey(error: unknown): string {
     if (error.status === 400) return 'invalid';
   }
   return 'unavailable';
+}
+
+export async function changeDeletion(
+  tenant: Tenant,
+  confirmation: string,
+  retentionDays: number,
+  cancel: boolean,
+): Promise<Tenant> {
+  const value = tenantValue(
+    await request(
+      `/v1/tenants/${tenant.tenant_id}/deletion${cancel ? '/cancel' : ''}`,
+      undefined,
+      {
+        confirmation,
+        retention_days: retentionDays,
+        expected_revision: tenant.revision,
+      },
+    ),
+  );
+  if (value.tenant_id !== tenant.tenant_id) throw new ApiError(502);
+  return value;
 }

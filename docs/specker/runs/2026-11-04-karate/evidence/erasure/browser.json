@@ -1,0 +1,27 @@
+{
+  "browser": "153.0.8010.12",
+  "realServices": [
+    "Rust API",
+    "PostgreSQL",
+    "Dex v2.46.1",
+    "HTTPS proxy"
+  ],
+  "axeViolations": 0,
+  "viewportWidths": [
+    320,
+    1440,
+    3840
+  ],
+  "localLab": {
+    "lcp": 152,
+    "cls": 0
+  },
+  "fieldCoreWebVitals": "Not measured; INP and field distribution remain open",
+  "screenshots": 5,
+  "erasure": {
+    "primaryDatabaseErased": true,
+    "batches": 5,
+    "foreignTenantPreserved": true
+  },
+  "provider": "synthetic connector; human-provider and screen-reader gates open"
+}

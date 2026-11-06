@@ -1,0 +1,12 @@
+[package]
+name = "karate-erasure"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+karate-core = { path = "../karate-core" }
+tokio = { version = "=1.54.1", features = ["macros", "rt-multi-thread", "time"] }
+tokio-postgres = { version = "=0.7.18" }
+serde_json.workspace = true

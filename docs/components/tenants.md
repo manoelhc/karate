@@ -16,7 +16,7 @@ GET /v1/tenants/{tenant} returns metadata for current interactive members when
 active; only current owners can inspect suspended tenants. PATCH on that path
 requires a current owner and expected_revision, name and state (active/suspended).
 It is compare-and-set; even no-op requires current revision, and no-op creates no
-audit/revision. Only active and suspended states exist. No delete/erasure promise.
+audit/revision. Only active and suspended states exist. Primary-database deletion is implemented separately; see [tenant erasure](tenant-erasure.md).
 
 Shared authorization checks current tenant state on every normal operation. A
 KEY SHARE tenant lock holds through bounded work, while lifecycle changes take
@@ -41,10 +41,16 @@ Commands: make lint test build licenses test-db coverage; audit/secrets; exact C
 
 Retention boundary: suspension retains all tenant data and audit. Grants contain
 sensitive identity references and operator approval metadata; encrypt storage and
-restrict operator access. Retention schedules, deletion requests, propagation,
-backups and erasure proof remain release gates. No shared/production migration
+restrict operator access. Owner-confirmed delayed deletion and primary-database logical receipts now exist.
+General retention schedules, external propagation, backups and full erasure proof
+remain release gates. No shared/production migration
 is authorized; migration 0007 runs only in private disposable fixtures.
 
 TASK-006a adds `can_manage` to tenant responses, derived from the current service
 principal's owner permission. It is a presentation hint only; all writes continue
 to enforce current membership and authorization inside the transaction.
+
+Pending deletion blocks rename/resume, and erasing closes owner browser recovery.
+Tenant responses now include owner-only nullable deletion metadata. Migration
+0008 is required before the current API/erasure binary; apply only to isolated
+fixtures in this run.

@@ -15,8 +15,9 @@ and audited rotation/revocation through the same service and current policy.
 HTTPS key refresh with fail-closed expiry. [Browser sessions](../components/browser-sessions.md)
 add code/PKCE login and tenant-bound durable cookies. [Tenant lifecycle](../components/tenants.md)
 adds operator-granted bootstrap, atomic ownership and guarded suspend/resume. [React workspace](../components/web-workspace.md) now supplies local sign-in, session
-and tenant recovery presentation. There is no worker or human-provider/SSO logout
-integration yet. The diagram below
+and tenant recovery presentation. [Tenant erasure](../components/tenant-erasure.md)
+adds owner scheduling/cancellation and a separate bounded Rust database runner.
+There is no assessment worker or human-provider/SSO logout integration yet. The diagram below
 remains the target architecture. The API calls the core membership policy after
 real credential verification and an async current-membership lookup; the original
 synchronous authentication seam remains useful for deterministic domain tests.
@@ -65,3 +66,8 @@ Evidence distinguishes observation, hypothesis and reproduced finding. The scann
 IdP outage blocks new login; already valid signatures may be checked only with trusted cached keys within their documented lifetime. PostgreSQL outage blocks mutations and job claims. Broker/queue lease recovery must not repeat consequential effects. Model/voice failure leaves useful text/API actions available. OTel failure drops bounded telemetry rather than blocking customer work. Backup/restore and key rotation must be verified before release.
 
 Diagrams are source artifacts; render verification is pending until the selected documentation tooling is available.
+
+Primary-database erasure uses one transaction per bounded batch, with tenant locking
+and durable phase checkpoints; it does not need a lease across external work. This
+is separate from the future assessment worker lease/fencing contract. See
+[ADR-0010](../adr/0010-primary-database-erasure.md).

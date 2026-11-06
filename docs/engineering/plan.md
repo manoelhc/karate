@@ -106,3 +106,18 @@ web 190/191 and 193/197. All strictly exceed 90% independently. Audits, licenses
 static checks, PostgreSQL isolation/restart, bundle, a11y and responsive checks pass.
 See web verification for unresolved human-provider/screen-reader/field-performance,
 retention and full platform gates. Exact CI is checked after the direct main push.
+
+Active TASK-003b2e2: owner-confirmed delayed tenant deletion, cancellation, restricted
+bounded Rust erasure runner and React recovery. Contract: components/tenant-erasure.
+No shared migration or production erasure; use disposable fixtures only. Preserve
+explicit backup/external-provider/restore and full-platform release gates.
+Backend checklist: [x] contract/impact/threat/retention review; [x] local migration
+boundary; [x] implementation and real integration; [x] component coverage; [ ] exact-commit CI after push.
+
+TASK-003b2e2 final local checkpoint: 46 Rust tests, 22 frontend tests and the real
+HTTPS browser journey pass. Core 479/479 lines, 274/280 branches; API 2408/2455,
+355/392; erasure runtime 59/59, 8/8; web 232/233, 271/278. Four independent component
+gates strictly exceed 90%. Browser completes erasure in five batches and retains
+another tenant. Screenshot review corrected stale cancellation/recovery wording;
+all final UI checks reran. See erasure verification for commands, hashes, operator
+actions and explicit unfinished backup/provider/restore/container/platform gates.

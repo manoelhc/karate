@@ -104,3 +104,47 @@ fn lifecycle_is_owner_only_revisioned_and_recoverable() {
         }
     }
 }
+#[test]
+fn deletion_requires_current_owner_explicit_confirmation_bounded_retention_and_revision() {
+    for role in [Role::Owner, Role::Admin, Role::Member, Role::Viewer] {
+        let id = identity();
+        let p = authorize_membership(
+            id.clone(),
+            Membership {
+                tenant_id: TENANT,
+                issuer: id.issuer,
+                subject: id.subject,
+                role,
+                revision: 1,
+                revoked: false,
+                expires_at: None,
+            },
+            TENANT,
+            10,
+        )
+        .unwrap();
+        assert_eq!(
+            request_deletion(&p, TENANT, TENANT, 7, 1, 1).is_ok(),
+            role == Role::Owner
+        );
+        if role == Role::Owner {
+            assert_eq!(request_deletion(&p, TENANT, TENANT, 30, 1, 1), Ok(()));
+            for (confirmation, days, revision) in [
+                (Uuid::new_v4(), 7, 1),
+                (TENANT, 6, 1),
+                (TENANT, 31, 1),
+                (TENANT, 7, 0),
+                (TENANT, 7, i64::MAX),
+            ] {
+                assert_eq!(
+                    request_deletion(&p, TENANT, confirmation, days, revision, 1),
+                    Err(Error::Validation)
+                );
+            }
+            assert_eq!(
+                request_deletion(&p, TENANT, TENANT, 7, 1, 2),
+                Err(Error::Conflict)
+            );
+        }
+    }
+}

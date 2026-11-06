@@ -31,3 +31,7 @@ karate.open_session(uuid,uuid,bytea,bigint),karate.session_verifier(uuid,uuid),k
 
 GRANT SELECT ON karate.tenant_events TO karate_api_test;
 GRANT EXECUTE ON FUNCTION karate.lock_tenant_grant(uuid,uuid),karate.provision_tenant(uuid,uuid),karate.lock_tenant(uuid,boolean),karate.tenant_active(uuid),karate.change_tenant(uuid,text,text,bigint) TO karate_api_test;
+
+GRANT EXECUTE ON FUNCTION karate.deletion_state(uuid),karate.deletion_info(uuid),karate.request_deletion(uuid,bigint,integer,boolean) TO karate_api_test;
+CREATE ROLE karate_erasure_test LOGIN NOSUPERUSER NOBYPASSRLS;
+GRANT karate_erasure_runner TO karate_erasure_test;

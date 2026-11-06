@@ -56,5 +56,22 @@
   "signingOut": "Signing out…",
   "signedOut": "You’re signed out.",
   "footer": "Thoughtful control. Clear boundaries.",
-  "nameHint": "Choose a name between 1 and 120 characters."
+  "nameHint": "Choose a name between 1 and 120 characters.",
+  "deletionTitle": "Retention & deletion",
+  "deletionIntro": "Schedule permanent deletion of this workspace’s primary database records. Backup and external-provider erasure are separate operational requirements.",
+  "deletionConfirmation": "Confirm workspace ID",
+  "deletionHint": "Type {{id}} to confirm this workspace.",
+  "retentionDays": "Recovery window (days)",
+  "retentionHint": "Choose 7–30 days. Ordinary access stops immediately.",
+  "deletionReview": "Review deletion",
+  "deletionDialogTitle": "Schedule workspace deletion?",
+  "deletionDialogDetail": "Access will be suspended now. After {{days}} days, the erasure process may begin. An owner can cancel until it starts. Once started, primary database erasure cannot be undone.",
+  "deletionSchedule": "Schedule deletion",
+  "deletionPending": "Deletion is scheduled. Cancel before erasure starts to keep the workspace.",
+  "deletionDue": "Eligible for erasure from {{time}}",
+  "deletionCancel": "Cancel deletion",
+  "deletionCancelled": "Deletion was cancelled. The workspace remains suspended until an owner resumes it.",
+  "deletionBlocked": "Deletion is blocked because the requester is no longer an owner. Cancel this request to review the workspace.",
+  "deletionErasing": "Erasure has started. This operation cannot be cancelled.",
+  "deletionLifecycle": "Ordinary access is suspended while deletion is pending or in progress."
 }

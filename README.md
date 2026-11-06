@@ -14,7 +14,8 @@ expiry, atomic rotation/revocation and one-time secret disclosure. Trusted HTTPS
 discovery now refreshes signing keys with bounded requests and fail-closed expiry. Browser code/PKCE sign-in uses secure tenant-bound sessions and local revocation.
 Explicit operator grants now bootstrap permanent owners; current owners can rename,
 suspend and resume tenants with atomic audit. The [React workspace](web/README.md) supports sign-in, session logout and owner
-recovery with English/pt-BR copy. No assessment worker exists yet.
+recovery with English/pt-BR copy. Owners can schedule/cancel delayed deletion, and
+a separate Rust runner performs bounded primary-database erasure. No assessment worker exists yet.
 
 ```sh
 make install
@@ -40,15 +41,17 @@ and a nonsuperuser Unix-socket PostgreSQL connection, then run `make run`.
 See [API setup](docs/operations/project-api.md) for exact configuration and grants.
 There is no anonymous mode, first-login administrator or committed credential.
 
-Latest local checks: **43 Rust tests passed**, including real PostgreSQL/HTTP,
-provider/session recovery and tenant lifecycle races. All three components exceed 90%
-line and branch coverage: core 462/462 lines, 266/272 branches; API 2292/2339 lines,
-351/388 branches; web 190/191 lines, 193/197 branches. Retention/erasure, human-provider integration, provider SSO logout, full Karate
-containers and the complete platform remain unfinished. This is partial
-implementation, not release readiness.
+Latest local checks: **46 Rust tests and 22 frontend tests passed**. All four
+implemented components exceed 90% line and branch coverage: core 479/479 lines,
+274/280 branches; API 2408/2455 lines, 355/392 branches; erasure 59/59 lines,
+8/8 branches; web 232/233 lines, 271/278 branches. Backup/provider erasure, general
+retention, human-provider integration, provider SSO logout, full Karate containers
+and the complete platform remain unfinished. This is partial implementation,
+not release readiness. See the checkpoint record for final browser/CI evidence.
 
 - [Current run and next actions](docs/specker/runs/2026-11-04-karate/run.md)
-- [Latest web verification](docs/specker/runs/2026-11-04-karate/web-verification.md)
+- [Latest erasure verification](docs/specker/runs/2026-11-04-karate/erasure-verification.md)
+- [Prior web verification](docs/specker/runs/2026-11-04-karate/web-verification.md)
 - [Prior tenant verification](docs/specker/runs/2026-11-04-karate/tenants-verification.md)
 - [Prior session verification](docs/specker/runs/2026-11-04-karate/sessions-verification.md)
 - [Prior discovery verification](docs/specker/runs/2026-11-04-karate/discovery-verification.md)

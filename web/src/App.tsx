@@ -1,3 +1,4 @@
+import { DeletionPanel } from './DeletionPanel';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import {
   QueryClient,
@@ -352,15 +353,18 @@ function TenantPanel({
   const [blocked, setBlocked] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
+  const deleting =
+    tenant.deletion !== null && tenant.deletion.state !== 'cancelled';
+  const saved = (value: Tenant) => {
+    if (isCurrent()) {
+      client.setQueryData(['tenant', tenant.tenant_id], value);
+      onChanged();
+    }
+  };
   const change = useMutation({
     mutationFn: ({ name, state }: { name: string; state: Tenant['state'] }) =>
       updateTenant(tenant, name, state),
-    onSuccess: (value) => {
-      if (isCurrent()) {
-        client.setQueryData(['tenant', tenant.tenant_id], value);
-        onChanged();
-      }
-    },
+    onSuccess: saved,
     onError: (error) => {
       if (isCurrent() && error instanceof ApiError && error.status === 401)
         endSession('expired');
@@ -386,7 +390,7 @@ function TenantPanel({
           </div>
           <span className={`badge ${tenant.state}`}>{t(tenant.state)}</span>
         </div>
-        {suspended && <Notice message={t('suspendedNote')} />}
+        {suspended && !deleting && <Notice message={t('suspendedNote')} />}
         {change.isError && <Notice message={t(errorKey(change.error))} alert />}
         {blocked && (
           <div className="notice">
@@ -418,7 +422,7 @@ function TenantPanel({
                   required
                   onChange={(e) => setName(e.target.value)}
                   aria-describedby="name-hint"
-                  disabled={change.isPending || blocked}
+                  disabled={change.isPending || blocked || deleting}
                 />
                 <p id="name-hint" className="hint">
                   {t('nameHint')}
@@ -428,7 +432,8 @@ function TenantPanel({
                     !name.trim() ||
                     name.trim() === tenant.name ||
                     change.isPending ||
-                    blocked
+                    blocked ||
+                    deleting
                   }
                 >
                   {t(change.isPending ? 'saving' : 'save')}
@@ -441,11 +446,13 @@ function TenantPanel({
           {tenant.can_manage && (
             <section>
               <h3>{t('lifecycle')}</h3>
-              <p className="muted">{t('lifecycleIntro')}</p>
+              <p className="muted">
+                {t(deleting ? 'deletionLifecycle' : 'lifecycleIntro')}
+              </p>
               <button
                 ref={trigger}
                 className={suspended ? 'primary' : 'danger'}
-                disabled={change.isPending || blocked}
+                disabled={change.isPending || blocked || deleting}
                 onClick={() => dialog.current?.showModal()}
               >
                 {t(suspended ? 'resume' : 'suspend')}
@@ -453,6 +460,16 @@ function TenantPanel({
             </section>
           )}
         </div>
+        {tenant.can_manage && (
+          <DeletionPanel
+            tenant={tenant}
+            onSaved={saved}
+            onExpired={() => {
+              if (isCurrent()) endSession('expired');
+            }}
+            refresh={refresh}
+          />
+        )}
       </section>
       <dialog
         ref={dialog}

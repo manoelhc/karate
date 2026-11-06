@@ -449,3 +449,19 @@
     margin-block-start: 2rem;
   }
 }
+
+@layer components {
+  .deletion {
+    margin-block-start: 2.5rem;
+    padding-block-start: 2rem;
+    border-block-start: 1px solid #d9ded4;
+  }
+
+  .deletion form {
+    max-inline-size: 32rem;
+  }
+
+  .deletion .hint {
+    overflow-wrap: anywhere;
+  }
+}

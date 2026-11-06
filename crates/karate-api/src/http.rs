@@ -212,6 +212,11 @@ pub fn router(service: Arc<ProjectService>) -> Router {
             get(tenant_info).patch(tenant_change),
         )
         .route("/v1/tenants/{tenant}/provision", post(tenant_provision))
+        .route("/v1/tenants/{tenant}/deletion", post(tenant_delete))
+        .route(
+            "/v1/tenants/{tenant}/deletion/cancel",
+            post(tenant_delete_cancel),
+        )
         .route("/v1/tenants/{tenant}/projects", post(create).get(list))
         .route(
             "/v1/tenants/{tenant}/projects/{project}",
@@ -791,4 +796,42 @@ async fn tenant_change(
             .await
             .map_err(error)?
     )))
+}
+
+async fn deletion_response(
+    service: Arc<ProjectService>,
+    locale: Locale,
+    headers: HeaderMap,
+    tenant: Result<Path<Uuid>, PathRejection>,
+    body: Result<Json<crate::tenants::DeletionInput>, JsonRejection>,
+    cancel: bool,
+) -> Result<Json<Value>, ApiError> {
+    let error = |e| ApiError(e, locale);
+    let credential = bearer(&headers).map_err(error)?;
+    let Path(tenant) = tenant.map_err(|_| error(Error::Validation))?;
+    let Json(input) = body.map_err(|_| error(Error::Validation))?;
+    Ok(Json(json!(
+        service
+            .request_deletion(credential, tenant, &input, cancel)
+            .await
+            .map_err(error)?
+    )))
+}
+async fn tenant_delete(
+    State(service): State<Arc<ProjectService>>,
+    Extension(locale): Extension<Locale>,
+    headers: HeaderMap,
+    tenant: Result<Path<Uuid>, PathRejection>,
+    body: Result<Json<crate::tenants::DeletionInput>, JsonRejection>,
+) -> Result<Json<Value>, ApiError> {
+    deletion_response(service, locale, headers, tenant, body, false).await
+}
+async fn tenant_delete_cancel(
+    State(service): State<Arc<ProjectService>>,
+    Extension(locale): Extension<Locale>,
+    headers: HeaderMap,
+    tenant: Result<Path<Uuid>, PathRejection>,
+    body: Result<Json<crate::tenants::DeletionInput>, JsonRejection>,
+) -> Result<Json<Value>, ApiError> {
+    deletion_response(service, locale, headers, tenant, body, true).await
 }

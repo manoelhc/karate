@@ -1,0 +1,429 @@
+python3 tools/coverage.py --require-branches --output-dir docs/specker/runs/2026-11-04-karate/evidence/erasure
+BEGIN
+CREATE SCHEMA
+REVOKE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+CREATE POLICY
+CREATE POLICY
+CREATE POLICY
+COMMIT
+BEGIN
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+CREATE POLICY
+COMMIT
+BEGIN
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+CREATE ROLE
+GRANT
+GRANT
+GRANT
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+REVOKE
+REVOKE
+COMMIT
+BEGIN
+CREATE TABLE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+GRANT
+GRANT
+GRANT
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+REVOKE
+REVOKE
+COMMIT
+BEGIN
+CREATE TABLE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+GRANT
+GRANT
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+REVOKE
+REVOKE
+COMMIT
+BEGIN
+CREATE TABLE
+CREATE INDEX
+CREATE TABLE
+CREATE INDEX
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+GRANT
+GRANT
+GRANT
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+REVOKE
+REVOKE
+COMMIT
+BEGIN
+ALTER TABLE
+CREATE TABLE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE POLICY
+GRANT
+GRANT
+GRANT
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE POLICY
+CREATE POLICY
+CREATE POLICY
+CREATE POLICY
+CREATE POLICY
+ALTER FUNCTION
+REVOKE
+ALTER FUNCTION
+REVOKE
+ALTER FUNCTION
+REVOKE
+ALTER FUNCTION
+REVOKE
+ALTER FUNCTION
+REVOKE
+ALTER FUNCTION
+REVOKE
+ALTER FUNCTION
+REVOKE
+REVOKE
+COMMIT
+BEGIN
+ALTER TABLE
+CREATE TABLE
+CREATE INDEX
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE ROLE
+CREATE ROLE
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+DO
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+ALTER FUNCTION
+REVOKE
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+REVOKE
+GRANT
+REVOKE
+COMMIT
+BEGIN
+ issue_tenant_grant 
+--------------------
+ 
+(1 row)
+
+DO
+DO
+CREATE ROLE
+GRANT
+GRANT
+GRANT
+GRANT
+SET
+              set_config              |       set_config       | set_config  
+--------------------------------------+------------------------+-------------
+ 00000000-0000-0000-0000-000000000701 | https://issuer.example | wrong-owner
+(1 row)
+
+DO
+ set_config 
+------------
+ sql-owner
+(1 row)
+
+DO
+DO
+INSERT 0 1
+DO
+DO
+DO
+DO
+DO
+              set_config              
+--------------------------------------
+ 00000000-0000-0000-0000-000000000702
+(1 row)
+
+DO
+ROLLBACK
+BEGIN
+DO
+DO
+ROLLBACK
+CREATE ROLE
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+INSERT 0 2
+INSERT 0 4
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+CREATE ROLE
+GRANT ROLE
+Dex v2.46.1 pinned container is ready; TLS verification enabled.
+
+running 1 test
+test deletion_auth_revision_cancel_interlocks_atomicity_and_http_contract ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 1 test
+test maintained_dex_code_pkce_nonce_replay_and_session_lifecycle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 4 tests
+test language_negotiation_and_catalogs_are_complete ... ok
+test signed_tokens_reject_forgery_expiry_audience_issuer_type_and_claim_errors ... ok
+test real_postgres_http_and_shared_service_enforce_tenants_revisions_and_atomic_audit ... ok
+test key_configuration_is_bounded_explicit_and_expires ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.11s
+
+
+running 1 test
+test membership_management_enforces_roles_revisions_ownership_and_atomic_audit ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+
+
+running 4 tests
+test discovered_credentials_use_current_membership_and_never_grant_tenant_authority ... ok
+test discovery_rejects_untrusted_configuration_tls_metadata_and_responses ... ok
+test refresh_is_atomic_coalesced_expires_without_extension_and_recovers ... ok
+test transport_bounds_headers_total_body_time_and_complete_refresh_time ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.38s
+
+
+running 2 tests
+test browser_provider_configuration_metadata_and_cookie_boundaries_fail_closed ... ok
+test browser_binding_claims_durable_sessions_authority_cookies_and_atomic_revocation ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.44s
+
+
+running 4 tests
+test real_process_serves_liveness_and_drains_on_interrupt ... ok
+test real_process_discovers_https_keys_and_checks_membership ... ok
+test discovery_process_configuration_is_explicit_bounded_and_fail_closed ... ok
+test startup_fails_closed_without_exposing_configuration ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.77s
+
+
+running 1 test
+test provisioning_lifecycle_replay_authority_atomicity_and_serialized_recovery ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s
+
+
+running 1 test
+test api_keys_verify_scopes_tenants_revisions_rotation_and_atomic_audit ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.59s
+
+
+running 1 test
+test invitations_require_bound_identity_current_grants_and_single_atomic_acceptance ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 3 tests
+test grants_bind_interactive_identity_expiry_and_single_use ... ok
+test deletion_requires_current_owner_explicit_confirmation_bounded_retention_and_revision ... ok
+test lifecycle_is_owner_only_revisioned_and_recoverable ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 4 tests
+test special_addresses_mixed_dns_and_unbounded_results_fail_closed ... ok
+test exclusions_are_validated_and_bounded ... ok
+test origin_and_segment_boundaries_are_exact ... ok
+test ambiguous_urls_are_rejected_before_normalization ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 8 tests
+test budget_reservations_reject_negative_values_exhaustion_and_overflow ... ok
+test errors_are_closed_stable_and_free_of_caller_data ... ok
+test every_state_event_pair_has_a_documented_outcome ... ok
+test names_are_bounded_and_not_empty ... ok
+test persisted_lifecycle_rejects_inconsistent_pause_metadata ... ok
+test the_full_journey_can_pause_resume_cancel_or_complete_honestly ... ok
+test observations_are_presence_only_and_never_contain_response_values ... ok
+test header_observation_work_is_bounded_without_echoing_oversized_input ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 10 tests
+test async_membership_entry_rejects_invalid_identity_and_preserves_key_limits ... ok
+test credentials_are_verified_before_any_membership_lookup ... ok
+test all_roles_and_actions_obey_the_documented_matrix ... ok
+test delegation_is_bounded_and_never_grants_privileged_operations ... ok
+test key_lifecycle_access_and_revision_binding_never_expand_authority ... ok
+test keys_cannot_cross_tenants_create_other_keys_or_elevate_roles ... ok
+test membership_is_bound_to_tenant_issuer_subject_and_current_authority ... ok
+test invitations_bind_interactive_identity_and_current_delegation ... ok
+test sessions_bind_tenant_revision_and_current_role_before_delegation ... ok
+test membership_management_cannot_escalate_or_remove_durable_ownership ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 1 test
+test durable_bounded_erasure_isolated_authority_rollback_and_binary ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s
+
+karate-api {'component': 'karate-api', 'lines': {'count': 2455, 'covered': 2408}, 'branches': {'count': 392, 'covered': 355}}
+karate-core {'component': 'karate-core', 'lines': {'count': 479, 'covered': 479}, 'branches': {'count': 280, 'covered': 274}}
+karate-erasure {'component': 'karate-erasure', 'lines': {'count': 59, 'covered': 59}, 'branches': {'count': 8, 'covered': 8}}

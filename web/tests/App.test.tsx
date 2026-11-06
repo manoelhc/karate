@@ -22,6 +22,7 @@ const tenant = {
   revision: 1,
   state: 'active' as const,
   can_manage: true,
+  deletion: null,
 };
 beforeEach(async () => {
   await i18n.changeLanguage('en');
@@ -247,4 +248,116 @@ it('offers a new workspace sign-in after membership loss', async () => {
   expect(screen.getByRole('alert')).toHaveTextContent(
     'membership no longer permits access',
   );
+});
+
+const deletion: api.Deletion = {
+  request_id: id,
+  state: 'pending',
+  requested_at: 1800000000,
+  erase_after: 1800604800,
+  retention_days: 7,
+};
+it('requires confirmation, previews consequences, schedules and cancels deletion', async () => {
+  vi.spyOn(api, 'changeDeletion').mockImplementation(
+    async (current, _id, days, cancel) => ({
+      ...current,
+      state: 'suspended',
+      revision: current.revision + 1,
+      deletion: {
+        ...deletion,
+        retention_days: days,
+        state: cancel ? 'cancelled' : 'pending',
+      },
+    }),
+  );
+  setup();
+  await screen.findByLabelText('Confirm workspace ID');
+  const user = userEvent.setup();
+  expect(
+    screen.getByRole('button', { name: 'Review deletion' }),
+  ).toBeDisabled();
+  fireEvent.submit(
+    screen.getByLabelText('Confirm workspace ID').closest('form')!,
+  );
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  await user.type(screen.getByLabelText('Confirm workspace ID'), id);
+  await user.clear(screen.getByLabelText('Recovery window (days)'));
+  expect(
+    screen.getByRole('button', { name: 'Review deletion' }),
+  ).toBeDisabled();
+  await user.type(screen.getByLabelText('Recovery window (days)'), '31');
+  expect(
+    screen.getByRole('button', { name: 'Review deletion' }),
+  ).toBeDisabled();
+  await user.clear(screen.getByLabelText('Recovery window (days)'));
+  await user.type(screen.getByLabelText('Recovery window (days)'), '30');
+  const button = screen.getByRole('button', { name: 'Review deletion' });
+  await user.click(button);
+  fireEvent(screen.getByRole('dialog'), new Event('cancel'));
+  await user.click(screen.getByRole('button', { name: /^Cancel$/ }));
+  expect(button).toHaveFocus();
+  await user.click(button);
+  await user.click(screen.getByRole('button', { name: 'Schedule deletion' }));
+  await screen.findByText(/Deletion is scheduled/);
+  expect(
+    screen.getByRole('button', { name: 'Resume workspace' }),
+  ).toBeDisabled();
+  expect(screen.getByLabelText('Workspace name')).toBeDisabled();
+  await user.click(screen.getByRole('button', { name: 'Cancel deletion' }));
+  await screen.findByText(/Deletion was cancelled/);
+  expect(
+    screen.getByRole('button', { name: 'Resume workspace' }),
+  ).toBeEnabled();
+  vi.spyOn(api, 'updateTenant').mockResolvedValue({
+    ...tenant,
+    revision: 4,
+    deletion: { ...deletion, state: 'cancelled' },
+  });
+  await user.click(screen.getByRole('button', { name: 'Resume workspace' }));
+  await user.click(screen.getByRole('button', { name: 'Confirm change' }));
+  await screen.findByText('Active', { exact: true });
+  expect(screen.queryByText(/Deletion was cancelled/)).not.toBeInTheDocument();
+});
+it('shows blocked/erasing states and refreshes after a deletion conflict', async () => {
+  vi.spyOn(api, 'changeDeletion').mockRejectedValue(new api.ApiError(409));
+  const first = setup(session, {
+    ...tenant,
+    state: 'suspended',
+    deletion: { ...deletion, state: 'blocked_authority' },
+  });
+  await screen.findByText(/requester is no longer/);
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Cancel deletion' }),
+  );
+  await screen.findByText(/workspace changed/);
+  expect(
+    screen.getByRole('button', { name: 'Cancel deletion' }),
+  ).toBeDisabled();
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Refresh workspace' }),
+  );
+  await waitFor(() =>
+    expect(
+      screen.getByRole('button', { name: 'Cancel deletion' }),
+    ).toBeEnabled(),
+  );
+  first.unmount();
+  setup(session, {
+    ...tenant,
+    state: 'suspended',
+    deletion: { ...deletion, state: 'erasing' },
+  });
+  await screen.findByText(/Erasure has started/);
+  expect(
+    screen.queryByRole('button', { name: 'Cancel deletion' }),
+  ).not.toBeInTheDocument();
+});
+it('clears an expired session during deletion cancellation', async () => {
+  vi.spyOn(api, 'changeDeletion').mockRejectedValue(new api.ApiError(401));
+  setup(session, { ...tenant, state: 'suspended', deletion });
+  await screen.findByText(/Deletion is scheduled/);
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Cancel deletion' }),
+  );
+  await screen.findByText(/Your session has ended/);
 });

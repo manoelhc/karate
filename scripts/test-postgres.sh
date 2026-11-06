@@ -28,6 +28,7 @@ psql -X -v ON_ERROR_STOP=1 -f migrations/0004_identity_invitations.sql
 psql -X -v ON_ERROR_STOP=1 -f migrations/0005_scoped_api_keys.sql
 psql -X -v ON_ERROR_STOP=1 -f migrations/0006_browser_sessions.sql
 psql -X -v ON_ERROR_STOP=1 -f migrations/0007_tenant_lifecycle.sql
+psql -X -v ON_ERROR_STOP=1 -f migrations/0008_tenant_erasure.sql
 psql -X -v ON_ERROR_STOP=1 -f tests/postgres/tenant_lifecycle.sql
 if [ "$#" -gt 0 ]; then
     psql -X -v ON_ERROR_STOP=1 -f tests/postgres/api_seed.sql
@@ -54,6 +55,7 @@ EXT
     openssl x509 -req -in "$fixture/tls.csr" -CA "$fixture/ca.pem" -CAkey "$fixture/ca-key.pem" -CAcreateserial -out "$fixture/tls.pem" -days 1 -extfile "$fixture/tls.ext" 2>/dev/null
     export KARATE_TEST_TLS_DIR="$fixture"
     export KARATE_TEST_DATABASE_URL="host=$fixture port=55439 user=karate_api_test dbname=postgres"
+    export KARATE_TEST_ERASURE_URL="host=$fixture port=55439 user=karate_erasure_test dbname=postgres"
     export KARATE_TEST_ADMIN_URL="host=$fixture port=55439 user=karate_fixture dbname=postgres"
     export KARATE_TEST_KEY="$fixture/key.der" KARATE_TEST_JWKS="$fixture/jwks.json"
     ./scripts/test-dex.sh "$@"

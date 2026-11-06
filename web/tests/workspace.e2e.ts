@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 const owner = '00000000-0000-4000-8000-000000000091';
 const viewer = '00000000-0000-4000-8000-000000000092';
-const evidence = '../docs/specker/runs/2026-11-04-karate/evidence/web';
+const evidence = '../docs/specker/runs/2026-11-04-karate/evidence/erasure';
 function sql(command: string) {
   execFileSync('psql', ['-X', '-v', 'ON_ERROR_STOP=1', '-c', command], {
     stdio: 'pipe',
@@ -182,6 +182,21 @@ test('real HTTPS code/PKCE, owner recovery, localization, access and cookie boun
   await page.getByRole('button', { name: 'Resume workspace' }).click();
   await page.getByRole('button', { name: 'Confirm change' }).click();
   await expect(page.getByText('Active', { exact: true })).toBeVisible();
+  await page.getByLabel('Confirm workspace ID').fill(owner);
+  await page.getByRole('button', { name: 'Review deletion' }).click();
+  await a11y(page);
+  await page.keyboard.press('Escape');
+  await expect(
+    page.getByRole('button', { name: 'Review deletion' }),
+  ).toBeFocused();
+  await page.getByRole('button', { name: 'Review deletion' }).click();
+  await page.getByRole('button', { name: 'Schedule deletion' }).click();
+  await expect(page.getByText(/Deletion is scheduled/)).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Resume workspace' }),
+  ).toBeDisabled();
+  await page.reload();
+  await expect(page.getByText(/Deletion is scheduled/)).toBeVisible();
   await page.getByLabel('Language').selectOption('pt-BR');
   await expect(
     page.getByRole('heading', { name: 'Configurações e acesso' }),
@@ -194,6 +209,12 @@ test('real HTTPS code/PKCE, owner recovery, localization, access and cookie boun
     fullPage: true,
   });
   await page.getByLabel('Idioma').selectOption('en');
+  await page.getByRole('button', { name: 'Cancel deletion' }).click();
+  await expect(page.getByText(/Deletion was cancelled/)).toBeVisible();
+  await expect(page.getByText('Suspended', { exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Resume workspace' }).click();
+  await page.getByRole('button', { name: 'Confirm change' }).click();
+  await expect(page.getByText('Active', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Sign out all my sessions' }).click();
   await signin(page, viewer);
   await expect(
@@ -230,6 +251,50 @@ test('real HTTPS code/PKCE, owner recovery, localization, access and cookie boun
   await page.goto('/v1/auth/callback?state=bad&error=private');
   await expect(page.getByRole('alert')).toContainText('Sign-in could not');
   await expect(page).toHaveURL('/');
+  // Only this disposable, synthetic tenant is eligible early. The actual Rust
+  // worker runs under its restricted role; no runtime clock/retention bypass.
+  await signin(page, owner);
+  await page.getByLabel('Confirm workspace ID').fill(owner);
+  await page.getByRole('button', { name: 'Review deletion' }).click();
+  await page.screenshot({
+    path: `${evidence}/deletion-confirmation-mobile.png`,
+    fullPage: true,
+  });
+  await a11y(page);
+  await page.getByRole('button', { name: 'Schedule deletion' }).click();
+  await expect(page.getByText(/Deletion is scheduled/)).toBeVisible();
+  sql(
+    `UPDATE karate.tenant_deletions SET erase_after=0 WHERE tenant_id='${owner}'`,
+  );
+  let erased = false;
+  let batches = 0;
+  for (; batches < 40; batches++) {
+    const result = JSON.parse(
+      execFileSync('../target/debug/karate-erasure', [], {
+        env: {
+          ...process.env,
+          KARATE_ERASURE_DATABASE_URL: process.env.KARATE_TEST_ERASURE_URL,
+        },
+        encoding: 'utf8',
+      }),
+    ) as { outcome: string; deleted_rows: number };
+    expect(result.deleted_rows).toBeLessThanOrEqual(100);
+    if (result.outcome === 'primary_database_erased') {
+      erased = true;
+      break;
+    }
+    expect(result.outcome).toBe('progress');
+  }
+  expect(erased).toBe(true);
+  sql(`DO $$ BEGIN
+    IF EXISTS(SELECT 1 FROM karate.tenants WHERE tenant_id='${owner}')
+      OR NOT EXISTS(SELECT 1 FROM karate.erasure_receipts WHERE tenant_id='${owner}')
+      OR NOT EXISTS(SELECT 1 FROM karate.tenants WHERE tenant_id='${viewer}')
+    THEN RAISE EXCEPTION 'erasure isolation or receipt failed'; END IF;
+  END $$`);
+  await page.reload();
+  await expect(page.getByLabel('Workspace ID', { exact: true })).toBeVisible();
+  expect(await page.getByText('Newer team').count()).toBe(0);
   expect(errors).toEqual([]);
   writeFileSync(
     `${evidence}/browser.json`,
@@ -242,7 +307,12 @@ test('real HTTPS code/PKCE, owner recovery, localization, access and cookie boun
         localLab: lab,
         fieldCoreWebVitals:
           'Not measured; INP and field distribution remain open',
-        screenshots: 4,
+        screenshots: 5,
+        erasure: {
+          primaryDatabaseErased: erased,
+          batches: batches + 1,
+          foreignTenantPreserved: true,
+        },
         provider:
           'synthetic connector; human-provider and screen-reader gates open',
       },

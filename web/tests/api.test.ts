@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
   ApiError,
+  deletionValue,
+  changeDeletion,
   errorKey,
   getSession,
   getTenant,
@@ -24,6 +26,7 @@ export const tenant = {
   revision: 1,
   state: 'active' as const,
   can_manage: true,
+  deletion: null,
 };
 const json = (value: unknown, status = 200) =>
   new Response(JSON.stringify(value), {
@@ -174,4 +177,57 @@ describe('bounded same-origin API', () => {
       expect(errorKey(new ApiError(status))).toBe(key);
     expect(errorKey(null)).toBe('unavailable');
   });
+});
+
+it('validates deletion status and sends revisioned confirmation requests', async () => {
+  const job = {
+    request_id: id,
+    state: 'pending',
+    requested_at: 1800000000,
+    erase_after: 1800604800,
+    retention_days: 7,
+  };
+  expect(deletionValue(null)).toBeNull();
+  expect(deletionValue(job)).toEqual(job);
+  for (const value of [
+    undefined,
+    {},
+    { ...job, request_id: 1 },
+    { ...job, request_id: 'bad' },
+    { ...job, state: 'other' },
+    { ...job, requested_at: 'x' },
+    { ...job, requested_at: 1.5 },
+    { ...job, requested_at: -1 },
+    { ...job, erase_after: 'x' },
+    { ...job, erase_after: 1.5 },
+    { ...job, erase_after: -1 },
+    { ...job, erase_after: 8640000000001 },
+    { ...job, retention_days: '7' },
+    { ...job, retention_days: 7.5 },
+    { ...job, retention_days: 6 },
+    { ...job, retention_days: 31 },
+  ])
+    expect(() => deletionValue(value)).toThrow(ApiError);
+  const spy = mock({ ...tenant, deletion: job });
+  await changeDeletion(tenant, id, 7, false);
+  expect(spy).toHaveBeenLastCalledWith(
+    `/v1/tenants/${id}/deletion`,
+    expect.objectContaining({
+      body: JSON.stringify({
+        confirmation: id,
+        retention_days: 7,
+        expected_revision: 1,
+      }),
+    }),
+  );
+  spy.mockResolvedValue(json({ ...tenant, deletion: job }));
+  await changeDeletion(tenant, id, 7, true);
+  expect(spy).toHaveBeenLastCalledWith(
+    `/v1/tenants/${id}/deletion/cancel`,
+    expect.objectContaining({ method: 'POST' }),
+  );
+  spy.mockResolvedValue(
+    json({ ...tenant, tenant_id: '00000000-0000-4000-8000-000000000002' }),
+  );
+  await expect(changeDeletion(tenant, id, 7, false)).rejects.toThrow(ApiError);
 });

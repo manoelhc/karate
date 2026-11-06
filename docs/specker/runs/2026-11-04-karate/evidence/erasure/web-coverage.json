@@ -1,0 +1,164 @@
+{
+  "total": {
+    "lines": {
+      "total": 233,
+      "covered": 232,
+      "skipped": 0,
+      "pct": 99.57
+    },
+    "statements": {
+      "total": 256,
+      "covered": 254,
+      "skipped": 0,
+      "pct": 99.21
+    },
+    "functions": {
+      "total": 74,
+      "covered": 73,
+      "skipped": 0,
+      "pct": 98.64
+    },
+    "branches": {
+      "total": 278,
+      "covered": 271,
+      "skipped": 0,
+      "pct": 97.48
+    },
+    "branchesTrue": {
+      "total": 0,
+      "covered": 0,
+      "skipped": 0,
+      "pct": "Unknown"
+    }
+  },
+  "web/src/App.tsx": {
+    "lines": {
+      "total": 110,
+      "covered": 109,
+      "skipped": 0,
+      "pct": 99.09
+    },
+    "functions": {
+      "total": 46,
+      "covered": 45,
+      "skipped": 0,
+      "pct": 97.82
+    },
+    "statements": {
+      "total": 116,
+      "covered": 115,
+      "skipped": 0,
+      "pct": 99.13
+    },
+    "branches": {
+      "total": 111,
+      "covered": 107,
+      "skipped": 0,
+      "pct": 96.39
+    }
+  },
+  "web/src/DeletionPanel.tsx": {
+    "lines": {
+      "total": 32,
+      "covered": 32,
+      "skipped": 0,
+      "pct": 100
+    },
+    "functions": {
+      "total": 11,
+      "covered": 11,
+      "skipped": 0,
+      "pct": 100
+    },
+    "statements": {
+      "total": 34,
+      "covered": 34,
+      "skipped": 0,
+      "pct": 100
+    },
+    "branches": {
+      "total": 46,
+      "covered": 44,
+      "skipped": 0,
+      "pct": 95.65
+    }
+  },
+  "web/src/api.ts": {
+    "lines": {
+      "total": 77,
+      "covered": 77,
+      "skipped": 0,
+      "pct": 100
+    },
+    "functions": {
+      "total": 15,
+      "covered": 15,
+      "skipped": 0,
+      "pct": 100
+    },
+    "statements": {
+      "total": 91,
+      "covered": 90,
+      "skipped": 0,
+      "pct": 98.9
+    },
+    "branches": {
+      "total": 113,
+      "covered": 112,
+      "skipped": 0,
+      "pct": 99.11
+    }
+  },
+  "web/src/i18n.ts": {
+    "lines": {
+      "total": 11,
+      "covered": 11,
+      "skipped": 0,
+      "pct": 100
+    },
+    "functions": {
+      "total": 2,
+      "covered": 2,
+      "skipped": 0,
+      "pct": 100
+    },
+    "statements": {
+      "total": 11,
+      "covered": 11,
+      "skipped": 0,
+      "pct": 100
+    },
+    "branches": {
+      "total": 6,
+      "covered": 6,
+      "skipped": 0,
+      "pct": 100
+    }
+  },
+  "web/src/main.tsx": {
+    "lines": {
+      "total": 3,
+      "covered": 3,
+      "skipped": 0,
+      "pct": 100
+    },
+    "functions": {
+      "total": 0,
+      "covered": 0,
+      "skipped": 0,
+      "pct": 100
+    },
+    "statements": {
+      "total": 4,
+      "covered": 4,
+      "skipped": 0,
+      "pct": 100
+    },
+    "branches": {
+      "total": 2,
+      "covered": 2,
+      "skipped": 0,
+      "pct": 100
+    }
+  }
+}
