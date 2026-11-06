@@ -610,6 +610,29 @@ async fn browser_provider_configuration_metadata_and_cookie_boundaries_fail_clos
         .await
         .unwrap();
     assert_eq!(response.status(), StatusCode::UNAUTHORIZED);
+    for path in [
+        "/v1/auth/callback",
+        "/v1/auth/callback?state=bad&error=private",
+    ] {
+        let response = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .uri(path)
+                    .header("accept", "text/html,application/xhtml+xml")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(response.status(), StatusCode::SEE_OTHER);
+        assert_eq!(
+            response.headers()["location"],
+            format!("{ORIGIN}/?signin=failed")
+        );
+        assert_eq!(response.headers()["referrer-policy"], "no-referrer");
+        assert_eq!(response.headers()["cache-control"], "no-store");
+    }
     for path in ["/v1/auth/callback", "/v1/auth/callback?state=bad"] {
         let r = app
             .clone()

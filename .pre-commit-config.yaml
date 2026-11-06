@@ -12,3 +12,14 @@ repos:
         language: system
         pass_filenames: false
         types: [rust]
+      - id: web-lint
+        name: TypeScript, ESLint, a11y, CSS, formatting and locale parity
+        entry: make web-lint
+        language: system
+        pass_filenames: false
+        files: ^(web/|tools/web/)
+      - id: trailing-whitespace
+        name: Diff whitespace checks
+        entry: git diff --check
+        language: system
+        pass_filenames: false

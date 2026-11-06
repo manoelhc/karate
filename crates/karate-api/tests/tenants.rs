@@ -170,6 +170,7 @@ async fn provisioning_lifecycle_replay_authority_atomicity_and_serialized_recove
     ));
     let info = s.tenant(&owner, t).await.unwrap();
     assert_eq!(info.revision, 1);
+    assert!(info.can_manage);
     assert_eq!(info.state, TenantState::Active);
     let member=a.query_one("SELECT role,expires_at IS NULL AS permanent FROM karate.memberships WHERE tenant_id=$1",&[&t]).await.unwrap();
     assert_eq!(member.get::<_, String>("role"), "owner");
@@ -186,7 +187,7 @@ async fn provisioning_lifecycle_replay_authority_atomicity_and_serialized_recove
             },
         )
         .await;
-        assert!(s.tenant(&token(subject), t).await.is_ok());
+        assert!(!s.tenant(&token(subject), t).await.unwrap().can_manage);
         assert!(matches!(
             s.change_tenant(&token(subject), t, &change(1, TenantState::Suspended))
                 .await,

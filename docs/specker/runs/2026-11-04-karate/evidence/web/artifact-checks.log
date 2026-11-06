@@ -1,0 +1,7 @@
+coverage-summary.json: source hashes match final application sources
+web-coverage.json: source hashes match final application sources
+Snapshot hashes match final source/contracts/docs/lockfiles
+Original MIT license equals web/LICENSE
+Temporary DB, TLS and Dex fixtures cleaned by successful test wrappers
+Workspace Rust outputs and npm node_modules removed; pinned local Node and static dist retained
+No external account, shared infrastructure, system CA or deployment action

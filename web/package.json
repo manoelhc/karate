@@ -1,0 +1,56 @@
+{
+  "name": "karate-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": "26.13.0"
+  },
+  "scripts": {
+    "dev": "vite preview --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build && node ../tools/web/check.mjs bundle",
+    "lint": "tsc --noEmit && eslint src tests && stylelint \"src/**/*.css\" && prettier --check . ../tools/web && node ../tools/web/check.mjs locales",
+    "format": "prettier --write . ../tools/web",
+    "test": "vitest run --coverage && node ../tools/web/check.mjs coverage",
+    "e2e": "playwright test",
+    "licenses": "license-checker-rseidelsohn --excludePackages karate-web@0.1.0 --summary --onlyAllow \"MIT;ISC;Apache-2.0;BSD-2-Clause;BSD-3-Clause;CC0-1.0;CC-BY-4.0;MPL-2.0;Python-2.0;BlueOak-1.0.0;0BSD;MIT-0;PSF-2.0;CC-BY-3.0\"",
+    "audit": "npm audit --audit-level=low"
+  },
+  "dependencies": {
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "@tanstack/react-query": "5.106.1",
+    "i18next": "26.7.2",
+    "react-i18next": "17.1.13"
+  },
+  "devDependencies": {
+    "typescript": "6.0.3",
+    "vite": "8.3.6",
+    "@vitejs/plugin-react": "6.2.1",
+    "vitest": "5.1.0",
+    "@vitest/coverage-v8": "5.1.0",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/user-event": "14.6.8",
+    "@testing-library/jest-dom": "7.0.1",
+    "jsdom": "31.0.0",
+    "@playwright/test": "1.65.0",
+    "@axe-core/playwright": "4.14.0",
+    "eslint": "9.39.5",
+    "typescript-eslint": "8.72.1",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "eslint-plugin-jsx-a11y": "6.10.2",
+    "prettier": "3.9.10",
+    "stylelint": "18.0.0",
+    "stylelint-config-standard": "41.0.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@types/node": "26.6.6",
+    "license-checker-rseidelsohn": "5.0.1",
+    "@testing-library/dom": "10.4.2"
+  },
+  "overrides": {
+    "minimatch@>=7": "11.0.1",
+    "glob@>=9": "14.0.2"
+  }
+}

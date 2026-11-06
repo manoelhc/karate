@@ -59,3 +59,7 @@ and expiry remain strict; absolute session expiry is capped at API time + one ho
 even when the issuer leads. This handles the observed subsecond host/Podman VM
 clock offset, whose Unix-second rounding intermittently produced iat = now + 1.
 Tests reject larger future issued-at and verify the cap for accepted small skew.
+
+TASK-006a browser callbacks accepting `text/html` redirect failed sign-in to the
+fixed public origin `/?signin=failed`, clear binding and set no-referrer. No provider
+error/code/state is reflected. JSON clients retain existing error/status behavior.

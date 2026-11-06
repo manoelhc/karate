@@ -194,3 +194,9 @@ ordinary work and preserves owner recovery; resume does not undo independent
 credential/membership revocation. Data remains retained, with no deletion or
 backup-erasure claim. Pool/SQL/body bounds apply; distributed rate control remains
 unimplemented. These endpoints do not configure or launch an assessment.
+
+Browser workspace additions: tenant responses include required boolean
+`can_manage`, a service-derived visibility hint with no authority of its own.
+A callback navigation accepting `text/html` returns 303 to the fixed public origin
+`/?signin=failed` on failure; non-browser JSON errors retain their status. All
+callback responses clear login binding, prevent referrer leakage and disable cache.

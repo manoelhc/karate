@@ -14,8 +14,9 @@ and audited rotation/revocation through the same service and current policy.
 [Trusted provider discovery](../components/identity-refresh.md) now supports bounded
 HTTPS key refresh with fail-closed expiry. [Browser sessions](../components/browser-sessions.md)
 add code/PKCE login and tenant-bound durable cookies. [Tenant lifecycle](../components/tenants.md)
-adds operator-granted bootstrap, atomic ownership and guarded suspend/resume. There is no worker/frontend
-or human-provider/SSO logout integration yet. The diagram below
+adds operator-granted bootstrap, atomic ownership and guarded suspend/resume. [React workspace](../components/web-workspace.md) now supplies local sign-in, session
+and tenant recovery presentation. There is no worker or human-provider/SSO logout
+integration yet. The diagram below
 remains the target architecture. The API calls the core membership policy after
 real credential verification and an async current-membership lookup; the original
 synchronous authentication seam remains useful for deterministic domain tests.

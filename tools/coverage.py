@@ -44,10 +44,15 @@ def main():
         flags = "-C instrument-coverage" + (" -Z coverage-options=branch" if "nightly" in args.toolchain else "")
         env = dict(os.environ, RUSTFLAGS=flags, LLVM_PROFILE_FILE=str(raw / "%p-%m.profraw"),
                    CARGO_TARGET_DIR=str(ROOT / "target" / "coverage-build"), RUSTC=str(compiler),
-                   RUSTDOC=str(compiler.parent / "rustdoc"), CARGO_BUILD_JOBS="2")
+                   RUSTDOC=str(compiler.parent / "rustdoc"), CARGO_BUILD_JOBS=os.environ.get("CARGO_BUILD_JOBS", "2"))
         build = subprocess.run([str(compiler.parent / "cargo"), "test", "--workspace", "--locked", "--offline", "--no-run", "--message-format=json"],
                                cwd=ROOT, text=True, env=env, capture_output=True)
-        (evidence / "coverage-build.log").write_text(build.stderr)
+        diagnostics = "".join(
+            event.get("message", {}).get("rendered", "")
+            for line in build.stdout.splitlines()
+            if (event := json.loads(line)).get("reason") == "compiler-message"
+        )
+        (evidence / "coverage-build.log").write_text(build.stderr + diagnostics)
         if build.returncode:
             raise SystemExit("Coverage build failed; see " + str(evidence / "coverage-build.log"))
         binaries, objects = set(), set()

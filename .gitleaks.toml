@@ -3,4 +3,4 @@ useDefault = true
 
 [allowlist]
 description = "Generated build, virtualenv and VCS internals only"
-paths = ['''(^|/)target/''', '''(^|/)\.venv/''', '''(^|/)\.git/''']
+paths = ['''(^|/)target/''', '''(^|/)\.venv/''', '''(^|/)\.git/''', '''(^|/)node_modules/''', '''^\.local/''']

@@ -1,0 +1,69 @@
+{
+  "component": "web",
+  "metrics": {
+    "lines": {
+      "total": 191,
+      "covered": 190,
+      "skipped": 0,
+      "pct": 99.47
+    },
+    "statements": {
+      "total": 209,
+      "covered": 207,
+      "skipped": 0,
+      "pct": 99.04
+    },
+    "functions": {
+      "total": 60,
+      "covered": 59,
+      "skipped": 0,
+      "pct": 98.33
+    },
+    "branches": {
+      "total": 197,
+      "covered": 193,
+      "skipped": 0,
+      "pct": 97.96
+    },
+    "branchesTrue": {
+      "total": 0,
+      "covered": 0,
+      "skipped": 0,
+      "pct": "Unknown"
+    }
+  },
+  "files": [
+    {
+      "path": "web/src/App.tsx",
+      "sha256": "80cd6712fb7614590b4f66ffc958442e002d1f607b97ec802f1ee90b1d32ab3e"
+    },
+    {
+      "path": "web/src/api.ts",
+      "sha256": "327d2c1b1b782c0451ef32ce3229e85e6d2929c32497f74c53aa2f267a4fb0bb"
+    },
+    {
+      "path": "web/src/i18n.ts",
+      "sha256": "59898bb6ac61c317e085ab9b8ecf37ff0e1e32bb262627a0344446f37981bd95"
+    },
+    {
+      "path": "web/src/locales/en.json",
+      "sha256": "237189dcca21749e802fa7be12a64201c50f9a5deefbd0f757ab9b0934bf73a6"
+    },
+    {
+      "path": "web/src/locales/pt-BR.json",
+      "sha256": "444674377e91a5e43a6b604ed25aa3bfc95a0a35136f2b965194b1aa8e2479ff"
+    },
+    {
+      "path": "web/src/main.tsx",
+      "sha256": "1895bb612dc362dc317a6dc3f55e10ca7d32ced6a2413e7625acf84946386bd6"
+    },
+    {
+      "path": "web/src/style.css",
+      "sha256": "77f06af640074568c1dbf2b0b41bd7c6328a7c9bb71fd1f7a6cf5fb1b9d9985d"
+    }
+  ],
+  "lock_sha256": "b6ed290be7a12c28a1ad00bf31a49d50098996566b0bb8fe8245d64e3fe04788",
+  "exclusions": [
+    "Test sources and third-party dependencies; every executable application source included"
+  ]
+}

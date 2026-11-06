@@ -34,6 +34,12 @@ config={'issuer':os.environ['KARATE_TEST_DEX_ISSUER'],'storage':{'type':'memory'
  'oauth2':{'grantTypes':['authorization_code'],'responseTypes':['code'],'skipApprovalScreen':True,'pkce':{'enforce':True,'codeChallengeMethodsSupported':['S256']}},
  'staticClients':[{'id':'karate-browser','name':'Karate isolated verification','public':True,'redirectURIs':['https://karate.example/v1/auth/callback']}],
  'connectors':[{'type':'mockCallback','id':'fixture','name':'Isolated synthetic identity'}]}
+origin=os.environ.get('KARATE_TEST_WEB_ORIGIN')
+if origin:
+    from urllib.parse import urlsplit
+    u=urlsplit(origin)
+    assert u.scheme=='https' and u.hostname=='localhost' and u.port and not u.username and not u.password and not u.path and not u.query and not u.fragment
+    config['staticClients'][0]['redirectURIs'].append(origin+'/v1/auth/callback')
 (p/'config.json').write_text(json.dumps(config));(p/'config.json').chmod(0o644)
 PY
 "$runtime" create --name "$name" --cap-drop=ALL --security-opt=no-new-privileges --memory=256m --cpus=1 --pids-limit=128 --publish "127.0.0.1:$port:5556" --entrypoint dex "$image" serve /tmp/config.json >/dev/null

@@ -41,3 +41,11 @@ __pycache__/
 !docs/specker/runs/2026-11-04-karate/evidence/discovery/*.log
 !docs/specker/runs/2026-11-04-karate/evidence/sessions/*.log
 !docs/specker/runs/2026-11-04-karate/evidence/tenants/*.log
+
+# Local frontend toolchain and verification outputs
+web/node_modules/
+web/dist/
+web/coverage/
+web/test-results/
+web/playwright-report/
+!docs/specker/runs/2026-11-04-karate/evidence/web/*.log

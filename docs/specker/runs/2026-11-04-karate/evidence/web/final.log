@@ -1,0 +1,110 @@
+./scripts/node.sh npm --prefix web run lint
+
+> karate-web@0.1.0 lint
+> tsc --noEmit && eslint src tests && stylelint "src/**/*.css" && prettier --check . ../tools/web && node ../tools/web/check.mjs locales
+
+Checking formatting...
+All matched files use Prettier code style!
+Locale parity: 58 translated keys.
+./scripts/node.sh npm --prefix web test
+
+> karate-web@0.1.0 test
+> vitest run --coverage && node ../tools/web/check.mjs coverage
+
+
+ RUN  v5.1.0 /Users/manoelhc/Documents/GitHub/manoelhc/karate/web
+      Coverage enabled with v8
+
+
+ Test Files  2 passed (2)
+      Tests  18 passed (18)
+   Start at  11:59:40
+   Duration  1.40s (tests 43%, environment 33%, setup 13%, transform 5%, import 3%, worker 2%)
+
+ % Coverage report from v8
+----------|---------|----------|---------|---------|-------------------
+File      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+----------|---------|----------|---------|---------|-------------------
+All files |   99.04 |    97.96 |   98.33 |   99.47 |
+ App.tsx  |    99.1 |    96.96 |   97.77 |   99.06 | 33
+ api.ts   |   98.78 |    98.88 |     100 |     100 | 183
+----------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 99.04% ( 207/209 )
+Branches     : 97.96% ( 193/197 )
+Functions    : 98.33% ( 59/60 )
+Lines        : 99.47% ( 190/191 )
+================================================================================
+{
+  "component": "web",
+  "files": 4,
+  "lines": {
+    "total": 191,
+    "covered": 190,
+    "skipped": 0,
+    "pct": 99.47
+  },
+  "branches": {
+    "total": 197,
+    "covered": 193,
+    "skipped": 0,
+    "pct": 97.96
+  }
+}
+./scripts/node.sh npm --prefix web run build
+
+> karate-web@0.1.0 build
+> tsc --noEmit && vite build && node ../tools/web/check.mjs bundle
+
+vite v8.3.6 building client environment for production...
+transforming...
+✓ 91 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.67 kB │ gzip:   0.37 kB
+dist/assets/index-BQQcivEQ.css    5.05 kB │ gzip:   1.73 kB
+dist/assets/index-B6UsQOll.js   328.95 kB │ gzip: 102.21 kB
+
+✓ built in 418ms
+{
+  "baseline": 0,
+  "bytesAndDelta": {
+    "js": {
+      "raw": 328955,
+      "gzip": 101100,
+      "brotli": 87867
+    },
+    "css": {
+      "raw": 5057,
+      "gzip": 1728,
+      "brotli": 1461
+    }
+  }
+}
+./scripts/node.sh npm --prefix web run licenses
+
+> karate-web@0.1.0 licenses
+> license-checker-rseidelsohn --excludePackages karate-web@0.1.0 --summary --onlyAllow "MIT;ISC;Apache-2.0;BSD-2-Clause;BSD-3-Clause;CC0-1.0;CC-BY-4.0;MPL-2.0;Python-2.0;BlueOak-1.0.0;0BSD;MIT-0;PSF-2.0;CC-BY-3.0"
+
+├─ MIT: 355
+├─ ISC: 68
+├─ Apache-2.0: 33
+├─ BlueOak-1.0.0: 12
+├─ BSD-2-Clause: 11
+├─ MPL-2.0: 4
+├─ BSD-3-Clause: 4
+├─ MIT-0: 3
+├─ CC0-1.0: 3
+├─ Python-2.0: 1
+├─ PSF-2.0: 1
+├─ CC-BY-4.0: 1
+├─ CC-BY-3.0: 1
+└─ (MIT AND CC-BY-3.0): 1
+
+./scripts/node.sh npm --prefix web run audit
+
+> karate-web@0.1.0 audit
+> npm audit --audit-level=low
+
+found 0 vulnerabilities

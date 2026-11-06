@@ -31,7 +31,7 @@ executable first-party code is excluded. Raw line AND branch counts must exceed
 
 CI installs the separately pinned instrumentation compiler and runs the same real
 fixtures. No branch protection has been verified. No release workflow exists, and this pipeline cannot establish the
-complete platform baseline. React coverage, real OIDC/MCP/voice/provider clients,
+complete platform baseline. Full application coverage, human OIDC/MCP/voice/provider clients,
 SAST/fuzzing, container scans/smoke, resilience/performance, accessibility, i18n,
 backup/restore and full end-to-end journeys remain required in TASK-003b–012.
 
@@ -65,3 +65,13 @@ read/total time limits, key replacement/removal, concurrency, cancellation coold
 failed refresh without lifetime extension, recovery, current DB membership and the
 actual API binary in both launch modes. No real customer identity/credential is
 used. This is deliberately not claimed as a maintained IdP/browser login test.
+
+TASK-006a adds strict Vitest V8 coverage over every executable React source,
+closed API-shape/bounds tests, locale parity, JSX accessibility rules and real
+Playwright browser navigation through HTTPS, the Rust binary, PostgreSQL and Dex.
+The browser fixture verifies native Secure/HttpOnly cookie behavior, CSRF rejection,
+owner suspension/recovery, conflict refresh, viewer denial and membership loss.
+It runs axe/keyboard/mobile/4K checks and captures sanitized synthetic UI screenshots.
+Local cached Chromium version and unthrottled LCP/CLS measurements are recorded;
+CI installs the version paired with the locked Playwright. Manual screen-reader,
+INP/field CWV, human-provider and full product container gates stay open.

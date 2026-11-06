@@ -4532,7 +4532,8 @@
           "tenant_id",
           "name",
           "state",
-          "revision"
+          "revision",
+          "can_manage"
         ],
         "properties": {
           "tenant_id": {
@@ -4555,6 +4556,10 @@
             "type": "integer",
             "format": "int64",
             "minimum": 1
+          },
+          "can_manage": {
+            "type": "boolean",
+            "description": "Current server-derived owner control visibility; mutations always reauthorize."
           }
         }
       },

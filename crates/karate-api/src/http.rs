@@ -626,6 +626,41 @@ async fn browser_callback(
     Extension(locale): Extension<Locale>,
     headers: HeaderMap,
     query: Result<Query<Callback>, QueryRejection>,
+) -> Response {
+    let navigation = headers
+        .get("accept")
+        .and_then(|v| v.to_str().ok())
+        .is_some_and(|v| {
+            v.split(',')
+                .any(|part| part.trim().split(';').next() == Some("text/html"))
+        });
+    let mut response =
+        match browser_callback_inner(State(service.clone()), Extension(locale), headers, query)
+            .await
+        {
+            Ok(response) => response,
+            Err(error) => error.into_response(),
+        };
+    if navigation
+        && (response.status().is_client_error() || response.status().is_server_error())
+        && let Ok(origin) = service.browser_origin()
+    {
+        response = Redirect::to(&format!("{origin}/?signin=failed")).into_response();
+    }
+    // All callback outcomes clear binding and prevent leaking code/state in Referer.
+    if let Err(error) = set_cookie(&mut response, LOGIN_COOKIE, "", 0) {
+        response = ApiError(error, locale).into_response();
+    }
+    response
+        .headers_mut()
+        .insert("referrer-policy", HeaderValue::from_static("no-referrer"));
+    response
+}
+async fn browser_callback_inner(
+    State(service): State<Arc<ProjectService>>,
+    Extension(locale): Extension<Locale>,
+    headers: HeaderMap,
+    query: Result<Query<Callback>, QueryRejection>,
 ) -> Result<Response, ApiError> {
     let error = |e| ApiError(e, locale);
     let Query(input) = query.map_err(|_| error(Error::Validation))?;
@@ -640,7 +675,7 @@ async fn browser_callback(
     let result = service
         .complete_login(&input.state, binding, code, input.iss.as_deref())
         .await;
-    let mut response = match result {
+    let response = match result {
         Ok(session) => {
             let mut response =
                 Redirect::to(&format!("{}/", service.browser_origin().map_err(error)?))
@@ -656,10 +691,6 @@ async fn browser_callback(
         }
         Err(e) => error(e).into_response(),
     };
-    set_cookie(&mut response, LOGIN_COOKIE, "", 0).map_err(error)?;
-    response
-        .headers_mut()
-        .insert("referrer-policy", HeaderValue::from_static("no-referrer"));
     Ok(response)
 }
 async fn browser_session(

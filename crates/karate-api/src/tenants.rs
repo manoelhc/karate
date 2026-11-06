@@ -18,6 +18,7 @@ pub struct Tenant {
     pub name: String,
     pub state: TenantState,
     pub revision: i64,
+    pub can_manage: bool,
 }
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -32,6 +33,7 @@ fn row(r: &Row) -> Result<Tenant, Error> {
         name: r.try_get("name").map_err(storage)?,
         state: r.try_get::<_, String>("state").map_err(storage)?.parse()?,
         revision: r.try_get("revision").map_err(storage)?,
+        can_manage: false,
     })
 }
 pub(crate) async fn locked(
@@ -99,7 +101,7 @@ impl ProjectService {
             !offer.try_get::<_, bool>("consumed").map_err(storage)?
                 && !offer.try_get::<_, bool>("revoked").map_err(storage)?,
         )?;
-        let result = row(&tx
+        let mut result = row(&tx
             .query_one(
                 "SELECT * FROM karate.provision_tenant($1,$2)",
                 &[&tenant, &grant],
@@ -109,6 +111,7 @@ impl ProjectService {
         member_principal(&tx, &identity, tenant)
             .await?
             .authorize(tenant, Action::DeleteTenant)?;
+        result.can_manage = true;
         tx.commit().await.map_err(storage)?;
         Ok(result)
     }
@@ -120,8 +123,9 @@ impl ProjectService {
             .start()
             .await
             .map_err(storage)?;
-        authorize_recovery(&tx, &identity, tenant).await?;
-        let result = locked(&tx, tenant, false).await?;
+        let principal = authorize_recovery(&tx, &identity, tenant).await?;
+        let mut result = locked(&tx, tenant, false).await?;
+        result.can_manage = principal.authorize(tenant, Action::DeleteTenant).is_ok();
         tx.commit().await.map_err(storage)?;
         Ok(result)
     }
@@ -151,7 +155,7 @@ impl ProjectService {
             input.expected_revision,
             current.revision,
         )?;
-        let result = row(&tx
+        let mut result = row(&tx
             .query_one(
                 "SELECT * FROM karate.change_tenant($1,$2,$3,$4)",
                 &[
@@ -163,6 +167,7 @@ impl ProjectService {
             )
             .await
             .map_err(storage)?)?;
+        result.can_manage = true;
         tx.commit().await.map_err(storage)?;
         Ok(result)
     }

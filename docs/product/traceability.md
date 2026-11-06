@@ -16,7 +16,7 @@ implementer; all future runtime/component owners are the implementation agent.
 | REQ-004/008/009 | PAGE-012/014/030/031 provisional | TASK-005/009/010 | Specification only | Test identities, retests and audience-safe JSON/HTML/PDF reports |
 | REQ-010/011 | PAGE-027/047 provisional | TASK-009 | Specification only | Scheduling, deploy triggers, repository/ticket integrations |
 | REQ-012/013 | PAGE-003/008/009/025/026/050 provisional; PAGE-052 partial | TASK-010 | Specification/backlog only | Android/iOS/network/AI/MCP target capabilities, private connector |
-| PLAT-UX/I18N | POLICY | Frontend, TASK-006 | Proposed locales/layout only | React journeys, full en/pt-BR catalogs, RTL/a11y and real APIs |
+| PLAT-UX/I18N | POLICY | Frontend, TASK-006a | React sign-in/session/owner recovery, en/pt-BR, real HTTPS/DB/Dex browser and axe checks | Full product journeys, manual screen-reader, human-provider and field performance |
 | PLAT-MCP/VOICE | POLICY | TASK-007 | Architecture only | Real protocol/client and voice providers with shared authorization |
 | PLAT-BILLING | POLICY | TASK-008 | Budget arithmetic only | Entitlements, meters, invoices/subscriptions, reconciliation/concurrency |
 | PLAT-OTEL/CONTAINER | POLICY | TASK-011 | None | Traces/metrics/logs, images, full restart/recovery and provider failures |

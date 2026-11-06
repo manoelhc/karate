@@ -78,3 +78,31 @@ TASK-003b2e1 final local checks: 43 tests, real SQL lifecycle/RLS and lock order
 core 462/462 lines and 266/272 branches, API 2262/2308 lines and 346/378 branches.
 Strict component thresholds pass. Next TASK-006a React session/tenant recovery
 journey; 003b2e2 erasure/retention remains explicit. See tenant verification.
+
+Active TASK-006a: React session/tenant-recovery workspace with same-origin cookies,
+server-derived control visibility, complete en/pt-BR states and bounded requests.
+Small additive Rust metadata/browser-error changes support the real UI. Local
+HTTPS Rust/PostgreSQL/Dex browser journey, UI coverage >90% lines/branches, a11y,
+responsive screenshots, bundle/license/audit/static checks and exact CI required.
+No frontend domain logic, hosting registration, deployment or paid resource.
+
+TASK-006a implementation checkpoint: React/TypeScript CSR, 58 en/pt-BR keys,
+validated bounded API adapter, session-bound mutation callbacks, complete recovery
+states and native accessible confirmation. Additive Rust owner visibility and
+safe HTML callback failure redirect. 18 frontend tests and real HTTPS browser
+journey pass locally; bundle/audit/licenses/static checks recorded with final
+Rust regression/coverage below. Manual screen-reader, human IdP, field CWV/INP,
+full containers and platform gates remain open. No hosting/account action.
+
+Frontend checklist: [x] design/states/data flow; [x] impact/license review;
+[x] minimization/current authority/expiry; [x] CSP and failure hardening;
+[x] local implementation and real browser verification; [ ] exact-commit CI.
+Necessary dependencies follow the user's continuing implementation authorization.
+No sub-agents. Direct main commits; no PR or deployment.
+
+TASK-006a final local gate: 43 Rust tests, 18 frontend tests and the real browser
+journey pass. Core 462/462 lines and 266/272 branches; API 2292/2339 and 351/388;
+web 190/191 and 193/197. All strictly exceed 90% independently. Audits, licenses,
+static checks, PostgreSQL isolation/restart, bundle, a11y and responsive checks pass.
+See web verification for unresolved human-provider/screen-reader/field-performance,
+retention and full platform gates. Exact CI is checked after the direct main push.

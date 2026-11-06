@@ -4,11 +4,22 @@
 - Method: https://github.com/manoelhc/specker at f71612bb25bfb1951b3d0df4abb3de9bf914e9d3.
 - Reference: https://www.aikido.dev/attack/aipentest (research only; no assessment authorized).
 - Product: independent MIT-licensed AI security-assessment SaaS; copyright Manoel Carvalho preserved.
-- Current delivery base: 4225dc9b1852c2b6b896848088a4fd1461ab6287. User requires direct commits/pushes to main without PRs. No production deployment or paid resources authorized.
-- Current stage: **partial implementation**. TASK-003b1 project API, TASK-003b2a existing-member administration TASK-003b2b invitations and TASK-003b2c API keys and TASK-003b2d1 discovery/key refresh plus TASK-003b2d2 browser sessions and TASK-003b2e1 explicit provisioning/lifecycle implemented; complete platform and reference parity still open.
+- Current delivery base: 256852839805b5dcbb46a6ba5a61f1b5a1911b19. User requires direct commits/pushes to main without PRs. No production deployment or paid resources authorized.
+- Current stage: **partial implementation**. TASK-003b1 project API, TASK-003b2a existing-member administration TASK-003b2b invitations and TASK-003b2c API keys and TASK-003b2d1 discovery/key refresh plus TASK-003b2d2 browser sessions and TASK-003b2e1 explicit provisioning/lifecycle and TASK-006a React access/recovery implemented; complete platform and reference parity still open.
 - Toolchains: production Rust 1.99.1; separate coverage-only nightly-2026-11-04 (1.101.0-nightly, 708c94ef0), matching LLVM tools. PostgreSQL 14.20 local fixture; production major version not selected. Docker absent; existing Podman machine supports the pinned Dex fixture.
-- Capacity: about 4.8 GiB free at this continuation start. No dependency or toolchain installation; workspace build outputs are removed at handoff.
-- Owner: single backend implementer using backend-engineer workflow. No sub-agents, cloud/account provisioning or provider credentials.
+- Capacity was constrained (under 2 GiB); run rebuildable Rust/frontend artifacts sequentially. Node/npm were installed only in the workspace; see web verification for cleanup.
+- Owner: single implementer using frontend-engineer plus existing backend workflow; Sites guidance routes this repository to local-only work. No sub-agents, cloud/account provisioning or provider credentials.
+
+## Latest continuation (2026-11-06): React workspace access and recovery
+
+TASK-006a implements the localized React session/tenant workspace, server-derived
+owner control visibility, safe browser callback failure redirect, bounded API
+requests and session-scoped cache cleanup. 18 frontend tests and the actual local
+HTTPS browser/Rust/PostgreSQL/Dex journey pass, with axe, keyboard and responsive
+checks. See [web verification](web-verification.md) for evidence and remaining gates.
+Rust 1.99.1 retains all authorization/domain logic. No deployment or account action.
+Prior tenant checkpoint 2568528 passed exact-commit CI; this checkpoint's exact CI
+is checked after its direct push. The human-provider connector gate remains open.
 
 ## Latest continuation (2026-11-06): explicit tenant provisioning and lifecycle
 
@@ -116,24 +127,22 @@ advertised iOS parity until detailed research resolves it. English/pt-BR and the
 web/API SaaS buyer remain unvalidated market assumptions.
 
 The Rust API now provides browser code/PKCE/session endpoints, but only for
-existing members. Human/provider connector integration, provider logout, React,
+existing members. Human/provider connector integration, provider logout,
 tenant deletion/retention and full platform gates remain open. The synthetic Dex connector
 is real protocol evidence, not a human sign-in journey. DB runtime is Unix-socket
-only; non-loopback API binds and unencrypted DB TCP are rejected. No frontend,
-worker or assessment executor is built.
+only; non-loopback API binds and unencrypted DB TCP are rejected. React access/recovery is now built; no worker or assessment executor is built.
 
 ## Exact next actions
 
-1. TASK-006a: React sign-in/session and tenant recovery UI, localized errors,
-   accessibility and real browser/provider checks. Operator-granted bootstrap and
-   owner-only lifecycle backend are implemented. TASK-003b2e2 deletion/retention,
-   operator support and provider SSO/backchannel logout remain separately open.
+1. TASK-003b2e2: define and implement tenant retention/deletion and operator-support
+   boundaries. React access/recovery is implemented. Human IdP connector integration,
+   SSO/backchannel logout, manual screen-reader and field performance remain open.
 2. TASK-004a after its access prerequisites: expiring target ownership, immutable
    scope, atomic budget/job publication, lease fencing and per-request authority/
    cancellation/DNS pinning. Only owned HTTP fixtures are authorized.
 3. TASK-001 alongside independent build work: finish documentation reading and
    the mobile/iOS/report frontier; reconcile provisional PRD/business evidence.
-4. Continue full baseline: React/localization/a11y, MCP/voice/providers, billing,
+4. Continue full baseline: complete React journeys/localization/a11y, MCP/voice/providers, billing,
    orchestration, OTel, container/recovery/security/performance gates. None waived.
 
 No renewed approval is required for local work or direct-to-main delivery. Paid

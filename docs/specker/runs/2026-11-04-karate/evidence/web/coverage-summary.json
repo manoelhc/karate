@@ -1,0 +1,105 @@
+{
+  "toolchain": "rustc 1.101.0-nightly (708c94ef0 2026-11-03)\nbinary: rustc\ncommit-hash: 708c94ef093ecc42fb8851e17d8383d999727abc\ncommit-date: 2026-11-03\nhost: aarch64-apple-darwin\nrelease: 1.101.0-nightly\nLLVM version: 23.1.5\n",
+  "instrumentation_only": true,
+  "production_toolchain": "1.99.1",
+  "components": [
+    {
+      "component": "karate-api",
+      "lines": {
+        "count": 2339,
+        "covered": 2292
+      },
+      "branches": {
+        "count": 388,
+        "covered": 351
+      }
+    },
+    {
+      "component": "karate-core",
+      "lines": {
+        "count": 462,
+        "covered": 462
+      },
+      "branches": {
+        "count": 272,
+        "covered": 266
+      }
+    }
+  ],
+  "files": [
+    {
+      "path": "crates/karate-api/src/browser.rs",
+      "sha256": "8d21b62450d5a45cc7cfec24adfe739218d2bf3590596e6c71bcbca9498fc425"
+    },
+    {
+      "path": "crates/karate-api/src/discovery.rs",
+      "sha256": "3fef52d1cf60078f1770a820daeaeae9789293ef2b160cd75aa262947d5ea1c0"
+    },
+    {
+      "path": "crates/karate-api/src/http.rs",
+      "sha256": "3e4764f0deb8e2177d2614036efe1ab96d516844b32ccb1c5792f60ff05365ee"
+    },
+    {
+      "path": "crates/karate-api/src/identity.rs",
+      "sha256": "759260ad33609d30c9f48a7e124f62c7df813656e6b81d8c43f0ac13968c007c"
+    },
+    {
+      "path": "crates/karate-api/src/invitations.rs",
+      "sha256": "06aa29c572516df0de0fdad9870d66c8d0c9c4b12547287a692f370fa38c78ac"
+    },
+    {
+      "path": "crates/karate-api/src/keys.rs",
+      "sha256": "ce2da5f2e64c047147be50a76da66e6e50e7e410801a0d7ada2cb68b79cf1a7d"
+    },
+    {
+      "path": "crates/karate-api/src/lib.rs",
+      "sha256": "d3b1a17b4b57c546a58fec2dd7c5e052d43750053eb976439478af6d2fdd0a13"
+    },
+    {
+      "path": "crates/karate-api/src/main.rs",
+      "sha256": "7ec62f7686b78e616037a55747bba5b9c7adebc68ac369cd98a2dbac6be8f78d"
+    },
+    {
+      "path": "crates/karate-api/src/membership.rs",
+      "sha256": "9a53662520259c1c037ea862337d75f8170643471e15a7851b410c6a72ab40b9"
+    },
+    {
+      "path": "crates/karate-api/src/service.rs",
+      "sha256": "f5b00f25cfddbf3111f6946c61ed927269f7d43f5e038a298d583324489c22e8"
+    },
+    {
+      "path": "crates/karate-api/src/tenants.rs",
+      "sha256": "5290909fbfe53bc20c84a38588fca719417a3b16db14bc9480e7a4b46fcf88e3"
+    },
+    {
+      "path": "crates/karate-core/src/assessment.rs",
+      "sha256": "13afd9ab0552f3d2c7c69d5956c1143bde122cc364ab55fbc8499edefb717a0a"
+    },
+    {
+      "path": "crates/karate-core/src/authorization.rs",
+      "sha256": "98c4bc3710135e457b86a3f5a08d56829b501ee271678ad84d47cc9403a77c2d"
+    },
+    {
+      "path": "crates/karate-core/src/evidence.rs",
+      "sha256": "a80b1e31826da6ad60feef030819702f09eae00108b1b27c18008c4cd369f69b"
+    },
+    {
+      "path": "crates/karate-core/src/lib.rs",
+      "sha256": "2b709c1a1a5227a4efadb5f965a3cc2f6217e6ac227abad749cd5fe88fa936bf"
+    },
+    {
+      "path": "crates/karate-core/src/scope.rs",
+      "sha256": "b8b8d35a69ce8fca174cb55b5dc33029565708a58ac4fcc57042441217d5512d"
+    },
+    {
+      "path": "crates/karate-core/src/tenant.rs",
+      "sha256": "b3ac1e53e295301baf152ebbaf82cabf2811e6e1cf0e0aa7a4880e7b1cb90223"
+    }
+  ],
+  "lock_sha256": "4220c98cc3372327b1cf17ec67753d7879b6263c6192130322694cae31628c5f",
+  "exclusions": [
+    "Test sources",
+    "Third-party/compiler code",
+    "karate-api/src/lib.rs: module declarations only, enforced by source check; no executable logic"
+  ]
+}

@@ -44,3 +44,7 @@ sensitive identity references and operator approval metadata; encrypt storage an
 restrict operator access. Retention schedules, deletion requests, propagation,
 backups and erasure proof remain release gates. No shared/production migration
 is authorized; migration 0007 runs only in private disposable fixtures.
+
+TASK-006a adds `can_manage` to tenant responses, derived from the current service
+principal's owner permission. It is a presentation hint only; all writes continue
+to enforce current membership and authorization inside the transaction.
